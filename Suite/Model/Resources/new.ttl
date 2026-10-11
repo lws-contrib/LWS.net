@@ -56,6 +56,7 @@
         _:createDataResourceLinksDataResourceType
         _:storageRootGetReturns200
         _:storageRootGetLinksContainerType
+        _:storageRootGetReturnsContainerType
     ) ;
 ] .
 
@@ -643,6 +644,15 @@ _:storageRootGetLinksContainerType
     :assertion _:containerTypeLink ;
 .
 
+_:storageRootGetReturnsContainerType
+    :name "Storage root GET returns Container type" ;
+    :steps (
+        _:discoverStorageRoot
+        _:getStorageRootType
+    ) ;
+    :assertion _:containerType ;
+.
+
 # Steps
 _:discoverStorageRoot
     :name "Discover storage root" ;
@@ -1191,10 +1201,7 @@ _:getContainerType
     :name "Get container type" ;
     :request _:getContainer ;
     :extractors (
-        [
-            :param "type" ;
-            :path "$.type" ;
-        ]
+        _:type
     ) ;
 .
 
@@ -1232,6 +1239,14 @@ _:getStorageRootTypeLinks
     :request _:getStorageRoot ;
     :extractors (
         _:typeLinks
+    ) ;
+.
+
+_:getStorageRootType
+    :name "Get storage root type" ;
+    :request _:getStorageRoot ;
+    :extractors (
+        _:type
     ) ;
 .
 
@@ -1387,6 +1402,11 @@ _:body
 _:contentType
     :param "contentType" ;
     :header "Content-Type" ;
+.
+
+_:type
+    :param "type" ;
+    :path "$.type" ;
 .
 
 _:typeLinks
