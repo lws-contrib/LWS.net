@@ -48,6 +48,7 @@
         _:createInMissingContainerReturnsClientError
         _:storageDescriptionWithoutAcceptReturns200
         _:containerGetReturnsETag
+        _:containerGetReturnsContainerType
     ) ;
 ] .
 
@@ -553,6 +554,19 @@ _:containerGetReturnsETag
     ] ;
 .
 
+_:containerGetReturnsContainerType
+    :name "Container GET returns Container type" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:getContainerType
+    ) ;
+    :assertion [
+        :param "type" ;
+        :regex "^Container$|\"Container\"" ;
+    ] ;
+.
+
 # Steps
 _:discoverStorageRoot
     :name "Discover storage root" ;
@@ -1046,17 +1060,6 @@ _:getStorageDescriptionStatus
     ) ;
 .
 
-_:getContainerETag
-    :name "Get container ETag" ;
-    :request _:getContainer ;
-    :extractors (
-        [
-            :param "etag" ;
-            :header "ETag" ;
-        ]
-    ) ;
-.
-
 _:getStorageDescriptionAsCidStatus
     :name "Get storage description as CID status" ;
     :request _:getStorageDescriptionAsCid ;
@@ -1091,6 +1094,28 @@ _:getStorageDescriptionSecondContext
         [
             :param "context" ;
             :path "$['@context'][1]" ;
+        ]
+    ) ;
+.
+
+_:getContainerETag
+    :name "Get container ETag" ;
+    :request _:getContainer ;
+    :extractors (
+        [
+            :param "etag" ;
+            :header "ETag" ;
+        ]
+    ) ;
+.
+
+_:getContainerType
+    :name "Get container type" ;
+    :request _:getContainer ;
+    :extractors (
+        [
+            :param "type" ;
+            :path "$.type" ;
         ]
     ) ;
 .
