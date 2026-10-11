@@ -49,6 +49,7 @@
         _:storageDescriptionWithoutAcceptReturns200
         _:containerGetReturnsETag
         _:containerGetReturnsContainerType
+        _:nestedContainerGetReturnsContainerType
     ) ;
 ] .
 
@@ -561,10 +562,18 @@ _:containerGetReturnsContainerType
         _:createContainer
         _:getContainerType
     ) ;
-    :assertion [
-        :param "type" ;
-        :regex "^Container$|\"Container\"" ;
-    ] ;
+    :assertion _:containerType ;
+.
+
+_:nestedContainerGetReturnsContainerType
+    :name "Nested container GET returns Container type" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createNestedContainer
+        _:getContainerType
+    ) ;
+    :assertion _:containerType ;
 .
 
 # Steps
@@ -1332,4 +1341,9 @@ _:lwsJsonContentType
 _:lwsCidContentType
     :param "contentType" ;
     :regex "(?i)^application/lws\\+cid\\s*(;|$)" ;
+.
+
+_:containerType
+    :param "type" ;
+    :regex "^Container$|\"Container\"" ;
 .
