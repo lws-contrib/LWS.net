@@ -42,6 +42,7 @@
         _:storageDescriptionAsCidReturnsCidMediaType
         _:storageDescriptionFirstContextIsCid
         _:storageDescriptionSecondContextIsLws
+        _:containerGetReturnsLwsMediaType
     ) ;
 ] .
 
@@ -477,6 +478,16 @@ _:storageDescriptionSecondContextIsLws
         :param "context" ;
         :value "https://www.w3.org/ns/lws/v1" ;
     ] ;
+.
+
+_:containerGetReturnsLwsMediaType
+    :name "Container GET returns LWS media type" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:getContainerContentType
+    ) ;
+    :assertion _:lwsJsonContentType ;
 .
 
 # Steps
