@@ -20,6 +20,11 @@ public abstract partial class Extractor : GraphWrapperNode
             return HeaderExtractor.Wrap(node);
         }
 
+        if (node.Graph.GetTriplesWithSubjectPredicate(node, Vocabulary.Link).Any())
+        {
+            return LinkExtractor.Wrap(node);
+        }
+
         if (node.Graph.GetTriplesWithSubjectPredicate(node, Vocabulary.Path).Any())
         {
             return JsonPathExtractor.Wrap(node);

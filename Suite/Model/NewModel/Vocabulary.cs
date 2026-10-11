@@ -40,6 +40,8 @@ internal static class Vocabulary
 
     internal static INode Path { get; } = factory.CreateUriNode(UriFactory.Create($"{NS}path"));
 
+    internal static INode Link { get; } = factory.CreateUriNode(UriFactory.Create($"{NS}link"));
+
     internal static INode Header { get; } = factory.CreateUriNode(UriFactory.Create($"{NS}header"));
 
     internal static INode Assertion { get; } = factory.CreateUriNode(UriFactory.Create($"{NS}assertion"));
