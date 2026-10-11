@@ -7,5 +7,5 @@ public abstract partial class Extractor
         context.Set(ParamName, await Extract(context, response));
     }
 
-    protected abstract Task<string> Extract(Context context, HttpResponseMessage response);
+    protected abstract Task<object> Extract(Context context, HttpResponseMessage response);
 }

@@ -2,7 +2,7 @@
 
 public partial class HeaderExtractor
 {
-    protected override async Task<string> Extract(Context context, HttpResponseMessage response)
+    protected override async Task<object> Extract(Context context, HttpResponseMessage response)
     {
         var values = response.Headers.TryGetValues(HeaderName, out var responseValues)
             ? responseValues

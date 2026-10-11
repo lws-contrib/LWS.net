@@ -2,7 +2,7 @@
 
 public partial class BodyExtractor
 {
-    protected override async Task<string> Extract(Context context, HttpResponseMessage response)
+    protected override async Task<object> Extract(Context context, HttpResponseMessage response)
     {
         var value = await response.Content.ReadAsStringAsync();
 
