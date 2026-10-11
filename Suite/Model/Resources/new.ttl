@@ -55,6 +55,7 @@
         _:createNestedContainerLinksContainerType
         _:createDataResourceLinksDataResourceType
         _:storageRootGetReturns200
+        _:storageRootGetLinksContainerType
     ) ;
 ] .
 
@@ -631,6 +632,15 @@ _:storageRootGetReturns200
         _:getStorageRootStatus
     ) ;
     :assertion _:200 ;
+.
+
+_:storageRootGetLinksContainerType
+    :name "Storage root GET links Container type" ;
+    :steps (
+        _:discoverStorageRoot
+        _:getStorageRootTypeLinks
+    ) ;
+    :assertion _:containerTypeLink ;
 .
 
 # Steps
@@ -1214,6 +1224,14 @@ _:getStorageRootStatus
     :request _:getStorageRoot ;
     :extractors (
         _:status
+    ) ;
+.
+
+_:getStorageRootTypeLinks
+    :name "Get storage root type links" ;
+    :request _:getStorageRoot ;
+    :extractors (
+        _:typeLinks
     ) ;
 .
 
