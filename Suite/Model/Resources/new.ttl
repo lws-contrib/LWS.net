@@ -43,6 +43,7 @@
         _:storageDescriptionFirstContextIsCid
         _:storageDescriptionSecondContextIsLws
         _:containerGetReturnsLwsMediaType
+        _:containerGetReturnsItemsArray
     ) ;
 ] .
 
@@ -488,6 +489,19 @@ _:containerGetReturnsLwsMediaType
         _:getContainerContentType
     ) ;
     :assertion _:lwsJsonContentType ;
+.
+
+_:containerGetReturnsItemsArray
+    :name "Container GET returns items array" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:getContainerItems
+    ) ;
+    :assertion [
+        :param "items" ;
+        :regex "^\\[" ;
+    ] ;
 .
 
 # Steps
