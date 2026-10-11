@@ -58,6 +58,7 @@
         _:storageRootGetLinksContainerType
         _:storageRootGetReturnsContainerType
         _:dataResourceGetLinksDataResourceType
+        _:dataResourceHeadLinksDataResourceType
     ) ;
 ] .
 
@@ -662,6 +663,17 @@ _:dataResourceGetLinksDataResourceType
     :assertion _:dataResourceTypeLink ;
 .
 
+_:dataResourceHeadLinksDataResourceType
+    :name "Data resource HEAD links DataResource type" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:headTextResourceTypeLinks
+    ) ;
+    :assertion _:dataResourceTypeLink ;
+.
+
 # Steps
 _:discoverStorageRoot
     :name "Discover storage root" ;
@@ -1262,6 +1274,14 @@ _:getStorageRootType
 _:getTextResourceTypeLinks
     :name "Get text resource type links" ;
     :request _:getTextResource ;
+    :extractors (
+        _:typeLinks
+    ) ;
+.
+
+_:headTextResourceTypeLinks
+    :name "Head text resource type links" ;
+    :request _:headTextResource ;
     :extractors (
         _:typeLinks
     ) ;
