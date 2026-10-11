@@ -54,6 +54,7 @@
         _:containerGetLinksContainerType
         _:createNestedContainerLinksContainerType
         _:createDataResourceLinksDataResourceType
+        _:storageRootGetReturns200
     ) ;
 ] .
 
@@ -621,6 +622,15 @@ _:createDataResourceLinksDataResourceType
         :param "typeLinks" ;
         :contains "https://www.w3.org/ns/lws#DataResource" ;
     ] ;
+.
+
+_:storageRootGetReturns200
+    :name "Storage root GET returns 200" ;
+    :steps (
+        _:discoverStorageRoot
+        _:getStorageRootStatus
+    ) ;
+    :assertion _:200 ;
 .
 
 # Steps
@@ -1199,6 +1209,14 @@ _:createTypedResource
     ) ;
 .
 
+_:getStorageRootStatus
+    :name "Get storage root status" ;
+    :request _:getStorageRoot ;
+    :extractors (
+        _:status
+    ) ;
+.
+
 # Requests
 _:getContainer
     :method "GET" ;
@@ -1269,6 +1287,12 @@ _:createSameBytesResource
     :uri _:container ;
     :headers _:contentTypeTextPlain ;
     :body "same bytes" ;
+.
+
+_:getStorageRoot
+    :method "GET" ;
+    :uri _:storageRoot ;
+    :headers _:acceptLwsJson ;
 .
 
 # URIs
