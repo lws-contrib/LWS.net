@@ -50,6 +50,7 @@
         _:containerGetReturnsETag
         _:containerGetReturnsContainerType
         _:nestedContainerGetReturnsContainerType
+        _:createNestedContainerReturns201
     ) ;
 ] .
 
@@ -576,6 +577,16 @@ _:nestedContainerGetReturnsContainerType
     :assertion _:containerType ;
 .
 
+_:createNestedContainerReturns201
+    :name "Create nested container returns 201" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createNestedContainer
+    ) ;
+    :assertion _:201 ;
+.
+
 # Steps
 _:discoverStorageRoot
     :name "Discover storage root" ;
@@ -718,6 +729,7 @@ _:createNestedContainer
     ] ;
     :extractors (
         _:containerLocation
+        _:status
     ) ;
 .
 
