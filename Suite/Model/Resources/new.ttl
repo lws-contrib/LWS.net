@@ -52,6 +52,7 @@
         _:nestedContainerGetReturnsContainerType
         _:createNestedContainerReturns201
         _:containerGetLinksContainerType
+        _:createNestedContainerLinksContainerType
     ) ;
 ] .
 
@@ -595,10 +596,17 @@ _:containerGetLinksContainerType
         _:createContainer
         _:getContainerTypeLinks
     ) ;
-    :assertion [
-        :param "typeLinks" ;
-        :contains "https://www.w3.org/ns/lws#Container" ;
-    ] ;
+    :assertion _:containerTypeLink ;
+.
+
+_:createNestedContainerLinksContainerType
+    :name "Create nested container links Container type" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createNestedContainer
+    ) ;
+    :assertion _:containerTypeLink ;
 .
 
 # Steps
@@ -744,6 +752,7 @@ _:createNestedContainer
     :extractors (
         _:containerLocation
         _:status
+        _:typeLinks
     ) ;
 .
 
@@ -1159,10 +1168,7 @@ _:getContainerTypeLinks
     :name "Get container type links" ;
     :request _:getContainer ;
     :extractors (
-        [
-            :param "typeLinks" ;
-            :link "type" ;
-        ]
+        _:typeLinks
     ) ;
 .
 
@@ -1314,6 +1320,11 @@ _:contentType
     :header "Content-Type" ;
 .
 
+_:typeLinks
+    :param "typeLinks" ;
+    :link "type" ;
+.
+
 # Assertions
 _:200
     :param "status" ;
@@ -1383,4 +1394,9 @@ _:lwsCidContentType
 _:containerType
     :param "type" ;
     :regex "^Container$|\"Container\"" ;
+.
+
+_:containerTypeLink
+    :param "typeLinks" ;
+    :contains "https://www.w3.org/ns/lws#Container" ;
 .
