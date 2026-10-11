@@ -53,6 +53,7 @@
         _:createNestedContainerReturns201
         _:containerGetLinksContainerType
         _:createNestedContainerLinksContainerType
+        _:createDataResourceLinksDataResourceType
     ) ;
 ] .
 
@@ -607,6 +608,19 @@ _:createNestedContainerLinksContainerType
         _:createNestedContainer
     ) ;
     :assertion _:containerTypeLink ;
+.
+
+_:createDataResourceLinksDataResourceType
+    :name "Create data resource links DataResource type" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTypedResource
+    ) ;
+    :assertion [
+        :param "typeLinks" ;
+        :contains "https://www.w3.org/ns/lws#DataResource" ;
+    ] ;
 .
 
 # Steps
@@ -1167,6 +1181,19 @@ _:getContainerType
 _:getContainerTypeLinks
     :name "Get container type links" ;
     :request _:getContainer ;
+    :extractors (
+        _:typeLinks
+    ) ;
+.
+
+_:createTypedResource
+    :name "Create typed resource" ;
+    :request [
+        :method "POST" ;
+        :uri _:container ;
+        :headers _:contentTypeTextPlain ;
+        :body "typed on creation" ;
+    ] ;
     :extractors (
         _:typeLinks
     ) ;
