@@ -46,6 +46,7 @@
         _:containerGetReturnsItemsArray
         _:nestedContainerGetReturns200
         _:createInMissingContainerReturnsClientError
+        _:storageDescriptionWithoutAcceptReturns200
     ) ;
 ] .
 
@@ -530,6 +531,14 @@ _:createInMissingContainerReturnsClientError
     ] ;
 .
 
+_:storageDescriptionWithoutAcceptReturns200
+    :name "Storage description without Accept returns 200" ;
+    :steps (
+        _:getStorageDescriptionStatus
+    ) ;
+    :assertion _:200 ;
+.
+
 # Steps
 _:discoverStorageRoot
     :name "Discover storage root" ;
@@ -1009,12 +1018,17 @@ _:headContainerContentType
 
 _:getStorageDescriptionContentType
     :name "Get storage description Content-Type" ;
-    :request [
-        :method "GET" ;
-        :uri _:storage ;
-    ] ;
+    :request _:getStorageDescription ;
     :extractors (
         _:contentType
+    ) ;
+.
+
+_:getStorageDescriptionStatus
+    :name "Get storage description status" ;
+    :request _:getStorageDescription ;
+    :extractors (
+        _:status
     ) ;
 .
 
@@ -1105,6 +1119,11 @@ _:getMissingResource
             :value "missing-resource" ;
         ] ;
     ] ;
+.
+
+_:getStorageDescription
+    :method "GET" ;
+    :uri _:storage ;
 .
 
 _:getStorageDescriptionAsCid
