@@ -47,6 +47,7 @@
         _:nestedContainerGetReturns200
         _:createInMissingContainerReturnsClientError
         _:storageDescriptionWithoutAcceptReturns200
+        _:containerGetReturnsETag
     ) ;
 ] .
 
@@ -539,6 +540,19 @@ _:storageDescriptionWithoutAcceptReturns200
     :assertion _:200 ;
 .
 
+_:containerGetReturnsETag
+    :name "Container GET returns ETag" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:getContainerETag
+    ) ;
+    :assertion [
+        :param "etag" ;
+        :regex "." ;
+    ] ;
+.
+
 # Steps
 _:discoverStorageRoot
     :name "Discover storage root" ;
@@ -1029,6 +1043,17 @@ _:getStorageDescriptionStatus
     :request _:getStorageDescription ;
     :extractors (
         _:status
+    ) ;
+.
+
+_:getContainerETag
+    :name "Get container ETag" ;
+    :request _:getContainer ;
+    :extractors (
+        [
+            :param "etag" ;
+            :header "ETag" ;
+        ]
     ) ;
 .
 
