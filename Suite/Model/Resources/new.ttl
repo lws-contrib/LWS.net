@@ -44,6 +44,7 @@
         _:storageDescriptionSecondContextIsLws
         _:containerGetReturnsLwsMediaType
         _:containerGetReturnsItemsArray
+        _:nestedContainerGetReturns200
     ) ;
 ] .
 
@@ -502,6 +503,17 @@ _:containerGetReturnsItemsArray
         :param "items" ;
         :regex "^\\[" ;
     ] ;
+.
+
+_:nestedContainerGetReturns200
+    :name "Nested container GET returns 200" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createNestedContainer
+        _:getContainerStatus
+    ) ;
+    :assertion _:200 ;
 .
 
 # Steps
