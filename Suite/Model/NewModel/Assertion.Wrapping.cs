@@ -20,6 +20,11 @@ public abstract partial class Assertion : GraphWrapperNode
             return RegexAssertion.Wrap(node);
         }
 
+        if (node.Graph.GetTriplesWithSubjectPredicate(node, Vocabulary.Contains).Any())
+        {
+            return ContainsAssertion.Wrap(node);
+        }
+
         throw new InvalidOperationException();
     }
 }
