@@ -45,6 +45,7 @@
         _:containerGetReturnsLwsMediaType
         _:containerGetReturnsItemsArray
         _:nestedContainerGetReturns200
+        _:createInMissingContainerReturnsClientError
     ) ;
 ] .
 
@@ -514,6 +515,19 @@ _:nestedContainerGetReturns200
         _:getContainerStatus
     ) ;
     :assertion _:200 ;
+.
+
+_:createInMissingContainerReturnsClientError
+    :name "Create in missing container returns client error" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createResourceInMissingContainer
+    ) ;
+    :assertion [
+        :param "status" ;
+        :regex "^4\\d\\d$" ;
+    ] ;
 .
 
 # Steps
