@@ -57,6 +57,7 @@
         _:storageRootGetReturns200
         _:storageRootGetLinksContainerType
         _:storageRootGetReturnsContainerType
+        _:dataResourceGetLinksDataResourceType
     ) ;
 ] .
 
@@ -620,10 +621,7 @@ _:createDataResourceLinksDataResourceType
         _:createContainer
         _:createTypedResource
     ) ;
-    :assertion [
-        :param "typeLinks" ;
-        :contains "https://www.w3.org/ns/lws#DataResource" ;
-    ] ;
+    :assertion _:dataResourceTypeLink ;
 .
 
 _:storageRootGetReturns200
@@ -651,6 +649,17 @@ _:storageRootGetReturnsContainerType
         _:getStorageRootType
     ) ;
     :assertion _:containerType ;
+.
+
+_:dataResourceGetLinksDataResourceType
+    :name "Data resource GET links DataResource type" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:getTextResourceTypeLinks
+    ) ;
+    :assertion _:dataResourceTypeLink ;
 .
 
 # Steps
@@ -1250,6 +1259,14 @@ _:getStorageRootType
     ) ;
 .
 
+_:getTextResourceTypeLinks
+    :name "Get text resource type links" ;
+    :request _:getTextResource ;
+    :extractors (
+        _:typeLinks
+    ) ;
+.
+
 # Requests
 _:getContainer
     :method "GET" ;
@@ -1488,4 +1505,9 @@ _:containerType
 _:containerTypeLink
     :param "typeLinks" ;
     :contains "https://www.w3.org/ns/lws#Container" ;
+.
+
+_:dataResourceTypeLink
+    :param "typeLinks" ;
+    :contains "https://www.w3.org/ns/lws#DataResource" ;
 .
