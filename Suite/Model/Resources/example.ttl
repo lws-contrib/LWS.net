@@ -1,0 +1,68 @@
+﻿@prefix : <http://example.com/> .
+
+[
+    :name "Example" ;
+    :tests [
+        :name "Delete returns 999 (intentionally failing)" ;
+        :steps (
+            [
+                :name "Discover storage root" ;
+                :request [
+                    :method "GET" ;
+                    :uri [
+                        :base [
+                            :param "baseUri" ;
+                        ] ;
+                        :relative [
+                            :value "/" ;
+                        ] ;
+                    ] ;
+                ] ;
+                :extractors (
+                    [
+                        :param "storageRoot" ;
+                        :path "$.service[?@.type == 'StorageRoot'].serviceEndpoint" ;
+                    ]
+                ) ;
+            ]
+            [
+                :name "Create resource" ;
+                :request [
+                    :method "POST" ;
+                    :uri [
+                        :param "storageRoot" ;
+                    ] ;
+                ] ;
+                :extractors (
+                    [
+                        :param "newResource" ;
+                        :header "Location" ;
+                    ]
+                ) ;
+            ]
+            [
+                :name "Delete resource" ;
+                :request [
+                    :method "DELETE" ;
+                    :uri [
+                        :single [
+                            :param "newResource" ;
+                        ] ;
+                    ] ;
+                ] ;
+                :extractors (
+                    [
+                        a :StatusCodeExtractor ;
+                        :param "status" ;
+                    ]
+                ) ;
+            ]
+        ) ;
+        :assertion [
+            :input [
+                :param "status" ;
+            ] ;
+            :value "999" ;
+        ] ;
+    ] ;
+] .

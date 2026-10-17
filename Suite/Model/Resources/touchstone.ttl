@@ -1,0 +1,2119 @@
+﻿@prefix : <http://example.com/> .
+
+[
+    :name "Touchstone" ;
+    :tests
+        _:containerGetReturns200 ,
+        _:createdDataResourceReturnsPostedBody ,
+        _:rangeBeyondEndReturns416 ,
+        _:newNestedContainerHasNoItems ,
+        _:byteRangeReturns206 ,
+        _:newContainerHasNoItems ,
+        _:suffixByteRangeReturns206 ,
+        _:dataResourceHeadReturnsNoBody ,
+        _:containerHeadReturnsNoBody ,
+        _:createWithForgedLinksetLinkReturns201 ,
+        _:containerGetWithWeightedAcceptReturns200 ,
+        _:containerGetAsJsonLdWithLwsProfileReturns200 ,
+        _:containerResponseVariesByAccept ,
+        _:dataResourceAdvertisesByteRanges ,
+        _:suffixByteRangeReturnsLastBytes ,
+        _:byteRangeReturnsContentRange ,
+        _:byteRangeReturnsRequestedBytes ,
+        _:createInMissingContainerReturns404 ,
+        _:rejectedCreateLeavesContainerEmpty ,
+        _:firstOfTwoIdenticalCreatesKeepsItsBody ,
+        _:secondOfTwoIdenticalCreatesKeepsItsBody ,
+        _:createBeneathDataResourceReturns405 ,
+        _:missingResourceReturns404 ,
+        _:missingResourceReturnsProblemDetails ,
+        _:dataResourceGetReturns200 ,
+        _:dataResourceGetReturnsItsMediaType ,
+        _:dataResourceGetReturnsETag ,
+        _:dataResourceHeadReturns200 ,
+        _:dataResourceHeadReturnsItsMediaType ,
+        _:nestedContainerGetReturnsLwsMediaType ,
+        _:containerHeadReturns200 ,
+        _:containerHeadReturnsLwsMediaType ,
+        _:storageDescriptionDefaultsToCidMediaType ,
+        _:storageDescriptionAsCidReturns200 ,
+        _:storageDescriptionAsCidReturnsCidMediaType ,
+        _:storageDescriptionFirstContextIsCid ,
+        _:storageDescriptionSecondContextIsLws ,
+        _:containerGetReturnsLwsMediaType ,
+        _:containerGetReturnsItemsArray ,
+        _:nestedContainerGetReturns200 ,
+        _:createInMissingContainerReturnsClientError ,
+        _:storageDescriptionWithoutAcceptReturns200 ,
+        _:containerGetReturnsETag ,
+        _:containerGetReturnsContainerType ,
+        _:nestedContainerGetReturnsContainerType ,
+        _:createNestedContainerReturns201 ,
+        _:containerGetLinksContainerType ,
+        _:createNestedContainerLinksContainerType ,
+        _:createDataResourceLinksDataResourceType ,
+        _:storageRootGetReturns200 ,
+        _:storageRootGetLinksContainerType ,
+        _:storageRootGetReturnsContainerType ,
+        _:dataResourceGetLinksDataResourceType ,
+        _:dataResourceHeadLinksDataResourceType ,
+        _:containerHeadLinksContainerType ,
+        _:createBeneathDataResourceReturnsAllow ,
+        _:containerGetWithWeightedAcceptReturnsJsonLdMediaType ,
+        _:containerGetWithWeightedAcceptReturnsContainerType ,
+        _:containerGetAsJsonLdWithLwsProfileReturnsContainerType ,
+        _:containerGetAsJsonLdWithLwsProfileReturnsItemsArray ,
+        _:containerGetAsJsonLdReturns200 ,
+        _:containerGetAsJsonLdReturnsJsonLdMediaType ,
+        _:containerGetAsJsonReturns200 ,
+        _:containerGetAsJsonReturnsJsonMediaType ,
+        _:storageDescriptionAsCidReturnsStorageType ,
+        _:storageDescriptionContextIsArray ,
+        _:storageDescriptionServiceIsArray ,
+        _:missingResourceProblemDetailsIsObject ,
+        _:createContainerReturnsLocation ,
+        _:createDataResourceReturns201 ,
+        _:createDataResourceReturnsLocation ,
+        _:secondOfTwoIdenticalCreatesReturns201 ,
+        _:containerGetLinksLinkset ,
+        _:dataResourceGetLinksLinkset ,
+        _:containerHeadLinksLinkset ,
+        _:dataResourceHeadLinksLinkset ,
+        _:createWithForgedLinksetLinkLinksLinkset ,
+        _:resourceCreatedWithForgedLinksetLinkGetLinksLinkset ,
+        _:containerHeadLinksUp ;
+] .
+
+# Tests
+
+_:containerGetReturns200
+    :name "Container GET returns 200" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:getContainerStatus
+    ) ;
+    :assertion _:200 ;
+.
+
+_:createdDataResourceReturnsPostedBody
+    :name "Created data resource returns posted body" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:getTextResourceBody
+    ) ;
+    :assertion [
+        :input [
+            :param "body" ;
+        ] ;
+        :value "milk\neggs\nbread\nbutter\napples\norange juice\n" ;
+    ] ;
+.
+
+_:rangeBeyondEndReturns416
+    :name "Range beyond end returns 416" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createDigitsResource
+        _:getDigitsResourceBeyondEndStatus
+    ) ;
+    :assertion _:416 ;
+.
+
+_:newNestedContainerHasNoItems
+    :name "New nested container has no items" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createNestedContainer
+        _:getContainerItems
+    ) ;
+    :assertion _:emptyItems ;
+.
+
+_:byteRangeReturns206
+    :name "Byte range returns 206" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createDigitsResource
+        _:getDigitsResourceFirstFourBytesStatus
+    ) ;
+    :assertion _:206 ;
+.
+
+_:newContainerHasNoItems
+    :name "New container has no items" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:getContainerItems
+    ) ;
+    :assertion _:emptyItems ;
+.
+
+_:suffixByteRangeReturns206
+    :name "Suffix byte range returns 206" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createDigitsResource
+        _:getDigitsResourceLastTwoBytesStatus
+    ) ;
+    :assertion _:206 ;
+.
+
+_:dataResourceHeadReturnsNoBody
+    :name "Data resource HEAD returns no body" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:headTextResourceBody
+    ) ;
+    :assertion _:emptyBody ;
+.
+
+_:containerHeadReturnsNoBody
+    :name "Container HEAD returns no body" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:headContainerBody
+    ) ;
+    :assertion _:emptyBody ;
+.
+
+_:createWithForgedLinksetLinkReturns201
+    :name "Create with forged linkset Link returns 201" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createResourceWithForgedLinkset
+    ) ;
+    :assertion _:201 ;
+.
+
+_:containerGetWithWeightedAcceptReturns200
+    :name "Container GET with weighted Accept returns 200" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:getContainerWithWeightedAcceptStatus
+    ) ;
+    :assertion _:200 ;
+.
+
+_:containerGetAsJsonLdWithLwsProfileReturns200
+    :name "Container GET as JSON-LD with LWS profile returns 200" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:getContainerWithLwsProfileAcceptStatus
+    ) ;
+    :assertion _:200 ;
+.
+
+_:containerResponseVariesByAccept
+    :name "Container response varies by Accept" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:getContainerVary
+    ) ;
+    :assertion [
+        :input [
+            :single [
+                :param "vary" ;
+            ] ;
+        ] ;
+        :regex "(?i)(^|[\\s,])accept($|[\\s,])" ;
+    ] ;
+.
+
+_:dataResourceAdvertisesByteRanges
+    :name "Data resource advertises byte ranges" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createDigitsResource
+        _:getDigitsResourceAcceptRanges
+    ) ;
+    :assertion [
+        :input [
+            :single [
+                :param "acceptRanges" ;
+            ] ;
+        ] ;
+        :regex "(?i)\\bbytes\\b" ;
+    ] ;
+.
+
+_:suffixByteRangeReturnsLastBytes
+    :name "Suffix byte range returns last bytes" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createDigitsResource
+        _:getDigitsResourceLastTwoBytesBody
+    ) ;
+    :assertion [
+        :input [
+            :param "body" ;
+        ] ;
+        :regex "^89$" ;
+    ] ;
+.
+
+_:byteRangeReturnsContentRange
+    :name "Byte range returns Content-Range" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createDigitsResource
+        _:getDigitsResourceFirstFourBytesContentRange
+    ) ;
+    :assertion [
+        :input [
+            :single [
+                :param "contentRange" ;
+            ] ;
+        ] ;
+        :regex "^bytes 0-3/10$" ;
+    ] ;
+.
+
+_:byteRangeReturnsRequestedBytes
+    :name "Byte range returns requested bytes" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createDigitsResource
+        _:getDigitsResourceFirstFourBytesBody
+    ) ;
+    :assertion [
+        :input [
+            :param "body" ;
+        ] ;
+        :regex "^0123$" ;
+    ] ;
+.
+
+_:createInMissingContainerReturns404
+    :name "Create in missing container returns 404" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createResourceInMissingContainer
+    ) ;
+    :assertion _:404 ;
+.
+
+_:rejectedCreateLeavesContainerEmpty
+    :name "Rejected create leaves container empty" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createResourceInMissingContainer
+        _:getContainerItems
+    ) ;
+    :assertion _:emptyItems ;
+.
+
+_:firstOfTwoIdenticalCreatesKeepsItsBody
+    :name "First of two identical creates keeps its body" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createFirstSameBytesResource
+        _:createSecondSameBytesResource
+        _:getFirstSameBytesResourceBody
+    ) ;
+    :assertion _:sameBytesBody ;
+.
+
+_:secondOfTwoIdenticalCreatesKeepsItsBody
+    :name "Second of two identical creates keeps its body" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createFirstSameBytesResource
+        _:createSecondSameBytesResource
+        _:getSecondSameBytesResourceBody
+    ) ;
+    :assertion _:sameBytesBody ;
+.
+
+_:createBeneathDataResourceReturns405
+    :name "Create beneath data resource returns 405" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createDataResource
+        _:createResourceBeneathDataResourceStatus
+    ) ;
+    :assertion _:405 ;
+.
+
+_:missingResourceReturns404
+    :name "Missing resource returns 404" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:getMissingResourceStatus
+    ) ;
+    :assertion _:404 ;
+.
+
+_:missingResourceReturnsProblemDetails
+    :name "Missing resource returns problem details" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:getMissingResourceContentType
+    ) ;
+    :assertion [
+        :input [
+            :single [
+                :param "contentType" ;
+            ] ;
+        ] ;
+        :regex "(?i)^application/problem\\+json\\s*(;|$)" ;
+    ] ;
+.
+
+_:dataResourceGetReturns200
+    :name "Data resource GET returns 200" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:getTextResourceStatus
+    ) ;
+    :assertion _:200 ;
+.
+
+_:dataResourceGetReturnsItsMediaType
+    :name "Data resource GET returns its media type" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:getTextResourceContentType
+    ) ;
+    :assertion _:textPlainContentType ;
+.
+
+_:dataResourceGetReturnsETag
+    :name "Data resource GET returns ETag" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:getTextResourceETag
+    ) ;
+    :assertion [
+        :input [
+            :single [
+                :param "etag" ;
+            ] ;
+        ] ;
+        :regex "." ;
+    ] ;
+.
+
+_:dataResourceHeadReturns200
+    :name "Data resource HEAD returns 200" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:headTextResourceStatus
+    ) ;
+    :assertion _:200 ;
+.
+
+_:dataResourceHeadReturnsItsMediaType
+    :name "Data resource HEAD returns its media type" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:headTextResourceContentType
+    ) ;
+    :assertion _:textPlainContentType ;
+.
+
+_:nestedContainerGetReturnsLwsMediaType
+    :name "Nested container GET returns LWS media type" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createNestedContainer
+        _:getContainerContentType
+    ) ;
+    :assertion _:lwsJsonContentType ;
+.
+
+_:containerHeadReturns200
+    :name "Container HEAD returns 200" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:headContainerStatus
+    ) ;
+    :assertion _:200 ;
+.
+
+_:containerHeadReturnsLwsMediaType
+    :name "Container HEAD returns LWS media type" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:headContainerContentType
+    ) ;
+    :assertion _:lwsJsonContentType ;
+.
+
+_:storageDescriptionDefaultsToCidMediaType
+    :name "Storage description defaults to CID media type" ;
+    :steps (
+        _:getStorageDescriptionContentType
+    ) ;
+    :assertion _:lwsCidContentType ;
+.
+
+_:storageDescriptionAsCidReturns200
+    :name "Storage description as CID returns 200" ;
+    :steps (
+        _:getStorageDescriptionAsCidStatus
+    ) ;
+    :assertion _:200 ;
+.
+
+_:storageDescriptionAsCidReturnsCidMediaType
+    :name "Storage description as CID returns CID media type" ;
+    :steps (
+        _:getStorageDescriptionAsCidContentType
+    ) ;
+    :assertion _:lwsCidContentType ;
+.
+
+_:storageDescriptionFirstContextIsCid
+    :name "Storage description first context is CID" ;
+    :steps (
+        _:getStorageDescriptionFirstContext
+    ) ;
+    :assertion [
+        :input [
+            :param "context" ;
+        ] ;
+        :value "https://www.w3.org/ns/cid/v1" ;
+    ] ;
+.
+
+_:storageDescriptionSecondContextIsLws
+    :name "Storage description second context is LWS" ;
+    :steps (
+        _:getStorageDescriptionSecondContext
+    ) ;
+    :assertion [
+        :input [
+            :param "context" ;
+        ] ;
+        :value "https://www.w3.org/ns/lws/v1" ;
+    ] ;
+.
+
+_:containerGetReturnsLwsMediaType
+    :name "Container GET returns LWS media type" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:getContainerContentType
+    ) ;
+    :assertion _:lwsJsonContentType ;
+.
+
+_:containerGetReturnsItemsArray
+    :name "Container GET returns items array" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:getContainerItems
+    ) ;
+    :assertion _:itemsArray ;
+.
+
+_:nestedContainerGetReturns200
+    :name "Nested container GET returns 200" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createNestedContainer
+        _:getContainerStatus
+    ) ;
+    :assertion _:200 ;
+.
+
+_:createInMissingContainerReturnsClientError
+    :name "Create in missing container returns client error" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createResourceInMissingContainer
+    ) ;
+    :assertion [
+        :input [
+            :param "status" ;
+        ] ;
+        :regex "^4\\d\\d$" ;
+    ] ;
+.
+
+_:storageDescriptionWithoutAcceptReturns200
+    :name "Storage description without Accept returns 200" ;
+    :steps (
+        _:getStorageDescriptionStatus
+    ) ;
+    :assertion _:200 ;
+.
+
+_:containerGetReturnsETag
+    :name "Container GET returns ETag" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:getContainerETag
+    ) ;
+    :assertion [
+        :input [
+            :single [
+                :param "etag" ;
+            ] ;
+        ] ;
+        :regex "." ;
+    ] ;
+.
+
+_:containerGetReturnsContainerType
+    :name "Container GET returns Container type" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:getContainerType
+    ) ;
+    :assertion _:containerType ;
+.
+
+_:nestedContainerGetReturnsContainerType
+    :name "Nested container GET returns Container type" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createNestedContainer
+        _:getContainerType
+    ) ;
+    :assertion _:containerType ;
+.
+
+_:createNestedContainerReturns201
+    :name "Create nested container returns 201" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createNestedContainer
+    ) ;
+    :assertion _:201 ;
+.
+
+_:containerGetLinksContainerType
+    :name "Container GET links Container type" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:getContainerTypeLinks
+    ) ;
+    :assertion _:containerTypeLink ;
+.
+
+_:createNestedContainerLinksContainerType
+    :name "Create nested container links Container type" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createNestedContainer
+    ) ;
+    :assertion _:containerTypeLink ;
+.
+
+_:createDataResourceLinksDataResourceType
+    :name "Create data resource links DataResource type" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTypedResource
+    ) ;
+    :assertion _:dataResourceTypeLink ;
+.
+
+_:storageRootGetReturns200
+    :name "Storage root GET returns 200" ;
+    :steps (
+        _:discoverStorageRoot
+        _:getStorageRootStatus
+    ) ;
+    :assertion _:200 ;
+.
+
+_:storageRootGetLinksContainerType
+    :name "Storage root GET links Container type" ;
+    :steps (
+        _:discoverStorageRoot
+        _:getStorageRootTypeLinks
+    ) ;
+    :assertion _:containerTypeLink ;
+.
+
+_:storageRootGetReturnsContainerType
+    :name "Storage root GET returns Container type" ;
+    :steps (
+        _:discoverStorageRoot
+        _:getStorageRootType
+    ) ;
+    :assertion _:containerType ;
+.
+
+_:dataResourceGetLinksDataResourceType
+    :name "Data resource GET links DataResource type" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:getTextResourceTypeLinks
+    ) ;
+    :assertion _:dataResourceTypeLink ;
+.
+
+_:dataResourceHeadLinksDataResourceType
+    :name "Data resource HEAD links DataResource type" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:headTextResourceTypeLinks
+    ) ;
+    :assertion _:dataResourceTypeLink ;
+.
+
+_:containerHeadLinksContainerType
+    :name "Container HEAD links Container type" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:headContainerTypeLinks
+    ) ;
+    :assertion _:containerTypeLink ;
+.
+
+_:createBeneathDataResourceReturnsAllow
+    :name "Create beneath data resource returns Allow" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createDataResource
+        _:createResourceBeneathDataResourceAllow
+    ) ;
+    :assertion [
+        :input [
+            :count [
+                :param "allow" ;
+            ] ;
+        ] ;
+        :greaterThan 0 ;
+    ] ;
+.
+
+_:containerGetWithWeightedAcceptReturnsJsonLdMediaType
+    :name "Container GET with weighted Accept returns JSON-LD media type" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:getContainerWithWeightedAcceptContentType
+    ) ;
+    :assertion _:jsonLdContentType ;
+.
+
+_:containerGetWithWeightedAcceptReturnsContainerType
+    :name "Container GET with weighted Accept returns Container type" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:getContainerWithWeightedAcceptType
+    ) ;
+    :assertion _:containerType ;
+.
+
+_:containerGetAsJsonLdWithLwsProfileReturnsContainerType
+    :name "Container GET as JSON-LD with LWS profile returns Container type" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:getContainerWithLwsProfileAcceptType
+    ) ;
+    :assertion _:containerType ;
+.
+
+_:containerGetAsJsonLdWithLwsProfileReturnsItemsArray
+    :name "Container GET as JSON-LD with LWS profile returns items array" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:getContainerWithLwsProfileAcceptItems
+    ) ;
+    :assertion _:itemsArray ;
+.
+
+_:containerGetAsJsonLdReturns200
+    :name "Container GET as JSON-LD returns 200" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:getContainerAsJsonLdStatus
+    ) ;
+    :assertion _:200 ;
+.
+
+_:containerGetAsJsonLdReturnsJsonLdMediaType
+    :name "Container GET as JSON-LD returns JSON-LD media type" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:getContainerAsJsonLdContentType
+    ) ;
+    :assertion _:jsonLdContentType ;
+.
+
+_:containerGetAsJsonReturns200
+    :name "Container GET as JSON returns 200" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:getContainerAsJsonStatus
+    ) ;
+    :assertion _:200 ;
+.
+
+_:containerGetAsJsonReturnsJsonMediaType
+    :name "Container GET as JSON returns JSON media type" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:getContainerAsJsonContentType
+    ) ;
+    :assertion [
+        :input [
+            :single [
+                :param "contentType" ;
+            ] ;
+        ] ;
+        :regex "(?i)^application/json\\s*(;|$)" ;
+    ] ;
+.
+
+_:storageDescriptionAsCidReturnsStorageType
+    :name "Storage description as CID returns Storage type" ;
+    :steps (
+        _:getStorageDescriptionAsCidType
+    ) ;
+    :assertion [
+        :input [
+            :param "type" ;
+        ] ;
+        :regex "^Storage$|\"Storage\"" ;
+    ] ;
+.
+
+_:storageDescriptionContextIsArray
+    :name "Storage description context is array" ;
+    :steps (
+        _:getStorageDescriptionContext
+    ) ;
+    :assertion [
+        :input [
+            :param "context" ;
+        ] ;
+        :regex "^\\[" ;
+    ] ;
+.
+
+_:storageDescriptionServiceIsArray
+    :name "Storage description service is array" ;
+    :steps (
+        _:getStorageDescriptionService
+    ) ;
+    :assertion [
+        :input [
+            :param "service" ;
+        ] ;
+        :regex "^\\[" ;
+    ] ;
+.
+
+_:missingResourceProblemDetailsIsObject
+    :name "Missing resource problem details is object" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:getMissingResourceBody
+    ) ;
+    :assertion [
+        :input [
+            :param "body" ;
+        ] ;
+        :regex "^\\s*\\{" ;
+    ] ;
+.
+
+_:createContainerReturnsLocation
+    :name "Create container returns Location" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+    ) ;
+    :assertion [
+        :input [
+            :count [
+                :param "containerLocation" ;
+            ] ;
+        ] ;
+        :greaterThan 0 ;
+    ] ;
+.
+
+_:createDataResourceReturns201
+    :name "Create data resource returns 201" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+    ) ;
+    :assertion _:201 ;
+.
+
+_:createDataResourceReturnsLocation
+    :name "Create data resource returns Location" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+    ) ;
+    :assertion [
+        :input [
+            :count [
+                :param "textResourceLocation" ;
+            ] ;
+        ] ;
+        :greaterThan 0 ;
+    ] ;
+.
+
+_:secondOfTwoIdenticalCreatesReturns201
+    :name "Second of two identical creates returns 201" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createFirstSameBytesResource
+        _:createSecondSameBytesResource
+    ) ;
+    :assertion _:201 ;
+.
+
+_:containerGetLinksLinkset
+    :name "Container GET links linkset" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:getContainerLinksetLinks
+    ) ;
+    :assertion _:linksetLink ;
+.
+
+_:dataResourceGetLinksLinkset
+    :name "Data resource GET links linkset" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:getTextResourceLinksetLinks
+    ) ;
+    :assertion _:linksetLink ;
+.
+
+_:containerHeadLinksLinkset
+    :name "Container HEAD links linkset" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:headContainerLinksetLinks
+    ) ;
+    :assertion _:linksetLink ;
+.
+
+_:dataResourceHeadLinksLinkset
+    :name "Data resource HEAD links linkset" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:headTextResourceLinksetLinks
+    ) ;
+    :assertion _:linksetLink ;
+.
+
+_:createWithForgedLinksetLinkLinksLinkset
+    :name "Create with forged linkset Link links linkset" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createResourceWithForgedLinkset
+    ) ;
+    :assertion _:linksetLink ;
+.
+
+_:resourceCreatedWithForgedLinksetLinkGetLinksLinkset
+    :name "Resource created with forged linkset Link GET links linkset" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createResourceWithForgedLinkset
+        _:getForgedLinksetResourceLinksetLinks
+    ) ;
+    :assertion _:linksetLink ;
+.
+
+_:containerHeadLinksUp
+    :name "Container HEAD links up" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:headContainerUpLinks
+    ) ;
+    :assertion [
+        :input [
+            :count [
+                :param "upLinks" ;
+            ] ;
+        ] ;
+        :greaterThan 0 ;
+    ] ;
+.
+
+# Steps
+_:discoverStorageRoot
+    :name "Discover storage root" ;
+    :request [
+        :method "GET" ;
+        :uri [
+            :base [
+                :param "baseUri" ;
+            ] ;
+            :relative [
+                :value "/" ;
+            ] ;
+        ] ;
+    ] ;
+    :extractors (
+        [
+            :param "storageRoot" ;
+            :path "$.service[?@.type == 'StorageRoot'].serviceEndpoint" ;
+        ]
+    ) ;
+.
+
+_:createContainer
+    :name "Create container" ;
+    :request [
+        :method "POST" ;
+        :uri _:storageRoot ;
+        :headers _:linkTypeContainer ;
+    ] ;
+    :extractors (
+        _:containerLocation
+    ) ;
+.
+
+_:getContainerStatus
+    :name "Get container status" ;
+    :request _:getContainer ;
+    :extractors (
+        _:status
+    ) ;
+.
+
+_:createTextResource
+    :name "Create text resource" ;
+    :request [
+        :method "POST" ;
+        :uri _:container ;
+        :headers _:contentTypeTextPlain ;
+        :body "milk\neggs\nbread\nbutter\napples\norange juice\n" ;
+    ] ;
+    :extractors (
+        [
+            :param "textResourceLocation" ;
+            :header "Location" ;
+        ]
+        _:status
+    ) ;
+.
+
+_:getTextResourceBody
+    :name "Get text resource body" ;
+    :request _:getTextResource ;
+    :extractors (
+        _:body
+    ) ;
+.
+
+_:createDigitsResource
+    :name "Create digits resource" ;
+    :request [
+        :method "POST" ;
+        :uri _:container ;
+        :headers _:contentTypeTextPlain ;
+        :body "0123456789" ;
+    ] ;
+    :extractors (
+        [
+            :param "digitsResourceLocation" ;
+            :header "Location" ;
+        ]
+    ) ;
+.
+
+_:getDigitsResourceBeyondEndStatus
+    :name "Get digits resource beyond end status" ;
+    :request [
+        :method "GET" ;
+        :uri _:digitsResource ;
+        :headers [
+            :header "Range" ;
+            :value "bytes=100-200" ;
+        ] ;
+    ] ;
+    :extractors (
+        _:status
+    ) ;
+.
+
+_:createNestedContainer
+    :name "Create nested container" ;
+    :request [
+        :method "POST" ;
+        :uri _:container ;
+        :headers _:linkTypeContainer ;
+    ] ;
+    :extractors (
+        _:containerLocation
+        _:status
+        _:typeLinks
+    ) ;
+.
+
+_:getContainerItems
+    :name "Get container items" ;
+    :request _:getContainer ;
+    :extractors (
+        _:items
+    ) ;
+.
+
+_:getDigitsResourceFirstFourBytesStatus
+    :name "Get digits resource first four bytes status" ;
+    :request _:getDigitsResourceFirstFourBytes ;
+    :extractors (
+        _:status
+    ) ;
+.
+
+_:getDigitsResourceLastTwoBytesStatus
+    :name "Get digits resource last two bytes status" ;
+    :request _:getDigitsResourceLastTwoBytes ;
+    :extractors (
+        _:status
+    ) ;
+.
+
+_:headTextResourceBody
+    :name "Head text resource body" ;
+    :request _:headTextResource ;
+    :extractors (
+        _:body
+    ) ;
+.
+
+_:headContainerBody
+    :name "Head container body" ;
+    :request _:headContainer ;
+    :extractors (
+        _:body
+    ) ;
+.
+
+_:createResourceWithForgedLinkset
+    :name "Create resource with forged linkset" ;
+    :request [
+        :method "POST" ;
+        :uri _:container ;
+        :headers
+            _:contentTypeTextPlain ,
+            [
+                :header "Link" ;
+                :value "<https://linkset.invalid/forged>; rel=\"linkset\"" ;
+            ] ;
+        :body "metadata override attempt" ;
+    ] ;
+    :extractors (
+        _:status
+        _:linksetLinks
+        [
+            :param "forgedLinksetLocation" ;
+            :header "Location" ;
+        ]
+    ) ;
+.
+
+_:getContainerWithWeightedAcceptStatus
+    :name "Get container with weighted Accept status" ;
+    :request _:getContainerWithWeightedAccept ;
+    :extractors (
+        _:status
+    ) ;
+.
+
+_:getContainerWithLwsProfileAcceptStatus
+    :name "Get container with LWS profile Accept status" ;
+    :request _:getContainerWithLwsProfileAccept ;
+    :extractors (
+        _:status
+    ) ;
+.
+
+_:getContainerVary
+    :name "Get container Vary" ;
+    :request _:getContainer ;
+    :extractors (
+        [
+            :param "vary" ;
+            :header "Vary" ;
+        ]
+    ) ;
+.
+
+_:getDigitsResourceAcceptRanges
+    :name "Get digits resource Accept-Ranges" ;
+    :request [
+        :method "GET" ;
+        :uri _:digitsResource ;
+    ] ;
+    :extractors (
+        [
+            :param "acceptRanges" ;
+            :header "Accept-Ranges" ;
+        ]
+    ) ;
+.
+
+_:getDigitsResourceLastTwoBytesBody
+    :name "Get digits resource last two bytes body" ;
+    :request _:getDigitsResourceLastTwoBytes ;
+    :extractors (
+        _:body
+    ) ;
+.
+
+_:getDigitsResourceFirstFourBytesContentRange
+    :name "Get digits resource first four bytes Content-Range" ;
+    :request _:getDigitsResourceFirstFourBytes ;
+    :extractors (
+        [
+            :param "contentRange" ;
+            :header "Content-Range" ;
+        ]
+    ) ;
+.
+
+_:getDigitsResourceFirstFourBytesBody
+    :name "Get digits resource first four bytes body" ;
+    :request _:getDigitsResourceFirstFourBytes ;
+    :extractors (
+        _:body
+    ) ;
+.
+
+_:createResourceInMissingContainer
+    :name "Create resource in missing container" ;
+    :request [
+        :method "POST" ;
+        :uri [
+            :base _:container ;
+            :relative [
+                :value "missing-container/" ;
+            ] ;
+        ] ;
+        :headers _:contentTypeTextPlain ;
+        :body "lost letter" ;
+    ] ;
+    :extractors (
+        _:status
+    ) ;
+.
+
+_:createFirstSameBytesResource
+    :name "Create first same-bytes resource" ;
+    :request _:createSameBytesResource ;
+    :extractors (
+        [
+            :param "firstSameBytesLocation" ;
+            :header "Location" ;
+        ]
+    ) ;
+.
+
+_:createSecondSameBytesResource
+    :name "Create second same-bytes resource" ;
+    :request _:createSameBytesResource ;
+    :extractors (
+        [
+            :param "secondSameBytesLocation" ;
+            :header "Location" ;
+        ]
+        _:status
+    ) ;
+.
+
+_:getFirstSameBytesResourceBody
+    :name "Get first same-bytes resource body" ;
+    :request [
+        :method "GET" ;
+        :uri [
+            :base _:storageRoot ;
+            :relative [
+                :single [
+                    :param "firstSameBytesLocation" ;
+                ] ;
+            ] ;
+        ] ;
+    ] ;
+    :extractors (
+        _:body
+    ) ;
+.
+
+_:getSecondSameBytesResourceBody
+    :name "Get second same-bytes resource body" ;
+    :request [
+        :method "GET" ;
+        :uri [
+            :base _:storageRoot ;
+            :relative [
+                :single [
+                    :param "secondSameBytesLocation" ;
+                ] ;
+            ] ;
+        ] ;
+    ] ;
+    :extractors (
+        _:body
+    ) ;
+.
+
+_:createDataResource
+    :name "Create data resource" ;
+    :request [
+        :method "POST" ;
+        :uri _:container ;
+        :headers _:contentTypeTextPlain ;
+        :body "not a container" ;
+    ] ;
+    :extractors (
+        [
+            :param "notAContainerLocation" ;
+            :header "Location" ;
+        ]
+    ) ;
+.
+
+_:createResourceBeneathDataResourceStatus
+    :name "Create resource beneath data resource status" ;
+    :request _:createResourceBeneathDataResource ;
+    :extractors (
+        _:status
+    ) ;
+.
+
+_:getMissingResourceStatus
+    :name "Get missing resource status" ;
+    :request _:getMissingResource ;
+    :extractors (
+        _:status
+    ) ;
+.
+
+_:getMissingResourceContentType
+    :name "Get missing resource Content-Type" ;
+    :request _:getMissingResource ;
+    :extractors (
+        _:contentType
+    ) ;
+.
+
+_:getTextResourceStatus
+    :name "Get text resource status" ;
+    :request _:getTextResource ;
+    :extractors (
+        _:status
+    ) ;
+.
+
+_:getTextResourceContentType
+    :name "Get text resource Content-Type" ;
+    :request _:getTextResource ;
+    :extractors (
+        _:contentType
+    ) ;
+.
+
+_:getTextResourceETag
+    :name "Get text resource ETag" ;
+    :request _:getTextResource ;
+    :extractors (
+        [
+            :param "etag" ;
+            :header "ETag" ;
+        ]
+    ) ;
+.
+
+_:headTextResourceStatus
+    :name "Head text resource status" ;
+    :request _:headTextResource ;
+    :extractors (
+        _:status
+    ) ;
+.
+
+_:headTextResourceContentType
+    :name "Head text resource Content-Type" ;
+    :request _:headTextResource ;
+    :extractors (
+        _:contentType
+    ) ;
+.
+
+_:getContainerContentType
+    :name "Get container Content-Type" ;
+    :request _:getContainer ;
+    :extractors (
+        _:contentType
+    ) ;
+.
+
+_:headContainerStatus
+    :name "Head container status" ;
+    :request _:headContainer ;
+    :extractors (
+        _:status
+    ) ;
+.
+
+_:headContainerContentType
+    :name "Head container Content-Type" ;
+    :request _:headContainer ;
+    :extractors (
+        _:contentType
+    ) ;
+.
+
+_:getStorageDescriptionContentType
+    :name "Get storage description Content-Type" ;
+    :request _:getStorageDescription ;
+    :extractors (
+        _:contentType
+    ) ;
+.
+
+_:getStorageDescriptionStatus
+    :name "Get storage description status" ;
+    :request _:getStorageDescription ;
+    :extractors (
+        _:status
+    ) ;
+.
+
+_:getStorageDescriptionAsCidStatus
+    :name "Get storage description as CID status" ;
+    :request _:getStorageDescriptionAsCid ;
+    :extractors (
+        _:status
+    ) ;
+.
+
+_:getStorageDescriptionAsCidContentType
+    :name "Get storage description as CID Content-Type" ;
+    :request _:getStorageDescriptionAsCid ;
+    :extractors (
+        _:contentType
+    ) ;
+.
+
+_:getStorageDescriptionFirstContext
+    :name "Get storage description first context" ;
+    :request _:getStorageDescriptionAsCid ;
+    :extractors (
+        [
+            :param "context" ;
+            :path "$['@context'][0]" ;
+        ]
+    ) ;
+.
+
+_:getStorageDescriptionSecondContext
+    :name "Get storage description second context" ;
+    :request _:getStorageDescriptionAsCid ;
+    :extractors (
+        [
+            :param "context" ;
+            :path "$['@context'][1]" ;
+        ]
+    ) ;
+.
+
+_:getContainerETag
+    :name "Get container ETag" ;
+    :request _:getContainer ;
+    :extractors (
+        [
+            :param "etag" ;
+            :header "ETag" ;
+        ]
+    ) ;
+.
+
+_:getContainerType
+    :name "Get container type" ;
+    :request _:getContainer ;
+    :extractors (
+        _:type
+    ) ;
+.
+
+_:getContainerTypeLinks
+    :name "Get container type links" ;
+    :request _:getContainer ;
+    :extractors (
+        _:typeLinks
+    ) ;
+.
+
+_:createTypedResource
+    :name "Create typed resource" ;
+    :request [
+        :method "POST" ;
+        :uri _:container ;
+        :headers _:contentTypeTextPlain ;
+        :body "typed on creation" ;
+    ] ;
+    :extractors (
+        _:typeLinks
+    ) ;
+.
+
+_:getStorageRootStatus
+    :name "Get storage root status" ;
+    :request _:getStorageRoot ;
+    :extractors (
+        _:status
+    ) ;
+.
+
+_:getStorageRootTypeLinks
+    :name "Get storage root type links" ;
+    :request _:getStorageRoot ;
+    :extractors (
+        _:typeLinks
+    ) ;
+.
+
+_:getStorageRootType
+    :name "Get storage root type" ;
+    :request _:getStorageRoot ;
+    :extractors (
+        _:type
+    ) ;
+.
+
+_:getTextResourceTypeLinks
+    :name "Get text resource type links" ;
+    :request _:getTextResource ;
+    :extractors (
+        _:typeLinks
+    ) ;
+.
+
+_:headTextResourceTypeLinks
+    :name "Head text resource type links" ;
+    :request _:headTextResource ;
+    :extractors (
+        _:typeLinks
+    ) ;
+.
+
+_:headContainerTypeLinks
+    :name "Head container type links" ;
+    :request _:headContainer ;
+    :extractors (
+        _:typeLinks
+    ) ;
+.
+
+_:createResourceBeneathDataResourceAllow
+    :name "Create resource beneath data resource Allow" ;
+    :request _:createResourceBeneathDataResource ;
+    :extractors (
+        [
+            :param "allow" ;
+            :header "Allow" ;
+        ]
+    ) ;
+.
+
+_:getContainerWithWeightedAcceptContentType
+    :name "Get container with weighted Accept Content-Type" ;
+    :request _:getContainerWithWeightedAccept ;
+    :extractors (
+        _:contentType
+    ) ;
+.
+
+_:getContainerWithWeightedAcceptType
+    :name "Get container with weighted Accept type" ;
+    :request _:getContainerWithWeightedAccept ;
+    :extractors (
+        _:type
+    ) ;
+.
+
+_:getContainerWithLwsProfileAcceptType
+    :name "Get container with LWS profile Accept type" ;
+    :request _:getContainerWithLwsProfileAccept ;
+    :extractors (
+        _:type
+    ) ;
+.
+
+_:getContainerWithLwsProfileAcceptItems
+    :name "Get container with LWS profile Accept items" ;
+    :request _:getContainerWithLwsProfileAccept ;
+    :extractors (
+        _:items
+    ) ;
+.
+
+_:getContainerAsJsonLdStatus
+    :name "Get container as JSON-LD status" ;
+    :request _:getContainerAsJsonLd ;
+    :extractors (
+        _:status
+    ) ;
+.
+
+_:getContainerAsJsonLdContentType
+    :name "Get container as JSON-LD Content-Type" ;
+    :request _:getContainerAsJsonLd ;
+    :extractors (
+        _:contentType
+    ) ;
+.
+
+_:getContainerAsJsonStatus
+    :name "Get container as JSON status" ;
+    :request _:getContainerAsJson ;
+    :extractors (
+        _:status
+    ) ;
+.
+
+_:getContainerAsJsonContentType
+    :name "Get container as JSON Content-Type" ;
+    :request _:getContainerAsJson ;
+    :extractors (
+        _:contentType
+    ) ;
+.
+
+_:getStorageDescriptionAsCidType
+    :name "Get storage description as CID type" ;
+    :request _:getStorageDescriptionAsCid ;
+    :extractors (
+        _:type
+    ) ;
+.
+
+_:getStorageDescriptionContext
+    :name "Get storage description context" ;
+    :request _:getStorageDescriptionAsCid ;
+    :extractors (
+        [
+            :param "context" ;
+            :path "$['@context']" ;
+        ]
+    ) ;
+.
+
+_:getStorageDescriptionService
+    :name "Get storage description service" ;
+    :request _:getStorageDescriptionAsCid ;
+    :extractors (
+        [
+            :param "service" ;
+            :path "$.service" ;
+        ]
+    ) ;
+.
+
+_:getMissingResourceBody
+    :name "Get missing resource body" ;
+    :request _:getMissingResource ;
+    :extractors (
+        _:body
+    ) ;
+.
+
+_:getContainerLinksetLinks
+    :name "Get container linkset links" ;
+    :request _:getContainer ;
+    :extractors (
+        _:linksetLinks
+    ) ;
+.
+
+_:getTextResourceLinksetLinks
+    :name "Get text resource linkset links" ;
+    :request _:getTextResource ;
+    :extractors (
+        _:linksetLinks
+    ) ;
+.
+
+_:headContainerLinksetLinks
+    :name "Head container linkset links" ;
+    :request _:headContainer ;
+    :extractors (
+        _:linksetLinks
+    ) ;
+.
+
+_:headTextResourceLinksetLinks
+    :name "Head text resource linkset links" ;
+    :request _:headTextResource ;
+    :extractors (
+        _:linksetLinks
+    ) ;
+.
+
+_:getForgedLinksetResourceLinksetLinks
+    :name "Get forged linkset resource linkset links" ;
+    :request [
+        :method "GET" ;
+        :uri [
+            :base _:storageRoot ;
+            :relative [
+                :single [
+                    :param "forgedLinksetLocation" ;
+                ] ;
+            ] ;
+        ] ;
+    ] ;
+    :extractors (
+        _:linksetLinks
+    ) ;
+.
+
+_:headContainerUpLinks
+    :name "Head container up links" ;
+    :request _:headContainer ;
+    :extractors (
+        [
+            :param "upLinks" ;
+            :link "up" ;
+        ]
+    ) ;
+.
+
+# Requests
+_:getContainer
+    :method "GET" ;
+    :uri _:container ;
+    :headers _:acceptLwsJson ;
+.
+
+_:getTextResource
+    :method "GET" ;
+    :uri _:textResource ;
+.
+
+_:getDigitsResourceFirstFourBytes
+    :method "GET" ;
+    :uri _:digitsResource ;
+    :headers [
+        :header "Range" ;
+        :value "bytes=0-3" ;
+    ] ;
+.
+
+_:getDigitsResourceLastTwoBytes
+    :method "GET" ;
+    :uri _:digitsResource ;
+    :headers [
+        :header "Range" ;
+        :value "bytes=-2" ;
+    ] ;
+.
+
+_:headTextResource
+    :method "HEAD" ;
+    :uri _:textResource ;
+.
+
+_:headContainer
+    :method "HEAD" ;
+    :uri _:container ;
+    :headers _:acceptLwsJson ;
+.
+
+_:getMissingResource
+    :method "GET" ;
+    :uri [
+        :base _:container ;
+        :relative [
+            :value "missing-resource" ;
+        ] ;
+    ] ;
+.
+
+_:getStorageDescription
+    :method "GET" ;
+    :uri _:storage ;
+.
+
+_:getStorageDescriptionAsCid
+    :method "GET" ;
+    :uri _:storage ;
+    :headers [
+        :header "Accept" ;
+        :value "application/lws+cid" ;
+    ] ;
+.
+
+_:createSameBytesResource
+    :method "POST" ;
+    :uri _:container ;
+    :headers _:contentTypeTextPlain ;
+    :body "same bytes" ;
+.
+
+_:getStorageRoot
+    :method "GET" ;
+    :uri _:storageRoot ;
+    :headers _:acceptLwsJson ;
+.
+
+_:createResourceBeneathDataResource
+    :method "POST" ;
+    :uri [
+        :base _:storageRoot ;
+        :relative [
+            :single [
+                :param "notAContainerLocation" ;
+            ] ;
+        ] ;
+    ] ;
+    :headers _:contentTypeTextPlain ;
+    :body "should be refused" ;
+.
+
+_:getContainerWithWeightedAccept
+    :method "GET" ;
+    :uri _:container ;
+    :headers [
+        :header "Accept" ;
+        :value "text/html;q=0.9, application/ld+json;q=0.5" ;
+    ] ;
+.
+
+_:getContainerWithLwsProfileAccept
+    :method "GET" ;
+    :uri _:container ;
+    :headers [
+        :header "Accept" ;
+        :value "application/ld+json; profile=\"https://www.w3.org/ns/lws/v1\"" ;
+    ] ;
+.
+
+_:getContainerAsJsonLd
+    :method "GET" ;
+    :uri _:container ;
+    :headers [
+        :header "Accept" ;
+        :value "application/ld+json" ;
+    ] ;
+.
+
+_:getContainerAsJson
+    :method "GET" ;
+    :uri _:container ;
+    :headers [
+        :header "Accept" ;
+        :value "application/json" ;
+    ] ;
+.
+
+# URIs
+_:storageRoot
+    :param "storageRoot" ;
+.
+
+_:container
+    :base _:storageRoot ;
+    :relative [
+        :single [
+            :param "containerLocation" ;
+        ] ;
+    ] ;
+.
+
+_:textResource
+    :base _:storageRoot ;
+    :relative [
+        :single [
+            :param "textResourceLocation" ;
+        ] ;
+    ] ;
+.
+
+_:digitsResource
+    :base _:storageRoot ;
+    :relative [
+        :single [
+            :param "digitsResourceLocation" ;
+        ] ;
+    ] ;
+.
+
+_:storage
+    :base [
+        :param "baseUri" ;
+    ] ;
+    :relative [
+        :value "/" ;
+    ] ;
+.
+
+# Headers
+_:linkTypeContainer
+    :header "Link" ;
+    :value "<https://www.w3.org/ns/lws#Container>; rel=\"type\"" ;
+.
+
+_:acceptLwsJson
+    :header "Accept" ;
+    :value "application/lws+json" ;
+.
+
+_:contentTypeTextPlain
+    :header "Content-Type" ;
+    :value "text/plain" ;
+.
+
+# Extractors
+_:status
+    a :StatusCodeExtractor ;
+    :param "status" ;
+.
+
+_:containerLocation
+    :param "containerLocation" ;
+    :header "Location" ;
+.
+
+_:body
+    a :BodyExtractor ;
+    :param "body" ;
+.
+
+_:contentType
+    :param "contentType" ;
+    :header "Content-Type" ;
+.
+
+_:type
+    :param "type" ;
+    :path "$.type" ;
+.
+
+_:items
+    :param "items" ;
+    :path "$.items" ;
+.
+
+_:typeLinks
+    :param "typeLinks" ;
+    :link "type" ;
+.
+
+_:linksetLinks
+    :param "linksetLinks" ;
+    :link "linkset" ;
+.
+
+# Assertions
+_:200
+    :input [
+        :param "status" ;
+    ] ;
+    :value "200" ;
+.
+
+_:201
+    :input [
+        :param "status" ;
+    ] ;
+    :value "201" ;
+.
+
+_:206
+    :input [
+        :param "status" ;
+    ] ;
+    :value "206" ;
+.
+
+_:404
+    :input [
+        :param "status" ;
+    ] ;
+    :value "404" ;
+.
+
+_:405
+    :input [
+        :param "status" ;
+    ] ;
+    :value "405" ;
+.
+
+_:416
+    :input [
+        :param "status" ;
+    ] ;
+    :value "416" ;
+.
+
+_:emptyItems
+    :input [
+        :param "items" ;
+    ] ;
+    :value "[]" ;
+.
+
+_:emptyBody
+    :input [
+        :param "body" ;
+    ] ;
+    :value "" ;
+.
+
+_:sameBytesBody
+    :input [
+        :param "body" ;
+    ] ;
+    :regex "^same bytes$" ;
+.
+
+_:textPlainContentType
+    :input [
+        :single [
+            :param "contentType" ;
+        ] ;
+    ] ;
+    :regex "(?i)^text/plain\\s*(;|$)" ;
+.
+
+_:lwsJsonContentType
+    :input [
+        :single [
+            :param "contentType" ;
+        ] ;
+    ] ;
+    :regex "(?i)^application/lws\\+json\\s*(;|$)" ;
+.
+
+_:lwsCidContentType
+    :input [
+        :single [
+            :param "contentType" ;
+        ] ;
+    ] ;
+    :regex "(?i)^application/lws\\+cid\\s*(;|$)" ;
+.
+
+_:containerType
+    :input [
+        :param "type" ;
+    ] ;
+    :regex "^Container$|\"Container\"" ;
+.
+
+_:containerTypeLink
+    :input [
+        :param "typeLinks" ;
+    ] ;
+    :contains "https://www.w3.org/ns/lws#Container" ;
+.
+
+_:dataResourceTypeLink
+    :input [
+        :param "typeLinks" ;
+    ] ;
+    :contains "https://www.w3.org/ns/lws#DataResource" ;
+.
+
+_:itemsArray
+    :input [
+        :param "items" ;
+    ] ;
+    :regex "^\\[" ;
+.
+
+_:jsonLdContentType
+    :input [
+        :single [
+            :param "contentType" ;
+        ] ;
+    ] ;
+    :regex "(?i)^application/ld\\+json\\s*(;|$)" ;
+.
+
+_:linksetLink
+    :input [
+        :count [
+            :param "linksetLinks" ;
+        ] ;
+    ] ;
+    :greaterThan 0 ;
+.
