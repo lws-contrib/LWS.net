@@ -1101,7 +1101,7 @@ _:getDigitsResourceBeyondEndStatus
         :method "GET" ;
         :uri _:digitsResource ;
         :headers [
-            :header "Range" ;
+            :key "Range" ;
             :value "bytes=100-200" ;
         ] ;
     ] ;
@@ -1172,7 +1172,7 @@ _:createResourceWithForgedLinkset
         :headers
             _:contentTypeTextPlain ,
             [
-                :header "Link" ;
+                :key "Link" ;
                 :value "<https://linkset.invalid/forged>; rel=\"linkset\"" ;
             ] ;
         :body "metadata override attempt" ;
@@ -1771,7 +1771,7 @@ _:getDigitsResourceFirstFourBytes
     :method "GET" ;
     :uri _:digitsResource ;
     :headers [
-        :header "Range" ;
+        :key "Range" ;
         :value "bytes=0-3" ;
     ] ;
 .
@@ -1780,7 +1780,7 @@ _:getDigitsResourceLastTwoBytes
     :method "GET" ;
     :uri _:digitsResource ;
     :headers [
-        :header "Range" ;
+        :key "Range" ;
         :value "bytes=-2" ;
     ] ;
 .
@@ -1815,7 +1815,7 @@ _:getStorageDescriptionAsCid
     :method "GET" ;
     :uri _:storage ;
     :headers [
-        :header "Accept" ;
+        :key "Accept" ;
         :value "application/lws+cid" ;
     ] ;
 .
@@ -1851,7 +1851,7 @@ _:getContainerWithWeightedAccept
     :method "GET" ;
     :uri _:container ;
     :headers [
-        :header "Accept" ;
+        :key "Accept" ;
         :value "text/html;q=0.9, application/ld+json;q=0.5" ;
     ] ;
 .
@@ -1860,7 +1860,7 @@ _:getContainerWithLwsProfileAccept
     :method "GET" ;
     :uri _:container ;
     :headers [
-        :header "Accept" ;
+        :key "Accept" ;
         :value "application/ld+json; profile=\"https://www.w3.org/ns/lws/v1\"" ;
     ] ;
 .
@@ -1869,7 +1869,7 @@ _:getContainerAsJsonLd
     :method "GET" ;
     :uri _:container ;
     :headers [
-        :header "Accept" ;
+        :key "Accept" ;
         :value "application/ld+json" ;
     ] ;
 .
@@ -1878,7 +1878,7 @@ _:getContainerAsJson
     :method "GET" ;
     :uri _:container ;
     :headers [
-        :header "Accept" ;
+        :key "Accept" ;
         :value "application/json" ;
     ] ;
 .
@@ -1926,17 +1926,17 @@ _:storage
 
 # Headers
 _:linkTypeContainer
-    :header "Link" ;
+    :key "Link" ;
     :value "<https://www.w3.org/ns/lws#Container>; rel=\"type\"" ;
 .
 
 _:acceptLwsJson
-    :header "Accept" ;
+    :key "Accept" ;
     :value "application/lws+json" ;
 .
 
 _:contentTypeTextPlain
-    :header "Content-Type" ;
+    :key "Content-Type" ;
     :value "text/plain" ;
 .
 

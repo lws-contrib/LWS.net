@@ -16,9 +16,9 @@ public partial class Request
 
         foreach (var header in Headers)
         {
-            if (!re.Headers.TryAddWithoutValidation(header.Name, header.Value))
+            if (!re.Headers.TryAddWithoutValidation(header.Key, header.Value))
             {
-                re.Content?.Headers.TryAddWithoutValidation(header.Name, header.Value);
+                re.Content?.Headers.TryAddWithoutValidation(header.Key, header.Value);
             }
         }
 

@@ -52,6 +52,8 @@ internal static class Vocabulary
 
     internal static INode Header { get; } = factory.CreateUriNode(UriFactory.Create($"{NS}header"));
 
+    internal static INode Key { get; } = factory.CreateUriNode(UriFactory.Create($"{NS}key"));
+
     internal static INode Assertion { get; } = factory.CreateUriNode(UriFactory.Create($"{NS}assertion"));
 
     internal static INode Contains { get; } = factory.CreateUriNode(UriFactory.Create($"{NS}contains"));
