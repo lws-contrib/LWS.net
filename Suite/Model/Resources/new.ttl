@@ -77,6 +77,7 @@
         _:createDataResourceReturns201
         _:createDataResourceReturnsLocation
         _:secondOfTwoIdenticalCreatesReturns201
+        _:containerGetLinksLinkset
     ) ;
 ] .
 
@@ -948,6 +949,16 @@ _:secondOfTwoIdenticalCreatesReturns201
     :assertion _:201 ;
 .
 
+_:containerGetLinksLinkset
+    :name "Container GET links linkset" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:getContainerLinksetLinks
+    ) ;
+    :assertion _:linksetLink ;
+.
+
 # Steps
 _:discoverStorageRoot
     :name "Discover storage root" ;
@@ -1661,6 +1672,14 @@ _:getMissingResourceBody
     ) ;
 .
 
+_:getContainerLinksetLinks
+    :name "Get container linkset links" ;
+    :request _:getContainer ;
+    :extractors (
+        _:linksetLinks
+    ) ;
+.
+
 # Requests
 _:getContainer
     :method "GET" ;
@@ -1888,6 +1907,11 @@ _:typeLinks
     :link "type" ;
 .
 
+_:linksetLinks
+    :param "linksetLinks" ;
+    :link "linkset" ;
+.
+
 # Assertions
 _:200
     :input [
@@ -2021,4 +2045,13 @@ _:jsonLdContentType
         ] ;
     ] ;
     :regex "(?i)^application/ld\\+json\\s*(;|$)" ;
+.
+
+_:linksetLink
+    :input [
+        :count [
+            :param "linksetLinks" ;
+        ] ;
+    ] ;
+    :greaterThan 0 ;
 .
