@@ -76,6 +76,7 @@
         _:createContainerReturnsLocation
         _:createDataResourceReturns201
         _:createDataResourceReturnsLocation
+        _:secondOfTwoIdenticalCreatesReturns201
     ) ;
 ] .
 
@@ -936,6 +937,17 @@ _:createDataResourceReturnsLocation
     ] ;
 .
 
+_:secondOfTwoIdenticalCreatesReturns201
+    :name "Second of two identical creates returns 201" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createFirstSameBytesResource
+        _:createSecondSameBytesResource
+    ) ;
+    :assertion _:201 ;
+.
+
 # Steps
 _:discoverStorageRoot
     :name "Discover storage root" ;
@@ -1247,6 +1259,7 @@ _:createSecondSameBytesResource
             :param "secondSameBytesLocation" ;
             :header "Location" ;
         ]
+        _:status
     ) ;
 .
 
