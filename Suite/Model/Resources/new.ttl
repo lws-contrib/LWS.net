@@ -60,6 +60,7 @@
         _:dataResourceGetLinksDataResourceType
         _:dataResourceHeadLinksDataResourceType
         _:containerHeadLinksContainerType
+        _:createBeneathDataResourceReturnsAllow
     ) ;
 ] .
 
@@ -352,7 +353,7 @@ _:createBeneathDataResourceReturns405
         _:discoverStorageRoot
         _:createContainer
         _:createDataResource
-        _:createResourceBeneathDataResource
+        _:createResourceBeneathDataResourceStatus
     ) ;
     :assertion _:405 ;
 .
@@ -721,6 +722,24 @@ _:containerHeadLinksContainerType
         _:headContainerTypeLinks
     ) ;
     :assertion _:containerTypeLink ;
+.
+
+_:createBeneathDataResourceReturnsAllow
+    :name "Create beneath data resource returns Allow" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createDataResource
+        _:createResourceBeneathDataResourceAllow
+    ) ;
+    :assertion [
+        :input [
+            :count [
+                :param "allow" ;
+            ] ;
+        ] ;
+        :greaterThan 0 ;
+    ] ;
 .
 
 # Steps
@@ -1105,21 +1124,9 @@ _:createDataResource
     ) ;
 .
 
-_:createResourceBeneathDataResource
-    :name "Create resource beneath data resource" ;
-    :request [
-        :method "POST" ;
-        :uri [
-            :base _:storageRoot ;
-            :relative [
-                :single [
-                    :param "notAContainerLocation" ;
-                ] ;
-            ] ;
-        ] ;
-        :headers _:contentTypeTextPlain ;
-        :body "should be refused" ;
-    ] ;
+_:createResourceBeneathDataResourceStatus
+    :name "Create resource beneath data resource status" ;
+    :request _:createResourceBeneathDataResource ;
     :extractors (
         _:status
     ) ;
@@ -1350,6 +1357,17 @@ _:headContainerTypeLinks
     ) ;
 .
 
+_:createResourceBeneathDataResourceAllow
+    :name "Create resource beneath data resource Allow" ;
+    :request _:createResourceBeneathDataResource ;
+    :extractors (
+        [
+            :param "allow" ;
+            :header "Allow" ;
+        ]
+    ) ;
+.
+
 # Requests
 _:getContainer
     :method "GET" ;
@@ -1426,6 +1444,20 @@ _:getStorageRoot
     :method "GET" ;
     :uri _:storageRoot ;
     :headers _:acceptLwsJson ;
+.
+
+_:createResourceBeneathDataResource
+    :method "POST" ;
+    :uri [
+        :base _:storageRoot ;
+        :relative [
+            :single [
+                :param "notAContainerLocation" ;
+            ] ;
+        ] ;
+    ] ;
+    :headers _:contentTypeTextPlain ;
+    :body "should be refused" ;
 .
 
 # URIs
