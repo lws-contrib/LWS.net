@@ -10,6 +10,8 @@ internal static class Vocabulary
 
     internal static INode Tests { get; } = factory.CreateUriNode(UriFactory.Create($"{NS}tests"));
 
+    internal static INode Include { get; } = factory.CreateUriNode(UriFactory.Create($"{NS}include"));
+
     internal static INode Name { get; } = factory.CreateUriNode(UriFactory.Create($"{NS}name"));
 
     internal static INode Steps { get; } = factory.CreateUriNode(UriFactory.Create($"{NS}steps"));
