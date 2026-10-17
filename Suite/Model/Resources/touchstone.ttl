@@ -105,7 +105,7 @@ _:createdDataResourceReturnsPostedBody
         _:getTextResourceBody
     ) ;
     :assert [
-        :input [
+        :that [
             :variable "body" ;
         ] ;
         :equals "milk\neggs\nbread\nbutter\napples\norange juice\n" ;
@@ -225,7 +225,7 @@ _:containerResponseVariesByAccept
         _:getContainerVary
     ) ;
     :assert [
-        :input [
+        :that [
             :single [
                 :variable "vary" ;
             ] ;
@@ -243,7 +243,7 @@ _:dataResourceAdvertisesByteRanges
         _:getDigitsResourceAcceptRanges
     ) ;
     :assert [
-        :input [
+        :that [
             :single [
                 :variable "acceptRanges" ;
             ] ;
@@ -261,7 +261,7 @@ _:suffixByteRangeReturnsLastBytes
         _:getDigitsResourceLastTwoBytesBody
     ) ;
     :assert [
-        :input [
+        :that [
             :variable "body" ;
         ] ;
         :regex "^89$" ;
@@ -277,7 +277,7 @@ _:byteRangeReturnsContentRange
         _:getDigitsResourceFirstFourBytesContentRange
     ) ;
     :assert [
-        :input [
+        :that [
             :single [
                 :variable "contentRange" ;
             ] ;
@@ -295,7 +295,7 @@ _:byteRangeReturnsRequestedBytes
         _:getDigitsResourceFirstFourBytesBody
     ) ;
     :assert [
-        :input [
+        :that [
             :variable "body" ;
         ] ;
         :regex "^0123$" ;
@@ -376,7 +376,7 @@ _:missingResourceReturnsProblemDetails
         _:getMissingResourceContentType
     ) ;
     :assert [
-        :input [
+        :that [
             :single [
                 :variable "contentType" ;
             ] ;
@@ -416,7 +416,7 @@ _:dataResourceGetReturnsETag
         _:getTextResourceETag
     ) ;
     :assert [
-        :input [
+        :that [
             :single [
                 :variable "etag" ;
             ] ;
@@ -508,7 +508,7 @@ _:storageDescriptionFirstContextIsCid
         _:getStorageDescriptionFirstContext
     ) ;
     :assert [
-        :input [
+        :that [
             :variable "context" ;
         ] ;
         :equals "https://www.w3.org/ns/cid/v1" ;
@@ -521,7 +521,7 @@ _:storageDescriptionSecondContextIsLws
         _:getStorageDescriptionSecondContext
     ) ;
     :assert [
-        :input [
+        :that [
             :variable "context" ;
         ] ;
         :equals "https://www.w3.org/ns/lws/v1" ;
@@ -567,7 +567,7 @@ _:createInMissingContainerReturnsClientError
         _:createResourceInMissingContainer
     ) ;
     :assert [
-        :input [
+        :that [
             :variable "status" ;
         ] ;
         :regex "^4\\d\\d$" ;
@@ -590,7 +590,7 @@ _:containerGetReturnsETag
         _:getContainerETag
     ) ;
     :assert [
-        :input [
+        :that [
             :single [
                 :variable "etag" ;
             ] ;
@@ -728,7 +728,7 @@ _:createBeneathDataResourceReturnsAllow
         _:createResourceBeneathDataResourceAllow
     ) ;
     :assert [
-        :input [
+        :that [
             :count [
                 :variable "allow" ;
             ] ;
@@ -815,7 +815,7 @@ _:containerGetAsJsonReturnsJsonMediaType
         _:getContainerAsJsonContentType
     ) ;
     :assert [
-        :input [
+        :that [
             :single [
                 :variable "contentType" ;
             ] ;
@@ -830,7 +830,7 @@ _:storageDescriptionAsCidReturnsStorageType
         _:getStorageDescriptionAsCidType
     ) ;
     :assert [
-        :input [
+        :that [
             :variable "type" ;
         ] ;
         :regex "^Storage$|\"Storage\"" ;
@@ -843,7 +843,7 @@ _:storageDescriptionContextIsArray
         _:getStorageDescriptionContext
     ) ;
     :assert [
-        :input [
+        :that [
             :variable "context" ;
         ] ;
         :regex "^\\[" ;
@@ -856,7 +856,7 @@ _:storageDescriptionServiceIsArray
         _:getStorageDescriptionService
     ) ;
     :assert [
-        :input [
+        :that [
             :variable "service" ;
         ] ;
         :regex "^\\[" ;
@@ -871,7 +871,7 @@ _:missingResourceProblemDetailsIsObject
         _:getMissingResourceBody
     ) ;
     :assert [
-        :input [
+        :that [
             :variable "body" ;
         ] ;
         :regex "^\\s*\\{" ;
@@ -885,7 +885,7 @@ _:createContainerReturnsLocation
         _:createContainer
     ) ;
     :assert [
-        :input [
+        :that [
             :count [
                 :variable "containerLocation" ;
             ] ;
@@ -912,7 +912,7 @@ _:createDataResourceReturnsLocation
         _:createTextResource
     ) ;
     :assert [
-        :input [
+        :that [
             :count [
                 :variable "textResourceLocation" ;
             ] ;
@@ -1003,7 +1003,7 @@ _:containerHeadLinksUp
         _:headContainerUpLinks
     ) ;
     :assert [
-        :input [
+        :that [
             :count [
                 :variable "upLinks" ;
             ] ;
@@ -1983,70 +1983,70 @@ _:linksetLinks
 
 # Assertions
 _:200
-    :input [
+    :that [
         :variable "status" ;
     ] ;
     :equals "200" ;
 .
 
 _:201
-    :input [
+    :that [
         :variable "status" ;
     ] ;
     :equals "201" ;
 .
 
 _:206
-    :input [
+    :that [
         :variable "status" ;
     ] ;
     :equals "206" ;
 .
 
 _:404
-    :input [
+    :that [
         :variable "status" ;
     ] ;
     :equals "404" ;
 .
 
 _:405
-    :input [
+    :that [
         :variable "status" ;
     ] ;
     :equals "405" ;
 .
 
 _:416
-    :input [
+    :that [
         :variable "status" ;
     ] ;
     :equals "416" ;
 .
 
 _:emptyItems
-    :input [
+    :that [
         :variable "items" ;
     ] ;
     :equals "[]" ;
 .
 
 _:emptyBody
-    :input [
+    :that [
         :variable "body" ;
     ] ;
     :equals "" ;
 .
 
 _:sameBytesBody
-    :input [
+    :that [
         :variable "body" ;
     ] ;
     :regex "^same bytes$" ;
 .
 
 _:textPlainContentType
-    :input [
+    :that [
         :single [
             :variable "contentType" ;
         ] ;
@@ -2055,7 +2055,7 @@ _:textPlainContentType
 .
 
 _:lwsJsonContentType
-    :input [
+    :that [
         :single [
             :variable "contentType" ;
         ] ;
@@ -2064,7 +2064,7 @@ _:lwsJsonContentType
 .
 
 _:lwsCidContentType
-    :input [
+    :that [
         :single [
             :variable "contentType" ;
         ] ;
@@ -2073,35 +2073,35 @@ _:lwsCidContentType
 .
 
 _:containerType
-    :input [
+    :that [
         :variable "type" ;
     ] ;
     :regex "^Container$|\"Container\"" ;
 .
 
 _:containerTypeLink
-    :input [
+    :that [
         :variable "typeLinks" ;
     ] ;
     :contains "https://www.w3.org/ns/lws#Container" ;
 .
 
 _:dataResourceTypeLink
-    :input [
+    :that [
         :variable "typeLinks" ;
     ] ;
     :contains "https://www.w3.org/ns/lws#DataResource" ;
 .
 
 _:itemsArray
-    :input [
+    :that [
         :variable "items" ;
     ] ;
     :regex "^\\[" ;
 .
 
 _:jsonLdContentType
-    :input [
+    :that [
         :single [
             :variable "contentType" ;
         ] ;
@@ -2110,7 +2110,7 @@ _:jsonLdContentType
 .
 
 _:linksetLink
-    :input [
+    :that [
         :count [
             :variable "linksetLinks" ;
         ] ;

@@ -59,7 +59,7 @@
             ]
         ) ;
         :assert [
-            :input [
+            :that [
                 :variable "status" ;
             ] ;
             :equals "999" ;
