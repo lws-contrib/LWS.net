@@ -6,7 +6,7 @@ public class Manifest : GraphWrapperNode
 
     public string Name => this.Singular(Vocabulary.Name, ValueMappings.As<string>);
 
-    public IList<TestCase> Tests => this.List(Vocabulary.Tests, TestCase.Wrap, TestCase.Wrap);
+    public ISet<TestCase> Tests => this.Objects(Vocabulary.Tests, TestCase.Wrap, TestCase.Wrap);
 
     public static Manifest Wrap(INode node, IGraph graph) => new(node, graph);
 

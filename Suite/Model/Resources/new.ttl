@@ -2,88 +2,87 @@
 
 [
     :name "LWS Test Suite" ;
-    :tests (
-        _:deletedResourceReturns404
-        _:deleteReturns999IntentionallyFailing
-        _:containerGetReturns200
-        _:createdDataResourceReturnsPostedBody
-        _:rangeBeyondEndReturns416
-        _:newNestedContainerHasNoItems
-        _:byteRangeReturns206
-        _:newContainerHasNoItems
-        _:suffixByteRangeReturns206
-        _:dataResourceHeadReturnsNoBody
-        _:containerHeadReturnsNoBody
-        _:createWithForgedLinksetLinkReturns201
-        _:containerGetWithWeightedAcceptReturns200
-        _:containerGetAsJsonLdWithLwsProfileReturns200
-        _:containerResponseVariesByAccept
-        _:dataResourceAdvertisesByteRanges
-        _:suffixByteRangeReturnsLastBytes
-        _:byteRangeReturnsContentRange
-        _:byteRangeReturnsRequestedBytes
-        _:createInMissingContainerReturns404
-        _:rejectedCreateLeavesContainerEmpty
-        _:firstOfTwoIdenticalCreatesKeepsItsBody
-        _:secondOfTwoIdenticalCreatesKeepsItsBody
-        _:createBeneathDataResourceReturns405
-        _:missingResourceReturns404
-        _:missingResourceReturnsProblemDetails
-        _:dataResourceGetReturns200
-        _:dataResourceGetReturnsItsMediaType
-        _:dataResourceGetReturnsETag
-        _:dataResourceHeadReturns200
-        _:dataResourceHeadReturnsItsMediaType
-        _:nestedContainerGetReturnsLwsMediaType
-        _:containerHeadReturns200
-        _:containerHeadReturnsLwsMediaType
-        _:storageDescriptionDefaultsToCidMediaType
-        _:storageDescriptionAsCidReturns200
-        _:storageDescriptionAsCidReturnsCidMediaType
-        _:storageDescriptionFirstContextIsCid
-        _:storageDescriptionSecondContextIsLws
-        _:containerGetReturnsLwsMediaType
-        _:containerGetReturnsItemsArray
-        _:nestedContainerGetReturns200
-        _:createInMissingContainerReturnsClientError
-        _:storageDescriptionWithoutAcceptReturns200
-        _:containerGetReturnsETag
-        _:containerGetReturnsContainerType
-        _:nestedContainerGetReturnsContainerType
-        _:createNestedContainerReturns201
-        _:containerGetLinksContainerType
-        _:createNestedContainerLinksContainerType
-        _:createDataResourceLinksDataResourceType
-        _:storageRootGetReturns200
-        _:storageRootGetLinksContainerType
-        _:storageRootGetReturnsContainerType
-        _:dataResourceGetLinksDataResourceType
-        _:dataResourceHeadLinksDataResourceType
-        _:containerHeadLinksContainerType
-        _:createBeneathDataResourceReturnsAllow
-        _:containerGetWithWeightedAcceptReturnsJsonLdMediaType
-        _:containerGetWithWeightedAcceptReturnsContainerType
-        _:containerGetAsJsonLdWithLwsProfileReturnsContainerType
-        _:containerGetAsJsonLdWithLwsProfileReturnsItemsArray
-        _:containerGetAsJsonLdReturns200
-        _:containerGetAsJsonLdReturnsJsonLdMediaType
-        _:containerGetAsJsonReturns200
-        _:containerGetAsJsonReturnsJsonMediaType
-        _:storageDescriptionAsCidReturnsStorageType
-        _:storageDescriptionContextIsArray
-        _:storageDescriptionServiceIsArray
-        _:missingResourceProblemDetailsIsObject
-        _:createContainerReturnsLocation
-        _:createDataResourceReturns201
-        _:createDataResourceReturnsLocation
-        _:secondOfTwoIdenticalCreatesReturns201
-        _:containerGetLinksLinkset
-        _:dataResourceGetLinksLinkset
-        _:containerHeadLinksLinkset
-        _:dataResourceHeadLinksLinkset
-        _:createWithForgedLinksetLinkLinksLinkset
-        _:resourceCreatedWithForgedLinksetLinkGetLinksLinkset
-    ) ;
+    :tests
+        _:deletedResourceReturns404 ,
+        _:deleteReturns999IntentionallyFailing ,
+        _:containerGetReturns200 ,
+        _:createdDataResourceReturnsPostedBody ,
+        _:rangeBeyondEndReturns416 ,
+        _:newNestedContainerHasNoItems ,
+        _:byteRangeReturns206 ,
+        _:newContainerHasNoItems ,
+        _:suffixByteRangeReturns206 ,
+        _:dataResourceHeadReturnsNoBody ,
+        _:containerHeadReturnsNoBody ,
+        _:createWithForgedLinksetLinkReturns201 ,
+        _:containerGetWithWeightedAcceptReturns200 ,
+        _:containerGetAsJsonLdWithLwsProfileReturns200 ,
+        _:containerResponseVariesByAccept ,
+        _:dataResourceAdvertisesByteRanges ,
+        _:suffixByteRangeReturnsLastBytes ,
+        _:byteRangeReturnsContentRange ,
+        _:byteRangeReturnsRequestedBytes ,
+        _:createInMissingContainerReturns404 ,
+        _:rejectedCreateLeavesContainerEmpty ,
+        _:firstOfTwoIdenticalCreatesKeepsItsBody ,
+        _:secondOfTwoIdenticalCreatesKeepsItsBody ,
+        _:createBeneathDataResourceReturns405 ,
+        _:missingResourceReturns404 ,
+        _:missingResourceReturnsProblemDetails ,
+        _:dataResourceGetReturns200 ,
+        _:dataResourceGetReturnsItsMediaType ,
+        _:dataResourceGetReturnsETag ,
+        _:dataResourceHeadReturns200 ,
+        _:dataResourceHeadReturnsItsMediaType ,
+        _:nestedContainerGetReturnsLwsMediaType ,
+        _:containerHeadReturns200 ,
+        _:containerHeadReturnsLwsMediaType ,
+        _:storageDescriptionDefaultsToCidMediaType ,
+        _:storageDescriptionAsCidReturns200 ,
+        _:storageDescriptionAsCidReturnsCidMediaType ,
+        _:storageDescriptionFirstContextIsCid ,
+        _:storageDescriptionSecondContextIsLws ,
+        _:containerGetReturnsLwsMediaType ,
+        _:containerGetReturnsItemsArray ,
+        _:nestedContainerGetReturns200 ,
+        _:createInMissingContainerReturnsClientError ,
+        _:storageDescriptionWithoutAcceptReturns200 ,
+        _:containerGetReturnsETag ,
+        _:containerGetReturnsContainerType ,
+        _:nestedContainerGetReturnsContainerType ,
+        _:createNestedContainerReturns201 ,
+        _:containerGetLinksContainerType ,
+        _:createNestedContainerLinksContainerType ,
+        _:createDataResourceLinksDataResourceType ,
+        _:storageRootGetReturns200 ,
+        _:storageRootGetLinksContainerType ,
+        _:storageRootGetReturnsContainerType ,
+        _:dataResourceGetLinksDataResourceType ,
+        _:dataResourceHeadLinksDataResourceType ,
+        _:containerHeadLinksContainerType ,
+        _:createBeneathDataResourceReturnsAllow ,
+        _:containerGetWithWeightedAcceptReturnsJsonLdMediaType ,
+        _:containerGetWithWeightedAcceptReturnsContainerType ,
+        _:containerGetAsJsonLdWithLwsProfileReturnsContainerType ,
+        _:containerGetAsJsonLdWithLwsProfileReturnsItemsArray ,
+        _:containerGetAsJsonLdReturns200 ,
+        _:containerGetAsJsonLdReturnsJsonLdMediaType ,
+        _:containerGetAsJsonReturns200 ,
+        _:containerGetAsJsonReturnsJsonMediaType ,
+        _:storageDescriptionAsCidReturnsStorageType ,
+        _:storageDescriptionContextIsArray ,
+        _:storageDescriptionServiceIsArray ,
+        _:missingResourceProblemDetailsIsObject ,
+        _:createContainerReturnsLocation ,
+        _:createDataResourceReturns201 ,
+        _:createDataResourceReturnsLocation ,
+        _:secondOfTwoIdenticalCreatesReturns201 ,
+        _:containerGetLinksLinkset ,
+        _:dataResourceGetLinksLinkset ,
+        _:containerHeadLinksLinkset ,
+        _:dataResourceHeadLinksLinkset ,
+        _:createWithForgedLinksetLinkLinksLinkset ,
+        _:resourceCreatedWithForgedLinksetLinkGetLinksLinkset ;
 ] .
 
 # Tests
