@@ -72,6 +72,7 @@
         _:storageDescriptionAsCidReturnsStorageType
         _:storageDescriptionContextIsArray
         _:storageDescriptionServiceIsArray
+        _:missingResourceProblemDetailsIsObject
     ) ;
 ] .
 
@@ -874,6 +875,21 @@ _:storageDescriptionServiceIsArray
     ] ;
 .
 
+_:missingResourceProblemDetailsIsObject
+    :name "Missing resource problem details is object" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:getMissingResourceBody
+    ) ;
+    :assertion [
+        :input [
+            :param "body" ;
+        ] ;
+        :regex "^\\s*\\{" ;
+    ] ;
+.
+
 # Steps
 _:discoverStorageRoot
     :name "Discover storage root" ;
@@ -1574,6 +1590,14 @@ _:getStorageDescriptionService
             :param "service" ;
             :path "$.service" ;
         ]
+    ) ;
+.
+
+_:getMissingResourceBody
+    :name "Get missing resource body" ;
+    :request _:getMissingResource ;
+    :extractors (
+        _:body
     ) ;
 .
 
