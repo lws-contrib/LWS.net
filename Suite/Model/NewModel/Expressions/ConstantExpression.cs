@@ -2,7 +2,7 @@
 
 public partial class ConstantExpression
 {
-    public override async Task<string> Evaluate(Context context)
+    public override async Task<object> Evaluate(Context context)
     {
         context.Log<ConstantExpression>("Evaluate [{Value}]", Value);
 

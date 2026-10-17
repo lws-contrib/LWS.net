@@ -2,11 +2,11 @@
 
 public partial class EqualityAssertion
 {
-    public override Result Execute(Context context)
+    protected override Result ExecuteInternal(object input)
     {
-        var actual = context.Get(Param) as string ?? throw new InvalidOperationException($"Parameter '{Param}' is not a string.");
+        var actual = input as string ?? throw new InvalidOperationException("Input is not a string.");
         return actual == Value
-            ? new Result { Outcome = "Pass", Info = $"Parameter '{Param}' equals '{Value}'." }
-            : new Result { Outcome = "Fail", Info = $"Parameter '{Param}' expected '{Value}', but got '{actual}'." };
+            ? new Result { Outcome = "Pass", Info = $"Input equals '{Value}'." }
+            : new Result { Outcome = "Fail", Info = $"Input expected '{Value}', but got '{actual}'." };
     }
 }

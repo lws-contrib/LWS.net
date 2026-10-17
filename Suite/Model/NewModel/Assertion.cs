@@ -2,5 +2,7 @@
 
 public abstract partial class Assertion
 {
-    public abstract Result Execute(Context context);
+    public async Task<Result> Execute(Context context) => ExecuteInternal(await Input.Evaluate(context));
+
+    protected abstract Result ExecuteInternal(object input);
 }

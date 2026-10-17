@@ -2,5 +2,5 @@
 
 public abstract partial class Expression
 {
-    public abstract Task<string> Evaluate(Context context);
+    public abstract Task<object> Evaluate(Context context);
 }

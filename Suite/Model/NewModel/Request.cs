@@ -6,7 +6,7 @@ public partial class Request
 {
     public async Task<HttpResponseMessage> Execute(Context context)
     {
-        var u = await Uri.Evaluate(context);
+        var u = await Uri.Evaluate(context) as string ?? throw new InvalidOperationException("Uri is not a string.");
         var re = new HttpRequestMessage(new HttpMethod(Method), u);
 
         if (Body is { } body)

@@ -104,7 +104,9 @@ _:createdDataResourceReturnsPostedBody
         _:getTextResourceBody
     ) ;
     :assertion [
-        :param "body" ;
+        :input [
+            :param "body" ;
+        ] ;
         :value "milk\neggs\nbread\nbutter\napples\norange juice\n" ;
     ] ;
 .
@@ -222,7 +224,9 @@ _:containerResponseVariesByAccept
         _:getContainerVary
     ) ;
     :assertion [
-        :param "vary" ;
+        :input [
+            :param "vary" ;
+        ] ;
         :regex "(?i)(^|[\\s,])accept($|[\\s,])" ;
     ] ;
 .
@@ -236,7 +240,9 @@ _:dataResourceAdvertisesByteRanges
         _:getDigitsResourceAcceptRanges
     ) ;
     :assertion [
-        :param "acceptRanges" ;
+        :input [
+            :param "acceptRanges" ;
+        ] ;
         :regex "(?i)\\bbytes\\b" ;
     ] ;
 .
@@ -250,7 +256,9 @@ _:suffixByteRangeReturnsLastBytes
         _:getDigitsResourceLastTwoBytesBody
     ) ;
     :assertion [
-        :param "body" ;
+        :input [
+            :param "body" ;
+        ] ;
         :regex "^89$" ;
     ] ;
 .
@@ -264,7 +272,9 @@ _:byteRangeReturnsContentRange
         _:getDigitsResourceFirstFourBytesContentRange
     ) ;
     :assertion [
-        :param "contentRange" ;
+        :input [
+            :param "contentRange" ;
+        ] ;
         :regex "^bytes 0-3/10$" ;
     ] ;
 .
@@ -278,7 +288,9 @@ _:byteRangeReturnsRequestedBytes
         _:getDigitsResourceFirstFourBytesBody
     ) ;
     :assertion [
-        :param "body" ;
+        :input [
+            :param "body" ;
+        ] ;
         :regex "^0123$" ;
     ] ;
 .
@@ -357,7 +369,9 @@ _:missingResourceReturnsProblemDetails
         _:getMissingResourceContentType
     ) ;
     :assertion [
-        :param "contentType" ;
+        :input [
+            :param "contentType" ;
+        ] ;
         :regex "(?i)^application/problem\\+json\\s*(;|$)" ;
     ] ;
 .
@@ -393,7 +407,9 @@ _:dataResourceGetReturnsETag
         _:getTextResourceETag
     ) ;
     :assertion [
-        :param "etag" ;
+        :input [
+            :param "etag" ;
+        ] ;
         :regex "." ;
     ] ;
 .
@@ -481,7 +497,9 @@ _:storageDescriptionFirstContextIsCid
         _:getStorageDescriptionFirstContext
     ) ;
     :assertion [
-        :param "context" ;
+        :input [
+            :param "context" ;
+        ] ;
         :value "https://www.w3.org/ns/cid/v1" ;
     ] ;
 .
@@ -492,7 +510,9 @@ _:storageDescriptionSecondContextIsLws
         _:getStorageDescriptionSecondContext
     ) ;
     :assertion [
-        :param "context" ;
+        :input [
+            :param "context" ;
+        ] ;
         :value "https://www.w3.org/ns/lws/v1" ;
     ] ;
 .
@@ -515,7 +535,9 @@ _:containerGetReturnsItemsArray
         _:getContainerItems
     ) ;
     :assertion [
-        :param "items" ;
+        :input [
+            :param "items" ;
+        ] ;
         :regex "^\\[" ;
     ] ;
 .
@@ -539,7 +561,9 @@ _:createInMissingContainerReturnsClientError
         _:createResourceInMissingContainer
     ) ;
     :assertion [
-        :param "status" ;
+        :input [
+            :param "status" ;
+        ] ;
         :regex "^4\\d\\d$" ;
     ] ;
 .
@@ -560,7 +584,9 @@ _:containerGetReturnsETag
         _:getContainerETag
     ) ;
     :assertion [
-        :param "etag" ;
+        :input [
+            :param "etag" ;
+        ] ;
         :regex "." ;
     ] ;
 .
@@ -1472,81 +1498,113 @@ _:typeLinks
 
 # Assertions
 _:200
-    :param "status" ;
+    :input [
+        :param "status" ;
+    ] ;
     :value "200" ;
 .
 
 _:201
-    :param "status" ;
+    :input [
+        :param "status" ;
+    ] ;
     :value "201" ;
 .
 
 _:206
-    :param "status" ;
+    :input [
+        :param "status" ;
+    ] ;
     :value "206" ;
 .
 
 _:404
-    :param "status" ;
+    :input [
+        :param "status" ;
+    ] ;
     :value "404" ;
 .
 
 _:405
-    :param "status" ;
+    :input [
+        :param "status" ;
+    ] ;
     :value "405" ;
 .
 
 _:416
-    :param "status" ;
+    :input [
+        :param "status" ;
+    ] ;
     :value "416" ;
 .
 
 _:999
-    :param "status" ;
+    :input [
+        :param "status" ;
+    ] ;
     :value "999" ;
 .
 
 _:emptyItems
-    :param "items" ;
+    :input [
+        :param "items" ;
+    ] ;
     :value "[]" ;
 .
 
 _:emptyBody
-    :param "body" ;
+    :input [
+        :param "body" ;
+    ] ;
     :value "" ;
 .
 
 _:sameBytesBody
-    :param "body" ;
+    :input [
+        :param "body" ;
+    ] ;
     :regex "^same bytes$" ;
 .
 
 _:textPlainContentType
-    :param "contentType" ;
+    :input [
+        :param "contentType" ;
+    ] ;
     :regex "(?i)^text/plain\\s*(;|$)" ;
 .
 
 _:lwsJsonContentType
-    :param "contentType" ;
+    :input [
+        :param "contentType" ;
+    ] ;
     :regex "(?i)^application/lws\\+json\\s*(;|$)" ;
 .
 
 _:lwsCidContentType
-    :param "contentType" ;
+    :input [
+        :param "contentType" ;
+    ] ;
     :regex "(?i)^application/lws\\+cid\\s*(;|$)" ;
 .
 
 _:containerType
-    :param "type" ;
+    :input [
+        :param "type" ;
+    ] ;
     :regex "^Container$|\"Container\"" ;
 .
 
 _:containerTypeLink
-    :param "typeLinks" ;
+    :input [
+        :param "typeLinks" ;
+    ] ;
     :contains "https://www.w3.org/ns/lws#Container" ;
 .
 
 _:dataResourceTypeLink
-    :param "typeLinks" ;
+    :input [
+        :param "typeLinks" ;
+    ] ;
     :contains "https://www.w3.org/ns/lws#DataResource" ;
 .

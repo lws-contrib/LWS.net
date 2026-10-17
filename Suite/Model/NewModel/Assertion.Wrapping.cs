@@ -6,7 +6,7 @@ public abstract partial class Assertion : GraphWrapperNode
 {
     protected Assertion(INode node, IGraph graph) : base(node, graph) { }
 
-    public string Param => this.Singular(Vocabulary.Param, ValueMappings.As<string>);
+    public Expression Input => this.Singular(Vocabulary.Input, Expression.Choose);
 
     internal static Assertion? Choose(GraphWrapperNode node)
     {

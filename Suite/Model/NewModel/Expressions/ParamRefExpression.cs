@@ -2,9 +2,9 @@
 
 public partial class ParamRefExpression
 {
-    public override async Task<string> Evaluate(Context context)
+    public override async Task<object> Evaluate(Context context)
     {
-        var value = context.Get(Param) as string ?? throw new InvalidOperationException($"Parameter '{Param}' is not a string.");
+        var value = context.Get(Param);
 
         context.Log<ParamRefExpression>("Evaluate: [{Param}] = [{Value}]", Param, value);
 

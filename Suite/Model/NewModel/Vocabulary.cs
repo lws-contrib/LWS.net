@@ -51,4 +51,6 @@ internal static class Vocabulary
     internal static INode Regex { get; } = factory.CreateUriNode(UriFactory.Create($"{NS}regex"));
 
     internal static INode StatusCodeExtractor { get; } = factory.CreateUriNode(UriFactory.Create($"{NS}StatusCodeExtractor"));
+
+    internal static INode Input { get; } = factory.CreateUriNode(UriFactory.Create($"{NS}input"));
 }

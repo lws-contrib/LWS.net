@@ -9,6 +9,6 @@ public partial class TestCase
             await step.Execute(context);
         }
 
-        return Assertion.Execute(context);
+        return await Assertion.Execute(context);
     }
 }
