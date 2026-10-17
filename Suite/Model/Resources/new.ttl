@@ -73,6 +73,7 @@
         _:storageDescriptionContextIsArray
         _:storageDescriptionServiceIsArray
         _:missingResourceProblemDetailsIsObject
+        _:createContainerReturnsLocation
     ) ;
 ] .
 
@@ -887,6 +888,22 @@ _:missingResourceProblemDetailsIsObject
             :param "body" ;
         ] ;
         :regex "^\\s*\\{" ;
+    ] ;
+.
+
+_:createContainerReturnsLocation
+    :name "Create container returns Location" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+    ) ;
+    :assertion [
+        :input [
+            :count [
+                :param "containerLocation" ;
+            ] ;
+        ] ;
+        :greaterThan 0 ;
     ] ;
 .
 
