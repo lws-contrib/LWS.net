@@ -25,6 +25,11 @@ public abstract partial class Assertion : GraphWrapperNode
             return ContainsAssertion.Wrap(node);
         }
 
+        if (node.Graph.GetTriplesWithSubjectPredicate(node, Vocabulary.GreaterThan).Any())
+        {
+            return GreaterThanAssertion.Wrap(node);
+        }
+
         throw new InvalidOperationException();
     }
 }

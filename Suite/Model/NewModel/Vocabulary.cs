@@ -57,4 +57,6 @@ internal static class Vocabulary
     internal static INode Single { get; } = factory.CreateUriNode(UriFactory.Create($"{NS}single"));
 
     internal static INode Count { get; } = factory.CreateUriNode(UriFactory.Create($"{NS}count"));
+
+    internal static INode GreaterThan { get; } = factory.CreateUriNode(UriFactory.Create($"{NS}greaterThan"));
 }
