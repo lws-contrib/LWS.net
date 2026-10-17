@@ -225,7 +225,9 @@ _:containerResponseVariesByAccept
     ) ;
     :assertion [
         :input [
-            :param "vary" ;
+            :single [
+                :param "vary" ;
+            ] ;
         ] ;
         :regex "(?i)(^|[\\s,])accept($|[\\s,])" ;
     ] ;
@@ -241,7 +243,9 @@ _:dataResourceAdvertisesByteRanges
     ) ;
     :assertion [
         :input [
-            :param "acceptRanges" ;
+            :single [
+                :param "acceptRanges" ;
+            ] ;
         ] ;
         :regex "(?i)\\bbytes\\b" ;
     ] ;
@@ -273,7 +277,9 @@ _:byteRangeReturnsContentRange
     ) ;
     :assertion [
         :input [
-            :param "contentRange" ;
+            :single [
+                :param "contentRange" ;
+            ] ;
         ] ;
         :regex "^bytes 0-3/10$" ;
     ] ;
@@ -370,7 +376,9 @@ _:missingResourceReturnsProblemDetails
     ) ;
     :assertion [
         :input [
-            :param "contentType" ;
+            :single [
+                :param "contentType" ;
+            ] ;
         ] ;
         :regex "(?i)^application/problem\\+json\\s*(;|$)" ;
     ] ;
@@ -408,7 +416,9 @@ _:dataResourceGetReturnsETag
     ) ;
     :assertion [
         :input [
-            :param "etag" ;
+            :single [
+                :param "etag" ;
+            ] ;
         ] ;
         :regex "." ;
     ] ;
@@ -585,7 +595,9 @@ _:containerGetReturnsETag
     ) ;
     :assertion [
         :input [
-            :param "etag" ;
+            :single [
+                :param "etag" ;
+            ] ;
         ] ;
         :regex "." ;
     ] ;
@@ -1048,7 +1060,9 @@ _:getFirstSameBytesResourceBody
         :uri [
             :base _:storageRoot ;
             :relative [
-                :param "firstSameBytesLocation" ;
+                :single [
+                    :param "firstSameBytesLocation" ;
+                ] ;
             ] ;
         ] ;
     ] ;
@@ -1064,7 +1078,9 @@ _:getSecondSameBytesResourceBody
         :uri [
             :base _:storageRoot ;
             :relative [
-                :param "secondSameBytesLocation" ;
+                :single [
+                    :param "secondSameBytesLocation" ;
+                ] ;
             ] ;
         ] ;
     ] ;
@@ -1096,7 +1112,9 @@ _:createResourceBeneathDataResource
         :uri [
             :base _:storageRoot ;
             :relative [
-                :param "notAContainerLocation" ;
+                :single [
+                    :param "notAContainerLocation" ;
+                ] ;
             ] ;
         ] ;
         :headers _:contentTypeTextPlain ;
@@ -1416,27 +1434,35 @@ _:storageRoot
 .
 
 _:newResource
-    :param "newResource" ;
+    :single [
+        :param "newResource" ;
+    ] ;
 .
 
 _:container
     :base _:storageRoot ;
     :relative [
-        :param "containerLocation" ;
+        :single [
+            :param "containerLocation" ;
+        ] ;
     ] ;
 .
 
 _:textResource
     :base _:storageRoot ;
     :relative [
-        :param "textResourceLocation" ;
+        :single [
+            :param "textResourceLocation" ;
+        ] ;
     ] ;
 .
 
 _:digitsResource
     :base _:storageRoot ;
     :relative [
-        :param "digitsResourceLocation" ;
+        :single [
+            :param "digitsResourceLocation" ;
+        ] ;
     ] ;
 .
 
@@ -1569,21 +1595,27 @@ _:sameBytesBody
 
 _:textPlainContentType
     :input [
-        :param "contentType" ;
+        :single [
+            :param "contentType" ;
+        ] ;
     ] ;
     :regex "(?i)^text/plain\\s*(;|$)" ;
 .
 
 _:lwsJsonContentType
     :input [
-        :param "contentType" ;
+        :single [
+            :param "contentType" ;
+        ] ;
     ] ;
     :regex "(?i)^application/lws\\+json\\s*(;|$)" ;
 .
 
 _:lwsCidContentType
     :input [
-        :param "contentType" ;
+        :single [
+            :param "contentType" ;
+        ] ;
     ] ;
     :regex "(?i)^application/lws\\+cid\\s*(;|$)" ;
 .
