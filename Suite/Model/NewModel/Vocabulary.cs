@@ -8,7 +8,7 @@ internal static class Vocabulary
 
     internal static string NS => "http://example.com/";
 
-    internal static INode Tests { get; } = factory.CreateUriNode(UriFactory.Create($"{NS}tests"));
+    internal static INode Test { get; } = factory.CreateUriNode(UriFactory.Create($"{NS}test"));
 
     internal static INode Include { get; } = factory.CreateUriNode(UriFactory.Create($"{NS}include"));
 

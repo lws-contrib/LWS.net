@@ -10,7 +10,7 @@ public sealed class TestSuite
 
     private static IEnumerable<TestDataRow<TestCase>> Rows(Manifest manifest)
     {
-        foreach (var test in manifest.Tests)
+        foreach (var test in manifest.Test)
         {
             yield return new TestDataRow<TestCase>(test)
             {

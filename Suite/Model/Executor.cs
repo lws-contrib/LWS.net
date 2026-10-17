@@ -10,7 +10,7 @@ public class Executor(ILoggerFactory loggerFactory, IOptions<SuiteOptions> optio
 {
     internal static readonly ActivitySource ActivitySource = new(typeof(Executor).FullName!);
 
-    public static IEnumerable<NewModel.TestCase> Tests => Resources.Graph.Manifest.Tests;
+    public static IEnumerable<NewModel.TestCase> Tests => Resources.Graph.Manifest.Test;
 
     public async Task<EarlGraph> Execute()
     {
@@ -31,7 +31,7 @@ public class Executor(ILoggerFactory loggerFactory, IOptions<SuiteOptions> optio
     {
         using var activity = ActivitySource.StartActivity(manifest.ManifestName)?.SetTag("test.suite.name", manifest.ManifestName);
 
-        foreach (var testCase in manifest.Tests)
+        foreach (var testCase in manifest.Test)
         {
             var result3 = await Execute(testCase);
             var entryRequirement = TestRequirement.Create(graph);

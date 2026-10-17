@@ -2,7 +2,7 @@
 
 [
     :manifestName "Touchstone" ;
-    :tests
+    :test
         _:containerGetReturns200 ,
         _:createdDataResourceReturnsPostedBody ,
         _:rangeBeyondEndReturns416 ,

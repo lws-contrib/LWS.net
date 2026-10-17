@@ -2,7 +2,7 @@
 
 [
     :manifestName "Example" ;
-    :tests [
+    :test [
         :testName "Delete returns 999 (intentionally failing)" ;
         :steps (
             [

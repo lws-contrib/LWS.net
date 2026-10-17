@@ -6,7 +6,7 @@ public class Manifest : GraphWrapperNode
 
     public string ManifestName => this.Singular(Vocabulary.ManifestName, ValueMappings.As<string>);
 
-    public ISet<TestCase> Tests => this.Objects(Vocabulary.Tests, TestCase.Wrap, TestCase.Wrap);
+    public ISet<TestCase> Test => this.Objects(Vocabulary.Test, TestCase.Wrap, TestCase.Wrap);
 
     public ISet<Uri> Include => this.Objects(Vocabulary.Include, NodeMappings.From, ValueMappings.As<Uri>);
 
