@@ -18,7 +18,7 @@
                         ] ;
                     ] ;
                 ] ;
-                :extractors (
+                :extract (
                     [
                         :to "storageRoot" ;
                         :path "$.service[?@.type == 'StorageRoot'].serviceEndpoint" ;
@@ -33,7 +33,7 @@
                         :variable "storageRoot" ;
                     ] ;
                 ] ;
-                :extractors (
+                :extract (
                     [
                         :to "newResource" ;
                         :header "Location" ;
@@ -50,7 +50,7 @@
                         ] ;
                     ] ;
                 ] ;
-                :extractors (
+                :extract (
                     [
                         a :StatusCodeExtractor ;
                         :to "status" ;

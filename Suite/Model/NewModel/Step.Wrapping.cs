@@ -8,7 +8,7 @@ public partial class Step : GraphWrapperNode
 
     public Request Request => this.Singular(Vocabulary.Request, Request.Wrap);
 
-    public IList<Extractor> Extractors => this.List(Vocabulary.Extractors, (value, graph) => null!, Extractor.Choose);
+    public IList<Extractor> Extract => this.List(Vocabulary.Extract, (value, graph) => null!, Extractor.Choose);
 
     public static Step Wrap(INode node, IGraph graph) => new(node, graph);
 

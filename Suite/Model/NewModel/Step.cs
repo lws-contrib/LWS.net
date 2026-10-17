@@ -12,7 +12,7 @@ public partial class Step
         {
             var response = await Request.Execute(context);
 
-            foreach (var extractor in Extractors)
+            foreach (var extractor in Extract)
             {
                 await extractor.Execute(context, response);
             }

@@ -1026,7 +1026,7 @@ _:discoverStorageRoot
             ] ;
         ] ;
     ] ;
-    :extractors (
+    :extract (
         [
             :to "storageRoot" ;
             :path "$.service[?@.type == 'StorageRoot'].serviceEndpoint" ;
@@ -1041,7 +1041,7 @@ _:createContainer
         :uri _:storageRoot ;
         :headers _:linkTypeContainer ;
     ] ;
-    :extractors (
+    :extract (
         _:containerLocation
     ) ;
 .
@@ -1049,7 +1049,7 @@ _:createContainer
 _:getContainerStatus
     :stepName "Get container status" ;
     :request _:getContainer ;
-    :extractors (
+    :extract (
         _:status
     ) ;
 .
@@ -1062,7 +1062,7 @@ _:createTextResource
         :headers _:contentTypeTextPlain ;
         :body "milk\neggs\nbread\nbutter\napples\norange juice\n" ;
     ] ;
-    :extractors (
+    :extract (
         [
             :to "textResourceLocation" ;
             :header "Location" ;
@@ -1074,7 +1074,7 @@ _:createTextResource
 _:getTextResourceBody
     :stepName "Get text resource body" ;
     :request _:getTextResource ;
-    :extractors (
+    :extract (
         _:body
     ) ;
 .
@@ -1087,7 +1087,7 @@ _:createDigitsResource
         :headers _:contentTypeTextPlain ;
         :body "0123456789" ;
     ] ;
-    :extractors (
+    :extract (
         [
             :to "digitsResourceLocation" ;
             :header "Location" ;
@@ -1105,7 +1105,7 @@ _:getDigitsResourceBeyondEndStatus
             :value "bytes=100-200" ;
         ] ;
     ] ;
-    :extractors (
+    :extract (
         _:status
     ) ;
 .
@@ -1117,7 +1117,7 @@ _:createNestedContainer
         :uri _:container ;
         :headers _:linkTypeContainer ;
     ] ;
-    :extractors (
+    :extract (
         _:containerLocation
         _:status
         _:typeLinks
@@ -1127,7 +1127,7 @@ _:createNestedContainer
 _:getContainerItems
     :stepName "Get container items" ;
     :request _:getContainer ;
-    :extractors (
+    :extract (
         _:items
     ) ;
 .
@@ -1135,7 +1135,7 @@ _:getContainerItems
 _:getDigitsResourceFirstFourBytesStatus
     :stepName "Get digits resource first four bytes status" ;
     :request _:getDigitsResourceFirstFourBytes ;
-    :extractors (
+    :extract (
         _:status
     ) ;
 .
@@ -1143,7 +1143,7 @@ _:getDigitsResourceFirstFourBytesStatus
 _:getDigitsResourceLastTwoBytesStatus
     :stepName "Get digits resource last two bytes status" ;
     :request _:getDigitsResourceLastTwoBytes ;
-    :extractors (
+    :extract (
         _:status
     ) ;
 .
@@ -1151,7 +1151,7 @@ _:getDigitsResourceLastTwoBytesStatus
 _:headTextResourceBody
     :stepName "Head text resource body" ;
     :request _:headTextResource ;
-    :extractors (
+    :extract (
         _:body
     ) ;
 .
@@ -1159,7 +1159,7 @@ _:headTextResourceBody
 _:headContainerBody
     :stepName "Head container body" ;
     :request _:headContainer ;
-    :extractors (
+    :extract (
         _:body
     ) ;
 .
@@ -1177,7 +1177,7 @@ _:createResourceWithForgedLinkset
             ] ;
         :body "metadata override attempt" ;
     ] ;
-    :extractors (
+    :extract (
         _:status
         _:linksetLinks
         [
@@ -1190,7 +1190,7 @@ _:createResourceWithForgedLinkset
 _:getContainerWithWeightedAcceptStatus
     :stepName "Get container with weighted Accept status" ;
     :request _:getContainerWithWeightedAccept ;
-    :extractors (
+    :extract (
         _:status
     ) ;
 .
@@ -1198,7 +1198,7 @@ _:getContainerWithWeightedAcceptStatus
 _:getContainerWithLwsProfileAcceptStatus
     :stepName "Get container with LWS profile Accept status" ;
     :request _:getContainerWithLwsProfileAccept ;
-    :extractors (
+    :extract (
         _:status
     ) ;
 .
@@ -1206,7 +1206,7 @@ _:getContainerWithLwsProfileAcceptStatus
 _:getContainerVary
     :stepName "Get container Vary" ;
     :request _:getContainer ;
-    :extractors (
+    :extract (
         [
             :to "vary" ;
             :header "Vary" ;
@@ -1220,7 +1220,7 @@ _:getDigitsResourceAcceptRanges
         :method "GET" ;
         :uri _:digitsResource ;
     ] ;
-    :extractors (
+    :extract (
         [
             :to "acceptRanges" ;
             :header "Accept-Ranges" ;
@@ -1231,7 +1231,7 @@ _:getDigitsResourceAcceptRanges
 _:getDigitsResourceLastTwoBytesBody
     :stepName "Get digits resource last two bytes body" ;
     :request _:getDigitsResourceLastTwoBytes ;
-    :extractors (
+    :extract (
         _:body
     ) ;
 .
@@ -1239,7 +1239,7 @@ _:getDigitsResourceLastTwoBytesBody
 _:getDigitsResourceFirstFourBytesContentRange
     :stepName "Get digits resource first four bytes Content-Range" ;
     :request _:getDigitsResourceFirstFourBytes ;
-    :extractors (
+    :extract (
         [
             :to "contentRange" ;
             :header "Content-Range" ;
@@ -1250,7 +1250,7 @@ _:getDigitsResourceFirstFourBytesContentRange
 _:getDigitsResourceFirstFourBytesBody
     :stepName "Get digits resource first four bytes body" ;
     :request _:getDigitsResourceFirstFourBytes ;
-    :extractors (
+    :extract (
         _:body
     ) ;
 .
@@ -1268,7 +1268,7 @@ _:createResourceInMissingContainer
         :headers _:contentTypeTextPlain ;
         :body "lost letter" ;
     ] ;
-    :extractors (
+    :extract (
         _:status
     ) ;
 .
@@ -1276,7 +1276,7 @@ _:createResourceInMissingContainer
 _:createFirstSameBytesResource
     :stepName "Create first same-bytes resource" ;
     :request _:createSameBytesResource ;
-    :extractors (
+    :extract (
         [
             :to "firstSameBytesLocation" ;
             :header "Location" ;
@@ -1287,7 +1287,7 @@ _:createFirstSameBytesResource
 _:createSecondSameBytesResource
     :stepName "Create second same-bytes resource" ;
     :request _:createSameBytesResource ;
-    :extractors (
+    :extract (
         [
             :to "secondSameBytesLocation" ;
             :header "Location" ;
@@ -1309,7 +1309,7 @@ _:getFirstSameBytesResourceBody
             ] ;
         ] ;
     ] ;
-    :extractors (
+    :extract (
         _:body
     ) ;
 .
@@ -1327,7 +1327,7 @@ _:getSecondSameBytesResourceBody
             ] ;
         ] ;
     ] ;
-    :extractors (
+    :extract (
         _:body
     ) ;
 .
@@ -1340,7 +1340,7 @@ _:createDataResource
         :headers _:contentTypeTextPlain ;
         :body "not a container" ;
     ] ;
-    :extractors (
+    :extract (
         [
             :to "notAContainerLocation" ;
             :header "Location" ;
@@ -1351,7 +1351,7 @@ _:createDataResource
 _:createResourceBeneathDataResourceStatus
     :stepName "Create resource beneath data resource status" ;
     :request _:createResourceBeneathDataResource ;
-    :extractors (
+    :extract (
         _:status
     ) ;
 .
@@ -1359,7 +1359,7 @@ _:createResourceBeneathDataResourceStatus
 _:getMissingResourceStatus
     :stepName "Get missing resource status" ;
     :request _:getMissingResource ;
-    :extractors (
+    :extract (
         _:status
     ) ;
 .
@@ -1367,7 +1367,7 @@ _:getMissingResourceStatus
 _:getMissingResourceContentType
     :stepName "Get missing resource Content-Type" ;
     :request _:getMissingResource ;
-    :extractors (
+    :extract (
         _:contentType
     ) ;
 .
@@ -1375,7 +1375,7 @@ _:getMissingResourceContentType
 _:getTextResourceStatus
     :stepName "Get text resource status" ;
     :request _:getTextResource ;
-    :extractors (
+    :extract (
         _:status
     ) ;
 .
@@ -1383,7 +1383,7 @@ _:getTextResourceStatus
 _:getTextResourceContentType
     :stepName "Get text resource Content-Type" ;
     :request _:getTextResource ;
-    :extractors (
+    :extract (
         _:contentType
     ) ;
 .
@@ -1391,7 +1391,7 @@ _:getTextResourceContentType
 _:getTextResourceETag
     :stepName "Get text resource ETag" ;
     :request _:getTextResource ;
-    :extractors (
+    :extract (
         [
             :to "etag" ;
             :header "ETag" ;
@@ -1402,7 +1402,7 @@ _:getTextResourceETag
 _:headTextResourceStatus
     :stepName "Head text resource status" ;
     :request _:headTextResource ;
-    :extractors (
+    :extract (
         _:status
     ) ;
 .
@@ -1410,7 +1410,7 @@ _:headTextResourceStatus
 _:headTextResourceContentType
     :stepName "Head text resource Content-Type" ;
     :request _:headTextResource ;
-    :extractors (
+    :extract (
         _:contentType
     ) ;
 .
@@ -1418,7 +1418,7 @@ _:headTextResourceContentType
 _:getContainerContentType
     :stepName "Get container Content-Type" ;
     :request _:getContainer ;
-    :extractors (
+    :extract (
         _:contentType
     ) ;
 .
@@ -1426,7 +1426,7 @@ _:getContainerContentType
 _:headContainerStatus
     :stepName "Head container status" ;
     :request _:headContainer ;
-    :extractors (
+    :extract (
         _:status
     ) ;
 .
@@ -1434,7 +1434,7 @@ _:headContainerStatus
 _:headContainerContentType
     :stepName "Head container Content-Type" ;
     :request _:headContainer ;
-    :extractors (
+    :extract (
         _:contentType
     ) ;
 .
@@ -1442,7 +1442,7 @@ _:headContainerContentType
 _:getStorageDescriptionContentType
     :stepName "Get storage description Content-Type" ;
     :request _:getStorageDescription ;
-    :extractors (
+    :extract (
         _:contentType
     ) ;
 .
@@ -1450,7 +1450,7 @@ _:getStorageDescriptionContentType
 _:getStorageDescriptionStatus
     :stepName "Get storage description status" ;
     :request _:getStorageDescription ;
-    :extractors (
+    :extract (
         _:status
     ) ;
 .
@@ -1458,7 +1458,7 @@ _:getStorageDescriptionStatus
 _:getStorageDescriptionAsCidStatus
     :stepName "Get storage description as CID status" ;
     :request _:getStorageDescriptionAsCid ;
-    :extractors (
+    :extract (
         _:status
     ) ;
 .
@@ -1466,7 +1466,7 @@ _:getStorageDescriptionAsCidStatus
 _:getStorageDescriptionAsCidContentType
     :stepName "Get storage description as CID Content-Type" ;
     :request _:getStorageDescriptionAsCid ;
-    :extractors (
+    :extract (
         _:contentType
     ) ;
 .
@@ -1474,7 +1474,7 @@ _:getStorageDescriptionAsCidContentType
 _:getStorageDescriptionFirstContext
     :stepName "Get storage description first context" ;
     :request _:getStorageDescriptionAsCid ;
-    :extractors (
+    :extract (
         [
             :to "context" ;
             :path "$['@context'][0]" ;
@@ -1485,7 +1485,7 @@ _:getStorageDescriptionFirstContext
 _:getStorageDescriptionSecondContext
     :stepName "Get storage description second context" ;
     :request _:getStorageDescriptionAsCid ;
-    :extractors (
+    :extract (
         [
             :to "context" ;
             :path "$['@context'][1]" ;
@@ -1496,7 +1496,7 @@ _:getStorageDescriptionSecondContext
 _:getContainerETag
     :stepName "Get container ETag" ;
     :request _:getContainer ;
-    :extractors (
+    :extract (
         [
             :to "etag" ;
             :header "ETag" ;
@@ -1507,7 +1507,7 @@ _:getContainerETag
 _:getContainerType
     :stepName "Get container type" ;
     :request _:getContainer ;
-    :extractors (
+    :extract (
         _:type
     ) ;
 .
@@ -1515,7 +1515,7 @@ _:getContainerType
 _:getContainerTypeLinks
     :stepName "Get container type links" ;
     :request _:getContainer ;
-    :extractors (
+    :extract (
         _:typeLinks
     ) ;
 .
@@ -1528,7 +1528,7 @@ _:createTypedResource
         :headers _:contentTypeTextPlain ;
         :body "typed on creation" ;
     ] ;
-    :extractors (
+    :extract (
         _:typeLinks
     ) ;
 .
@@ -1536,7 +1536,7 @@ _:createTypedResource
 _:getStorageRootStatus
     :stepName "Get storage root status" ;
     :request _:getStorageRoot ;
-    :extractors (
+    :extract (
         _:status
     ) ;
 .
@@ -1544,7 +1544,7 @@ _:getStorageRootStatus
 _:getStorageRootTypeLinks
     :stepName "Get storage root type links" ;
     :request _:getStorageRoot ;
-    :extractors (
+    :extract (
         _:typeLinks
     ) ;
 .
@@ -1552,7 +1552,7 @@ _:getStorageRootTypeLinks
 _:getStorageRootType
     :stepName "Get storage root type" ;
     :request _:getStorageRoot ;
-    :extractors (
+    :extract (
         _:type
     ) ;
 .
@@ -1560,7 +1560,7 @@ _:getStorageRootType
 _:getTextResourceTypeLinks
     :stepName "Get text resource type links" ;
     :request _:getTextResource ;
-    :extractors (
+    :extract (
         _:typeLinks
     ) ;
 .
@@ -1568,7 +1568,7 @@ _:getTextResourceTypeLinks
 _:headTextResourceTypeLinks
     :stepName "Head text resource type links" ;
     :request _:headTextResource ;
-    :extractors (
+    :extract (
         _:typeLinks
     ) ;
 .
@@ -1576,7 +1576,7 @@ _:headTextResourceTypeLinks
 _:headContainerTypeLinks
     :stepName "Head container type links" ;
     :request _:headContainer ;
-    :extractors (
+    :extract (
         _:typeLinks
     ) ;
 .
@@ -1584,7 +1584,7 @@ _:headContainerTypeLinks
 _:createResourceBeneathDataResourceAllow
     :stepName "Create resource beneath data resource Allow" ;
     :request _:createResourceBeneathDataResource ;
-    :extractors (
+    :extract (
         [
             :to "allow" ;
             :header "Allow" ;
@@ -1595,7 +1595,7 @@ _:createResourceBeneathDataResourceAllow
 _:getContainerWithWeightedAcceptContentType
     :stepName "Get container with weighted Accept Content-Type" ;
     :request _:getContainerWithWeightedAccept ;
-    :extractors (
+    :extract (
         _:contentType
     ) ;
 .
@@ -1603,7 +1603,7 @@ _:getContainerWithWeightedAcceptContentType
 _:getContainerWithWeightedAcceptType
     :stepName "Get container with weighted Accept type" ;
     :request _:getContainerWithWeightedAccept ;
-    :extractors (
+    :extract (
         _:type
     ) ;
 .
@@ -1611,7 +1611,7 @@ _:getContainerWithWeightedAcceptType
 _:getContainerWithLwsProfileAcceptType
     :stepName "Get container with LWS profile Accept type" ;
     :request _:getContainerWithLwsProfileAccept ;
-    :extractors (
+    :extract (
         _:type
     ) ;
 .
@@ -1619,7 +1619,7 @@ _:getContainerWithLwsProfileAcceptType
 _:getContainerWithLwsProfileAcceptItems
     :stepName "Get container with LWS profile Accept items" ;
     :request _:getContainerWithLwsProfileAccept ;
-    :extractors (
+    :extract (
         _:items
     ) ;
 .
@@ -1627,7 +1627,7 @@ _:getContainerWithLwsProfileAcceptItems
 _:getContainerAsJsonLdStatus
     :stepName "Get container as JSON-LD status" ;
     :request _:getContainerAsJsonLd ;
-    :extractors (
+    :extract (
         _:status
     ) ;
 .
@@ -1635,7 +1635,7 @@ _:getContainerAsJsonLdStatus
 _:getContainerAsJsonLdContentType
     :stepName "Get container as JSON-LD Content-Type" ;
     :request _:getContainerAsJsonLd ;
-    :extractors (
+    :extract (
         _:contentType
     ) ;
 .
@@ -1643,7 +1643,7 @@ _:getContainerAsJsonLdContentType
 _:getContainerAsJsonStatus
     :stepName "Get container as JSON status" ;
     :request _:getContainerAsJson ;
-    :extractors (
+    :extract (
         _:status
     ) ;
 .
@@ -1651,7 +1651,7 @@ _:getContainerAsJsonStatus
 _:getContainerAsJsonContentType
     :stepName "Get container as JSON Content-Type" ;
     :request _:getContainerAsJson ;
-    :extractors (
+    :extract (
         _:contentType
     ) ;
 .
@@ -1659,7 +1659,7 @@ _:getContainerAsJsonContentType
 _:getStorageDescriptionAsCidType
     :stepName "Get storage description as CID type" ;
     :request _:getStorageDescriptionAsCid ;
-    :extractors (
+    :extract (
         _:type
     ) ;
 .
@@ -1667,7 +1667,7 @@ _:getStorageDescriptionAsCidType
 _:getStorageDescriptionContext
     :stepName "Get storage description context" ;
     :request _:getStorageDescriptionAsCid ;
-    :extractors (
+    :extract (
         [
             :to "context" ;
             :path "$['@context']" ;
@@ -1678,7 +1678,7 @@ _:getStorageDescriptionContext
 _:getStorageDescriptionService
     :stepName "Get storage description service" ;
     :request _:getStorageDescriptionAsCid ;
-    :extractors (
+    :extract (
         [
             :to "service" ;
             :path "$.service" ;
@@ -1689,7 +1689,7 @@ _:getStorageDescriptionService
 _:getMissingResourceBody
     :stepName "Get missing resource body" ;
     :request _:getMissingResource ;
-    :extractors (
+    :extract (
         _:body
     ) ;
 .
@@ -1697,7 +1697,7 @@ _:getMissingResourceBody
 _:getContainerLinksetLinks
     :stepName "Get container linkset links" ;
     :request _:getContainer ;
-    :extractors (
+    :extract (
         _:linksetLinks
     ) ;
 .
@@ -1705,7 +1705,7 @@ _:getContainerLinksetLinks
 _:getTextResourceLinksetLinks
     :stepName "Get text resource linkset links" ;
     :request _:getTextResource ;
-    :extractors (
+    :extract (
         _:linksetLinks
     ) ;
 .
@@ -1713,7 +1713,7 @@ _:getTextResourceLinksetLinks
 _:headContainerLinksetLinks
     :stepName "Head container linkset links" ;
     :request _:headContainer ;
-    :extractors (
+    :extract (
         _:linksetLinks
     ) ;
 .
@@ -1721,7 +1721,7 @@ _:headContainerLinksetLinks
 _:headTextResourceLinksetLinks
     :stepName "Head text resource linkset links" ;
     :request _:headTextResource ;
-    :extractors (
+    :extract (
         _:linksetLinks
     ) ;
 .
@@ -1739,7 +1739,7 @@ _:getForgedLinksetResourceLinksetLinks
             ] ;
         ] ;
     ] ;
-    :extractors (
+    :extract (
         _:linksetLinks
     ) ;
 .
@@ -1747,7 +1747,7 @@ _:getForgedLinksetResourceLinksetLinks
 _:headContainerUpLinks
     :stepName "Head container up links" ;
     :request _:headContainer ;
-    :extractors (
+    :extract (
         [
             :to "upLinks" ;
             :link "up" ;
