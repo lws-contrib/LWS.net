@@ -26,7 +26,14 @@ public class Executor(ILoggerFactory loggerFactory, IOptions<SuiteOptions> optio
         var suiteRequirement = TestRequirement.Create(graph);
         suiteRequirement.Title = Resources.Graph.Manifest.Name;
 
-        foreach (var testCase in Tests)
+        await Execute(Resources.Graph.Manifest, graph, assertor, suiteRequirement);
+
+        return graph;
+    }
+
+    private async Task Execute(Manifest manifest, EarlGraph graph, Assertor assertor, TestRequirement suiteRequirement)
+    {
+        foreach (var testCase in manifest.Tests)
         {
             var result3 = await Execute(testCase);
             var entryRequirement = TestRequirement.Create(graph);
@@ -50,8 +57,6 @@ public class Executor(ILoggerFactory loggerFactory, IOptions<SuiteOptions> optio
                 _ => throw new InvalidOperationException($"Unknown outcome: {result3.Outcome}")
             };
         }
-
-        return graph;
     }
 
     public async Task<Result> Execute(string name, ActivityContext parentContext = default)
