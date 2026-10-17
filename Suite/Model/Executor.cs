@@ -57,6 +57,11 @@ public class Executor(ILoggerFactory loggerFactory, IOptions<SuiteOptions> optio
                 _ => throw new InvalidOperationException($"Unknown outcome: {result3.Outcome}")
             };
         }
+
+        foreach (var include in manifest.Include)
+        {
+            await Execute(Resources.Parse(new(manifest.Graph.BaseUri, include)).Manifest, graph, assertor, suiteRequirement);
+        }
     }
 
     public async Task<Result> Execute(string name, ActivityContext parentContext = default)
