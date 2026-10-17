@@ -61,6 +61,7 @@
         _:dataResourceHeadLinksDataResourceType
         _:containerHeadLinksContainerType
         _:createBeneathDataResourceReturnsAllow
+        _:containerGetWithWeightedAcceptReturnsJsonLdMediaType
     ) ;
 ] .
 
@@ -742,6 +743,23 @@ _:createBeneathDataResourceReturnsAllow
     ] ;
 .
 
+_:containerGetWithWeightedAcceptReturnsJsonLdMediaType
+    :name "Container GET with weighted Accept returns JSON-LD media type" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:getContainerWithWeightedAcceptContentType
+    ) ;
+    :assertion [
+        :input [
+            :single [
+                :param "contentType" ;
+            ] ;
+        ] ;
+        :regex "(?i)^application/ld\\+json\\s*(;|$)" ;
+    ] ;
+.
+
 # Steps
 _:discoverStorageRoot
     :name "Discover storage root" ;
@@ -952,14 +970,7 @@ _:createResourceWithForgedLinkset
 
 _:getContainerWithWeightedAcceptStatus
     :name "Get container with weighted Accept status" ;
-    :request [
-        :method "GET" ;
-        :uri _:container ;
-        :headers [
-            :header "Accept" ;
-            :value "text/html;q=0.9, application/ld+json;q=0.5" ;
-        ] ;
-    ] ;
+    :request _:getContainerWithWeightedAccept ;
     :extractors (
         _:status
     ) ;
@@ -1368,6 +1379,14 @@ _:createResourceBeneathDataResourceAllow
     ) ;
 .
 
+_:getContainerWithWeightedAcceptContentType
+    :name "Get container with weighted Accept Content-Type" ;
+    :request _:getContainerWithWeightedAccept ;
+    :extractors (
+        _:contentType
+    ) ;
+.
+
 # Requests
 _:getContainer
     :method "GET" ;
@@ -1458,6 +1477,15 @@ _:createResourceBeneathDataResource
     ] ;
     :headers _:contentTypeTextPlain ;
     :body "should be refused" ;
+.
+
+_:getContainerWithWeightedAccept
+    :method "GET" ;
+    :uri _:container ;
+    :headers [
+        :header "Accept" ;
+        :value "text/html;q=0.9, application/ld+json;q=0.5" ;
+    ] ;
 .
 
 # URIs
