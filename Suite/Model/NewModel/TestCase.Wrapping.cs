@@ -4,7 +4,7 @@ public partial class TestCase : GraphWrapperNode
 {
     protected TestCase(INode node, IGraph graph) : base(node, graph) { }
 
-    public Assertion Assertion => this.Singular(Vocabulary.Assertion, Assertion.Choose);
+    public Assertion Assert => this.Singular(Vocabulary.Assert, Assertion.Choose);
 
     public string TestName => this.Singular(Vocabulary.TestName, ValueMappings.As<string>);
 

@@ -58,7 +58,7 @@
                 ) ;
             ]
         ) ;
-        :assertion [
+        :assert [
             :input [
                 :variable "status" ;
             ] ;

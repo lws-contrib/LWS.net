@@ -93,7 +93,7 @@ _:containerGetReturns200
         _:createContainer
         _:getContainerStatus
     ) ;
-    :assertion _:200 ;
+    :assert _:200 ;
 .
 
 _:createdDataResourceReturnsPostedBody
@@ -104,7 +104,7 @@ _:createdDataResourceReturnsPostedBody
         _:createTextResource
         _:getTextResourceBody
     ) ;
-    :assertion [
+    :assert [
         :input [
             :variable "body" ;
         ] ;
@@ -120,7 +120,7 @@ _:rangeBeyondEndReturns416
         _:createDigitsResource
         _:getDigitsResourceBeyondEndStatus
     ) ;
-    :assertion _:416 ;
+    :assert _:416 ;
 .
 
 _:newNestedContainerHasNoItems
@@ -131,7 +131,7 @@ _:newNestedContainerHasNoItems
         _:createNestedContainer
         _:getContainerItems
     ) ;
-    :assertion _:emptyItems ;
+    :assert _:emptyItems ;
 .
 
 _:byteRangeReturns206
@@ -142,7 +142,7 @@ _:byteRangeReturns206
         _:createDigitsResource
         _:getDigitsResourceFirstFourBytesStatus
     ) ;
-    :assertion _:206 ;
+    :assert _:206 ;
 .
 
 _:newContainerHasNoItems
@@ -152,7 +152,7 @@ _:newContainerHasNoItems
         _:createContainer
         _:getContainerItems
     ) ;
-    :assertion _:emptyItems ;
+    :assert _:emptyItems ;
 .
 
 _:suffixByteRangeReturns206
@@ -163,7 +163,7 @@ _:suffixByteRangeReturns206
         _:createDigitsResource
         _:getDigitsResourceLastTwoBytesStatus
     ) ;
-    :assertion _:206 ;
+    :assert _:206 ;
 .
 
 _:dataResourceHeadReturnsNoBody
@@ -174,7 +174,7 @@ _:dataResourceHeadReturnsNoBody
         _:createTextResource
         _:headTextResourceBody
     ) ;
-    :assertion _:emptyBody ;
+    :assert _:emptyBody ;
 .
 
 _:containerHeadReturnsNoBody
@@ -184,7 +184,7 @@ _:containerHeadReturnsNoBody
         _:createContainer
         _:headContainerBody
     ) ;
-    :assertion _:emptyBody ;
+    :assert _:emptyBody ;
 .
 
 _:createWithForgedLinksetLinkReturns201
@@ -194,7 +194,7 @@ _:createWithForgedLinksetLinkReturns201
         _:createContainer
         _:createResourceWithForgedLinkset
     ) ;
-    :assertion _:201 ;
+    :assert _:201 ;
 .
 
 _:containerGetWithWeightedAcceptReturns200
@@ -204,7 +204,7 @@ _:containerGetWithWeightedAcceptReturns200
         _:createContainer
         _:getContainerWithWeightedAcceptStatus
     ) ;
-    :assertion _:200 ;
+    :assert _:200 ;
 .
 
 _:containerGetAsJsonLdWithLwsProfileReturns200
@@ -214,7 +214,7 @@ _:containerGetAsJsonLdWithLwsProfileReturns200
         _:createContainer
         _:getContainerWithLwsProfileAcceptStatus
     ) ;
-    :assertion _:200 ;
+    :assert _:200 ;
 .
 
 _:containerResponseVariesByAccept
@@ -224,7 +224,7 @@ _:containerResponseVariesByAccept
         _:createContainer
         _:getContainerVary
     ) ;
-    :assertion [
+    :assert [
         :input [
             :single [
                 :variable "vary" ;
@@ -242,7 +242,7 @@ _:dataResourceAdvertisesByteRanges
         _:createDigitsResource
         _:getDigitsResourceAcceptRanges
     ) ;
-    :assertion [
+    :assert [
         :input [
             :single [
                 :variable "acceptRanges" ;
@@ -260,7 +260,7 @@ _:suffixByteRangeReturnsLastBytes
         _:createDigitsResource
         _:getDigitsResourceLastTwoBytesBody
     ) ;
-    :assertion [
+    :assert [
         :input [
             :variable "body" ;
         ] ;
@@ -276,7 +276,7 @@ _:byteRangeReturnsContentRange
         _:createDigitsResource
         _:getDigitsResourceFirstFourBytesContentRange
     ) ;
-    :assertion [
+    :assert [
         :input [
             :single [
                 :variable "contentRange" ;
@@ -294,7 +294,7 @@ _:byteRangeReturnsRequestedBytes
         _:createDigitsResource
         _:getDigitsResourceFirstFourBytesBody
     ) ;
-    :assertion [
+    :assert [
         :input [
             :variable "body" ;
         ] ;
@@ -309,7 +309,7 @@ _:createInMissingContainerReturns404
         _:createContainer
         _:createResourceInMissingContainer
     ) ;
-    :assertion _:404 ;
+    :assert _:404 ;
 .
 
 _:rejectedCreateLeavesContainerEmpty
@@ -320,7 +320,7 @@ _:rejectedCreateLeavesContainerEmpty
         _:createResourceInMissingContainer
         _:getContainerItems
     ) ;
-    :assertion _:emptyItems ;
+    :assert _:emptyItems ;
 .
 
 _:firstOfTwoIdenticalCreatesKeepsItsBody
@@ -332,7 +332,7 @@ _:firstOfTwoIdenticalCreatesKeepsItsBody
         _:createSecondSameBytesResource
         _:getFirstSameBytesResourceBody
     ) ;
-    :assertion _:sameBytesBody ;
+    :assert _:sameBytesBody ;
 .
 
 _:secondOfTwoIdenticalCreatesKeepsItsBody
@@ -344,7 +344,7 @@ _:secondOfTwoIdenticalCreatesKeepsItsBody
         _:createSecondSameBytesResource
         _:getSecondSameBytesResourceBody
     ) ;
-    :assertion _:sameBytesBody ;
+    :assert _:sameBytesBody ;
 .
 
 _:createBeneathDataResourceReturns405
@@ -355,7 +355,7 @@ _:createBeneathDataResourceReturns405
         _:createDataResource
         _:createResourceBeneathDataResourceStatus
     ) ;
-    :assertion _:405 ;
+    :assert _:405 ;
 .
 
 _:missingResourceReturns404
@@ -365,7 +365,7 @@ _:missingResourceReturns404
         _:createContainer
         _:getMissingResourceStatus
     ) ;
-    :assertion _:404 ;
+    :assert _:404 ;
 .
 
 _:missingResourceReturnsProblemDetails
@@ -375,7 +375,7 @@ _:missingResourceReturnsProblemDetails
         _:createContainer
         _:getMissingResourceContentType
     ) ;
-    :assertion [
+    :assert [
         :input [
             :single [
                 :variable "contentType" ;
@@ -393,7 +393,7 @@ _:dataResourceGetReturns200
         _:createTextResource
         _:getTextResourceStatus
     ) ;
-    :assertion _:200 ;
+    :assert _:200 ;
 .
 
 _:dataResourceGetReturnsItsMediaType
@@ -404,7 +404,7 @@ _:dataResourceGetReturnsItsMediaType
         _:createTextResource
         _:getTextResourceContentType
     ) ;
-    :assertion _:textPlainContentType ;
+    :assert _:textPlainContentType ;
 .
 
 _:dataResourceGetReturnsETag
@@ -415,7 +415,7 @@ _:dataResourceGetReturnsETag
         _:createTextResource
         _:getTextResourceETag
     ) ;
-    :assertion [
+    :assert [
         :input [
             :single [
                 :variable "etag" ;
@@ -433,7 +433,7 @@ _:dataResourceHeadReturns200
         _:createTextResource
         _:headTextResourceStatus
     ) ;
-    :assertion _:200 ;
+    :assert _:200 ;
 .
 
 _:dataResourceHeadReturnsItsMediaType
@@ -444,7 +444,7 @@ _:dataResourceHeadReturnsItsMediaType
         _:createTextResource
         _:headTextResourceContentType
     ) ;
-    :assertion _:textPlainContentType ;
+    :assert _:textPlainContentType ;
 .
 
 _:nestedContainerGetReturnsLwsMediaType
@@ -455,7 +455,7 @@ _:nestedContainerGetReturnsLwsMediaType
         _:createNestedContainer
         _:getContainerContentType
     ) ;
-    :assertion _:lwsJsonContentType ;
+    :assert _:lwsJsonContentType ;
 .
 
 _:containerHeadReturns200
@@ -465,7 +465,7 @@ _:containerHeadReturns200
         _:createContainer
         _:headContainerStatus
     ) ;
-    :assertion _:200 ;
+    :assert _:200 ;
 .
 
 _:containerHeadReturnsLwsMediaType
@@ -475,7 +475,7 @@ _:containerHeadReturnsLwsMediaType
         _:createContainer
         _:headContainerContentType
     ) ;
-    :assertion _:lwsJsonContentType ;
+    :assert _:lwsJsonContentType ;
 .
 
 _:storageDescriptionDefaultsToCidMediaType
@@ -483,7 +483,7 @@ _:storageDescriptionDefaultsToCidMediaType
     :steps (
         _:getStorageDescriptionContentType
     ) ;
-    :assertion _:lwsCidContentType ;
+    :assert _:lwsCidContentType ;
 .
 
 _:storageDescriptionAsCidReturns200
@@ -491,7 +491,7 @@ _:storageDescriptionAsCidReturns200
     :steps (
         _:getStorageDescriptionAsCidStatus
     ) ;
-    :assertion _:200 ;
+    :assert _:200 ;
 .
 
 _:storageDescriptionAsCidReturnsCidMediaType
@@ -499,7 +499,7 @@ _:storageDescriptionAsCidReturnsCidMediaType
     :steps (
         _:getStorageDescriptionAsCidContentType
     ) ;
-    :assertion _:lwsCidContentType ;
+    :assert _:lwsCidContentType ;
 .
 
 _:storageDescriptionFirstContextIsCid
@@ -507,7 +507,7 @@ _:storageDescriptionFirstContextIsCid
     :steps (
         _:getStorageDescriptionFirstContext
     ) ;
-    :assertion [
+    :assert [
         :input [
             :variable "context" ;
         ] ;
@@ -520,7 +520,7 @@ _:storageDescriptionSecondContextIsLws
     :steps (
         _:getStorageDescriptionSecondContext
     ) ;
-    :assertion [
+    :assert [
         :input [
             :variable "context" ;
         ] ;
@@ -535,7 +535,7 @@ _:containerGetReturnsLwsMediaType
         _:createContainer
         _:getContainerContentType
     ) ;
-    :assertion _:lwsJsonContentType ;
+    :assert _:lwsJsonContentType ;
 .
 
 _:containerGetReturnsItemsArray
@@ -545,7 +545,7 @@ _:containerGetReturnsItemsArray
         _:createContainer
         _:getContainerItems
     ) ;
-    :assertion _:itemsArray ;
+    :assert _:itemsArray ;
 .
 
 _:nestedContainerGetReturns200
@@ -556,7 +556,7 @@ _:nestedContainerGetReturns200
         _:createNestedContainer
         _:getContainerStatus
     ) ;
-    :assertion _:200 ;
+    :assert _:200 ;
 .
 
 _:createInMissingContainerReturnsClientError
@@ -566,7 +566,7 @@ _:createInMissingContainerReturnsClientError
         _:createContainer
         _:createResourceInMissingContainer
     ) ;
-    :assertion [
+    :assert [
         :input [
             :variable "status" ;
         ] ;
@@ -579,7 +579,7 @@ _:storageDescriptionWithoutAcceptReturns200
     :steps (
         _:getStorageDescriptionStatus
     ) ;
-    :assertion _:200 ;
+    :assert _:200 ;
 .
 
 _:containerGetReturnsETag
@@ -589,7 +589,7 @@ _:containerGetReturnsETag
         _:createContainer
         _:getContainerETag
     ) ;
-    :assertion [
+    :assert [
         :input [
             :single [
                 :variable "etag" ;
@@ -606,7 +606,7 @@ _:containerGetReturnsContainerType
         _:createContainer
         _:getContainerType
     ) ;
-    :assertion _:containerType ;
+    :assert _:containerType ;
 .
 
 _:nestedContainerGetReturnsContainerType
@@ -617,7 +617,7 @@ _:nestedContainerGetReturnsContainerType
         _:createNestedContainer
         _:getContainerType
     ) ;
-    :assertion _:containerType ;
+    :assert _:containerType ;
 .
 
 _:createNestedContainerReturns201
@@ -627,7 +627,7 @@ _:createNestedContainerReturns201
         _:createContainer
         _:createNestedContainer
     ) ;
-    :assertion _:201 ;
+    :assert _:201 ;
 .
 
 _:containerGetLinksContainerType
@@ -637,7 +637,7 @@ _:containerGetLinksContainerType
         _:createContainer
         _:getContainerTypeLinks
     ) ;
-    :assertion _:containerTypeLink ;
+    :assert _:containerTypeLink ;
 .
 
 _:createNestedContainerLinksContainerType
@@ -647,7 +647,7 @@ _:createNestedContainerLinksContainerType
         _:createContainer
         _:createNestedContainer
     ) ;
-    :assertion _:containerTypeLink ;
+    :assert _:containerTypeLink ;
 .
 
 _:createDataResourceLinksDataResourceType
@@ -657,7 +657,7 @@ _:createDataResourceLinksDataResourceType
         _:createContainer
         _:createTypedResource
     ) ;
-    :assertion _:dataResourceTypeLink ;
+    :assert _:dataResourceTypeLink ;
 .
 
 _:storageRootGetReturns200
@@ -666,7 +666,7 @@ _:storageRootGetReturns200
         _:discoverStorageRoot
         _:getStorageRootStatus
     ) ;
-    :assertion _:200 ;
+    :assert _:200 ;
 .
 
 _:storageRootGetLinksContainerType
@@ -675,7 +675,7 @@ _:storageRootGetLinksContainerType
         _:discoverStorageRoot
         _:getStorageRootTypeLinks
     ) ;
-    :assertion _:containerTypeLink ;
+    :assert _:containerTypeLink ;
 .
 
 _:storageRootGetReturnsContainerType
@@ -684,7 +684,7 @@ _:storageRootGetReturnsContainerType
         _:discoverStorageRoot
         _:getStorageRootType
     ) ;
-    :assertion _:containerType ;
+    :assert _:containerType ;
 .
 
 _:dataResourceGetLinksDataResourceType
@@ -695,7 +695,7 @@ _:dataResourceGetLinksDataResourceType
         _:createTextResource
         _:getTextResourceTypeLinks
     ) ;
-    :assertion _:dataResourceTypeLink ;
+    :assert _:dataResourceTypeLink ;
 .
 
 _:dataResourceHeadLinksDataResourceType
@@ -706,7 +706,7 @@ _:dataResourceHeadLinksDataResourceType
         _:createTextResource
         _:headTextResourceTypeLinks
     ) ;
-    :assertion _:dataResourceTypeLink ;
+    :assert _:dataResourceTypeLink ;
 .
 
 _:containerHeadLinksContainerType
@@ -716,7 +716,7 @@ _:containerHeadLinksContainerType
         _:createContainer
         _:headContainerTypeLinks
     ) ;
-    :assertion _:containerTypeLink ;
+    :assert _:containerTypeLink ;
 .
 
 _:createBeneathDataResourceReturnsAllow
@@ -727,7 +727,7 @@ _:createBeneathDataResourceReturnsAllow
         _:createDataResource
         _:createResourceBeneathDataResourceAllow
     ) ;
-    :assertion [
+    :assert [
         :input [
             :count [
                 :variable "allow" ;
@@ -744,7 +744,7 @@ _:containerGetWithWeightedAcceptReturnsJsonLdMediaType
         _:createContainer
         _:getContainerWithWeightedAcceptContentType
     ) ;
-    :assertion _:jsonLdContentType ;
+    :assert _:jsonLdContentType ;
 .
 
 _:containerGetWithWeightedAcceptReturnsContainerType
@@ -754,7 +754,7 @@ _:containerGetWithWeightedAcceptReturnsContainerType
         _:createContainer
         _:getContainerWithWeightedAcceptType
     ) ;
-    :assertion _:containerType ;
+    :assert _:containerType ;
 .
 
 _:containerGetAsJsonLdWithLwsProfileReturnsContainerType
@@ -764,7 +764,7 @@ _:containerGetAsJsonLdWithLwsProfileReturnsContainerType
         _:createContainer
         _:getContainerWithLwsProfileAcceptType
     ) ;
-    :assertion _:containerType ;
+    :assert _:containerType ;
 .
 
 _:containerGetAsJsonLdWithLwsProfileReturnsItemsArray
@@ -774,7 +774,7 @@ _:containerGetAsJsonLdWithLwsProfileReturnsItemsArray
         _:createContainer
         _:getContainerWithLwsProfileAcceptItems
     ) ;
-    :assertion _:itemsArray ;
+    :assert _:itemsArray ;
 .
 
 _:containerGetAsJsonLdReturns200
@@ -784,7 +784,7 @@ _:containerGetAsJsonLdReturns200
         _:createContainer
         _:getContainerAsJsonLdStatus
     ) ;
-    :assertion _:200 ;
+    :assert _:200 ;
 .
 
 _:containerGetAsJsonLdReturnsJsonLdMediaType
@@ -794,7 +794,7 @@ _:containerGetAsJsonLdReturnsJsonLdMediaType
         _:createContainer
         _:getContainerAsJsonLdContentType
     ) ;
-    :assertion _:jsonLdContentType ;
+    :assert _:jsonLdContentType ;
 .
 
 _:containerGetAsJsonReturns200
@@ -804,7 +804,7 @@ _:containerGetAsJsonReturns200
         _:createContainer
         _:getContainerAsJsonStatus
     ) ;
-    :assertion _:200 ;
+    :assert _:200 ;
 .
 
 _:containerGetAsJsonReturnsJsonMediaType
@@ -814,7 +814,7 @@ _:containerGetAsJsonReturnsJsonMediaType
         _:createContainer
         _:getContainerAsJsonContentType
     ) ;
-    :assertion [
+    :assert [
         :input [
             :single [
                 :variable "contentType" ;
@@ -829,7 +829,7 @@ _:storageDescriptionAsCidReturnsStorageType
     :steps (
         _:getStorageDescriptionAsCidType
     ) ;
-    :assertion [
+    :assert [
         :input [
             :variable "type" ;
         ] ;
@@ -842,7 +842,7 @@ _:storageDescriptionContextIsArray
     :steps (
         _:getStorageDescriptionContext
     ) ;
-    :assertion [
+    :assert [
         :input [
             :variable "context" ;
         ] ;
@@ -855,7 +855,7 @@ _:storageDescriptionServiceIsArray
     :steps (
         _:getStorageDescriptionService
     ) ;
-    :assertion [
+    :assert [
         :input [
             :variable "service" ;
         ] ;
@@ -870,7 +870,7 @@ _:missingResourceProblemDetailsIsObject
         _:createContainer
         _:getMissingResourceBody
     ) ;
-    :assertion [
+    :assert [
         :input [
             :variable "body" ;
         ] ;
@@ -884,7 +884,7 @@ _:createContainerReturnsLocation
         _:discoverStorageRoot
         _:createContainer
     ) ;
-    :assertion [
+    :assert [
         :input [
             :count [
                 :variable "containerLocation" ;
@@ -901,7 +901,7 @@ _:createDataResourceReturns201
         _:createContainer
         _:createTextResource
     ) ;
-    :assertion _:201 ;
+    :assert _:201 ;
 .
 
 _:createDataResourceReturnsLocation
@@ -911,7 +911,7 @@ _:createDataResourceReturnsLocation
         _:createContainer
         _:createTextResource
     ) ;
-    :assertion [
+    :assert [
         :input [
             :count [
                 :variable "textResourceLocation" ;
@@ -929,7 +929,7 @@ _:secondOfTwoIdenticalCreatesReturns201
         _:createFirstSameBytesResource
         _:createSecondSameBytesResource
     ) ;
-    :assertion _:201 ;
+    :assert _:201 ;
 .
 
 _:containerGetLinksLinkset
@@ -939,7 +939,7 @@ _:containerGetLinksLinkset
         _:createContainer
         _:getContainerLinksetLinks
     ) ;
-    :assertion _:linksetLink ;
+    :assert _:linksetLink ;
 .
 
 _:dataResourceGetLinksLinkset
@@ -950,7 +950,7 @@ _:dataResourceGetLinksLinkset
         _:createTextResource
         _:getTextResourceLinksetLinks
     ) ;
-    :assertion _:linksetLink ;
+    :assert _:linksetLink ;
 .
 
 _:containerHeadLinksLinkset
@@ -960,7 +960,7 @@ _:containerHeadLinksLinkset
         _:createContainer
         _:headContainerLinksetLinks
     ) ;
-    :assertion _:linksetLink ;
+    :assert _:linksetLink ;
 .
 
 _:dataResourceHeadLinksLinkset
@@ -971,7 +971,7 @@ _:dataResourceHeadLinksLinkset
         _:createTextResource
         _:headTextResourceLinksetLinks
     ) ;
-    :assertion _:linksetLink ;
+    :assert _:linksetLink ;
 .
 
 _:createWithForgedLinksetLinkLinksLinkset
@@ -981,7 +981,7 @@ _:createWithForgedLinksetLinkLinksLinkset
         _:createContainer
         _:createResourceWithForgedLinkset
     ) ;
-    :assertion _:linksetLink ;
+    :assert _:linksetLink ;
 .
 
 _:resourceCreatedWithForgedLinksetLinkGetLinksLinkset
@@ -992,7 +992,7 @@ _:resourceCreatedWithForgedLinksetLinkGetLinksLinkset
         _:createResourceWithForgedLinkset
         _:getForgedLinksetResourceLinksetLinks
     ) ;
-    :assertion _:linksetLink ;
+    :assert _:linksetLink ;
 .
 
 _:containerHeadLinksUp
@@ -1002,7 +1002,7 @@ _:containerHeadLinksUp
         _:createContainer
         _:headContainerUpLinks
     ) ;
-    :assertion [
+    :assert [
         :input [
             :count [
                 :variable "upLinks" ;
