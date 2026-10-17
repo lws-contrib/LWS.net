@@ -20,8 +20,8 @@
                 ] ;
                 :extract (
                     [
-                        :to "storageRoot" ;
                         :path "$.service[?@.type == 'StorageRoot'].serviceEndpoint" ;
+                        :to "storageRoot" ;
                     ]
                 ) ;
             ]
@@ -35,8 +35,8 @@
                 ] ;
                 :extract (
                     [
-                        :to "newResource" ;
                         :header "Location" ;
+                        :to "newResource" ;
                     ]
                 ) ;
             ]

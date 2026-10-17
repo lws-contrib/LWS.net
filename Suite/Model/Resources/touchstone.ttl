@@ -1028,8 +1028,8 @@ _:discoverStorageRoot
     ] ;
     :extract (
         [
-            :to "storageRoot" ;
             :path "$.service[?@.type == 'StorageRoot'].serviceEndpoint" ;
+            :to "storageRoot" ;
         ]
     ) ;
 .
@@ -1064,8 +1064,8 @@ _:createTextResource
     ] ;
     :extract (
         [
-            :to "textResourceLocation" ;
             :header "Location" ;
+            :to "textResourceLocation" ;
         ]
         _:status
     ) ;
@@ -1089,8 +1089,8 @@ _:createDigitsResource
     ] ;
     :extract (
         [
-            :to "digitsResourceLocation" ;
             :header "Location" ;
+            :to "digitsResourceLocation" ;
         ]
     ) ;
 .
@@ -1181,8 +1181,8 @@ _:createResourceWithForgedLinkset
         _:status
         _:linksetLinks
         [
-            :to "forgedLinksetLocation" ;
             :header "Location" ;
+            :to "forgedLinksetLocation" ;
         ]
     ) ;
 .
@@ -1208,8 +1208,8 @@ _:getContainerVary
     :request _:getContainer ;
     :extract (
         [
-            :to "vary" ;
             :header "Vary" ;
+            :to "vary" ;
         ]
     ) ;
 .
@@ -1222,8 +1222,8 @@ _:getDigitsResourceAcceptRanges
     ] ;
     :extract (
         [
-            :to "acceptRanges" ;
             :header "Accept-Ranges" ;
+            :to "acceptRanges" ;
         ]
     ) ;
 .
@@ -1241,8 +1241,8 @@ _:getDigitsResourceFirstFourBytesContentRange
     :request _:getDigitsResourceFirstFourBytes ;
     :extract (
         [
-            :to "contentRange" ;
             :header "Content-Range" ;
+            :to "contentRange" ;
         ]
     ) ;
 .
@@ -1278,8 +1278,8 @@ _:createFirstSameBytesResource
     :request _:createSameBytesResource ;
     :extract (
         [
-            :to "firstSameBytesLocation" ;
             :header "Location" ;
+            :to "firstSameBytesLocation" ;
         ]
     ) ;
 .
@@ -1289,8 +1289,8 @@ _:createSecondSameBytesResource
     :request _:createSameBytesResource ;
     :extract (
         [
-            :to "secondSameBytesLocation" ;
             :header "Location" ;
+            :to "secondSameBytesLocation" ;
         ]
         _:status
     ) ;
@@ -1342,8 +1342,8 @@ _:createDataResource
     ] ;
     :extract (
         [
-            :to "notAContainerLocation" ;
             :header "Location" ;
+            :to "notAContainerLocation" ;
         ]
     ) ;
 .
@@ -1393,8 +1393,8 @@ _:getTextResourceETag
     :request _:getTextResource ;
     :extract (
         [
-            :to "etag" ;
             :header "ETag" ;
+            :to "etag" ;
         ]
     ) ;
 .
@@ -1476,8 +1476,8 @@ _:getStorageDescriptionFirstContext
     :request _:getStorageDescriptionAsCid ;
     :extract (
         [
-            :to "context" ;
             :path "$['@context'][0]" ;
+            :to "context" ;
         ]
     ) ;
 .
@@ -1487,8 +1487,8 @@ _:getStorageDescriptionSecondContext
     :request _:getStorageDescriptionAsCid ;
     :extract (
         [
-            :to "context" ;
             :path "$['@context'][1]" ;
+            :to "context" ;
         ]
     ) ;
 .
@@ -1498,8 +1498,8 @@ _:getContainerETag
     :request _:getContainer ;
     :extract (
         [
-            :to "etag" ;
             :header "ETag" ;
+            :to "etag" ;
         ]
     ) ;
 .
@@ -1586,8 +1586,8 @@ _:createResourceBeneathDataResourceAllow
     :request _:createResourceBeneathDataResource ;
     :extract (
         [
-            :to "allow" ;
             :header "Allow" ;
+            :to "allow" ;
         ]
     ) ;
 .
@@ -1669,8 +1669,8 @@ _:getStorageDescriptionContext
     :request _:getStorageDescriptionAsCid ;
     :extract (
         [
-            :to "context" ;
             :path "$['@context']" ;
+            :to "context" ;
         ]
     ) ;
 .
@@ -1680,8 +1680,8 @@ _:getStorageDescriptionService
     :request _:getStorageDescriptionAsCid ;
     :extract (
         [
-            :to "service" ;
             :path "$.service" ;
+            :to "service" ;
         ]
     ) ;
 .
@@ -1749,8 +1749,8 @@ _:headContainerUpLinks
     :request _:headContainer ;
     :extract (
         [
-            :to "upLinks" ;
             :link "up" ;
+            :to "upLinks" ;
         ]
     ) ;
 .
@@ -1947,8 +1947,8 @@ _:status
 .
 
 _:containerLocation
-    :to "containerLocation" ;
     :header "Location" ;
+    :to "containerLocation" ;
 .
 
 _:body
@@ -1957,28 +1957,28 @@ _:body
 .
 
 _:contentType
-    :to "contentType" ;
     :header "Content-Type" ;
+    :to "contentType" ;
 .
 
 _:type
-    :to "type" ;
     :path "$.type" ;
+    :to "type" ;
 .
 
 _:items
-    :to "items" ;
     :path "$.items" ;
+    :to "items" ;
 .
 
 _:typeLinks
-    :to "typeLinks" ;
     :link "type" ;
+    :to "typeLinks" ;
 .
 
 _:linksetLinks
-    :to "linksetLinks" ;
     :link "linkset" ;
+    :to "linksetLinks" ;
 .
 
 # Assertions
