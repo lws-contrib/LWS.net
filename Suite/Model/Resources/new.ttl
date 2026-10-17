@@ -75,6 +75,7 @@
         _:missingResourceProblemDetailsIsObject
         _:createContainerReturnsLocation
         _:createDataResourceReturns201
+        _:createDataResourceReturnsLocation
     ) ;
 ] .
 
@@ -916,6 +917,23 @@ _:createDataResourceReturns201
         _:createTextResource
     ) ;
     :assertion _:201 ;
+.
+
+_:createDataResourceReturnsLocation
+    :name "Create data resource returns Location" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+    ) ;
+    :assertion [
+        :input [
+            :count [
+                :param "textResourceLocation" ;
+            ] ;
+        ] ;
+        :greaterThan 0 ;
+    ] ;
 .
 
 # Steps
