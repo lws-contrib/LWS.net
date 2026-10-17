@@ -83,7 +83,7 @@ public class Resources
         return new RemoteDocument { Document = String(Base.MakeRelativeUri(uri).ToString()) };
     }
 
-    internal static NewModel.Graph Parse(Uri uri)
+    public static NewModel.Graph Parse(Uri uri)
     {
         var g = new Graph { BaseUri = uri };
         new TurtleParser().Load(g, Reader(Base.MakeRelativeUri(uri).ToString()));

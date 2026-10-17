@@ -6,14 +6,28 @@ namespace Test;
 [TestClass]
 public sealed class TestSuite
 {
-    private static IEnumerable<TestDataRow<TestCase>> TestCases =>
-        Executor.Tests.Select(test =>
-            new TestDataRow<TestCase>(test)
+    private static IEnumerable<TestDataRow<TestCase>> TestCases => Rows(Resources.Graph.Manifest);
+
+    private static IEnumerable<TestDataRow<TestCase>> Rows(Manifest manifest)
+    {
+        foreach (var test in manifest.Tests)
+        {
+            yield return new TestDataRow<TestCase>(test)
             {
-                DisplayName = test.Name
+                DisplayName = $"{manifest.Name}: {test.Name}"
                 // TODO: ignore
                 // TODO: categories
-            });
+            };
+        }
+
+        foreach (var include in manifest.Include)
+        {
+            foreach (var row in Rows(Resources.Parse(new(manifest.Graph.BaseUri, include)).Manifest))
+            {
+                yield return row;
+            }
+        }
+    }
 
     [TestMethod]
     [DynamicData(nameof(TestCases))]
