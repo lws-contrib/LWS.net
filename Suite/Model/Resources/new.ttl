@@ -63,6 +63,7 @@
         _:createBeneathDataResourceReturnsAllow
         _:containerGetWithWeightedAcceptReturnsJsonLdMediaType
         _:containerGetWithWeightedAcceptReturnsContainerType
+        _:containerGetAsJsonLdWithLwsProfileReturnsContainerType
     ) ;
 ] .
 
@@ -771,6 +772,16 @@ _:containerGetWithWeightedAcceptReturnsContainerType
     :assertion _:containerType ;
 .
 
+_:containerGetAsJsonLdWithLwsProfileReturnsContainerType
+    :name "Container GET as JSON-LD with LWS profile returns Container type" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:getContainerWithLwsProfileAcceptType
+    ) ;
+    :assertion _:containerType ;
+.
+
 # Steps
 _:discoverStorageRoot
     :name "Discover storage root" ;
@@ -989,14 +1000,7 @@ _:getContainerWithWeightedAcceptStatus
 
 _:getContainerWithLwsProfileAcceptStatus
     :name "Get container with LWS profile Accept status" ;
-    :request [
-        :method "GET" ;
-        :uri _:container ;
-        :headers [
-            :header "Accept" ;
-            :value "application/ld+json; profile=\"https://www.w3.org/ns/lws/v1\"" ;
-        ] ;
-    ] ;
+    :request _:getContainerWithLwsProfileAccept ;
     :extractors (
         _:status
     ) ;
@@ -1406,6 +1410,14 @@ _:getContainerWithWeightedAcceptType
     ) ;
 .
 
+_:getContainerWithLwsProfileAcceptType
+    :name "Get container with LWS profile Accept type" ;
+    :request _:getContainerWithLwsProfileAccept ;
+    :extractors (
+        _:type
+    ) ;
+.
+
 # Requests
 _:getContainer
     :method "GET" ;
@@ -1504,6 +1516,15 @@ _:getContainerWithWeightedAccept
     :headers [
         :header "Accept" ;
         :value "text/html;q=0.9, application/ld+json;q=0.5" ;
+    ] ;
+.
+
+_:getContainerWithLwsProfileAccept
+    :method "GET" ;
+    :uri _:container ;
+    :headers [
+        :header "Accept" ;
+        :value "application/ld+json; profile=\"https://www.w3.org/ns/lws/v1\"" ;
     ] ;
 .
 
