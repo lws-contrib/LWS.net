@@ -82,7 +82,8 @@
         _:containerHeadLinksLinkset ,
         _:dataResourceHeadLinksLinkset ,
         _:createWithForgedLinksetLinkLinksLinkset ,
-        _:resourceCreatedWithForgedLinksetLinkGetLinksLinkset ;
+        _:resourceCreatedWithForgedLinksetLinkGetLinksLinkset ,
+        _:containerHeadLinksUp ;
 ] .
 
 # Tests
@@ -1016,6 +1017,23 @@ _:resourceCreatedWithForgedLinksetLinkGetLinksLinkset
     :assertion _:linksetLink ;
 .
 
+_:containerHeadLinksUp
+    :name "Container HEAD links up" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:headContainerUpLinks
+    ) ;
+    :assertion [
+        :input [
+            :count [
+                :param "upLinks" ;
+            ] ;
+        ] ;
+        :greaterThan 0 ;
+    ] ;
+.
+
 # Steps
 _:discoverStorageRoot
     :name "Discover storage root" ;
@@ -1781,6 +1799,17 @@ _:getForgedLinksetResourceLinksetLinks
     ] ;
     :extractors (
         _:linksetLinks
+    ) ;
+.
+
+_:headContainerUpLinks
+    :name "Head container up links" ;
+    :request _:headContainer ;
+    :extractors (
+        [
+            :param "upLinks" ;
+            :link "up" ;
+        ]
     ) ;
 .
 
