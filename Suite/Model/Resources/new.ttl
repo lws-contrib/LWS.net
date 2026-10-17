@@ -79,6 +79,7 @@
         _:secondOfTwoIdenticalCreatesReturns201
         _:containerGetLinksLinkset
         _:dataResourceGetLinksLinkset
+        _:containerHeadLinksLinkset
     ) ;
 ] .
 
@@ -971,6 +972,16 @@ _:dataResourceGetLinksLinkset
     :assertion _:linksetLink ;
 .
 
+_:containerHeadLinksLinkset
+    :name "Container HEAD links linkset" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:headContainerLinksetLinks
+    ) ;
+    :assertion _:linksetLink ;
+.
+
 # Steps
 _:discoverStorageRoot
     :name "Discover storage root" ;
@@ -1695,6 +1706,14 @@ _:getContainerLinksetLinks
 _:getTextResourceLinksetLinks
     :name "Get text resource linkset links" ;
     :request _:getTextResource ;
+    :extractors (
+        _:linksetLinks
+    ) ;
+.
+
+_:headContainerLinksetLinks
+    :name "Head container linkset links" ;
+    :request _:headContainer ;
     :extractors (
         _:linksetLinks
     ) ;
