@@ -74,6 +74,7 @@
         _:storageDescriptionServiceIsArray
         _:missingResourceProblemDetailsIsObject
         _:createContainerReturnsLocation
+        _:createDataResourceReturns201
     ) ;
 ] .
 
@@ -907,6 +908,16 @@ _:createContainerReturnsLocation
     ] ;
 .
 
+_:createDataResourceReturns201
+    :name "Create data resource returns 201" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+    ) ;
+    :assertion _:201 ;
+.
+
 # Steps
 _:discoverStorageRoot
     :name "Discover storage root" ;
@@ -998,6 +1009,7 @@ _:createTextResource
             :param "textResourceLocation" ;
             :header "Location" ;
         ]
+        _:status
     ) ;
 .
 
