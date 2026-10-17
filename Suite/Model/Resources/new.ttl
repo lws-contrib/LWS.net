@@ -66,6 +66,7 @@
         _:containerGetAsJsonLdWithLwsProfileReturnsContainerType
         _:containerGetAsJsonLdWithLwsProfileReturnsItemsArray
         _:containerGetAsJsonLdReturns200
+        _:containerGetAsJsonLdReturnsJsonLdMediaType
     ) ;
 ] .
 
@@ -749,14 +750,7 @@ _:containerGetWithWeightedAcceptReturnsJsonLdMediaType
         _:createContainer
         _:getContainerWithWeightedAcceptContentType
     ) ;
-    :assertion [
-        :input [
-            :single [
-                :param "contentType" ;
-            ] ;
-        ] ;
-        :regex "(?i)^application/ld\\+json\\s*(;|$)" ;
-    ] ;
+    :assertion _:jsonLdContentType ;
 .
 
 _:containerGetWithWeightedAcceptReturnsContainerType
@@ -797,6 +791,16 @@ _:containerGetAsJsonLdReturns200
         _:getContainerAsJsonLdStatus
     ) ;
     :assertion _:200 ;
+.
+
+_:containerGetAsJsonLdReturnsJsonLdMediaType
+    :name "Container GET as JSON-LD returns JSON-LD media type" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:getContainerAsJsonLdContentType
+    ) ;
+    :assertion _:jsonLdContentType ;
 .
 
 # Steps
@@ -1448,6 +1452,14 @@ _:getContainerAsJsonLdStatus
     ) ;
 .
 
+_:getContainerAsJsonLdContentType
+    :name "Get container as JSON-LD Content-Type" ;
+    :request _:getContainerAsJsonLd ;
+    :extractors (
+        _:contentType
+    ) ;
+.
+
 # Requests
 _:getContainer
     :method "GET" ;
@@ -1790,4 +1802,13 @@ _:itemsArray
         :param "items" ;
     ] ;
     :regex "^\\[" ;
+.
+
+_:jsonLdContentType
+    :input [
+        :single [
+            :param "contentType" ;
+        ] ;
+    ] ;
+    :regex "(?i)^application/ld\\+json\\s*(;|$)" ;
 .
