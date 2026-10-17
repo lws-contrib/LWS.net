@@ -81,6 +81,7 @@
         _:dataResourceGetLinksLinkset
         _:containerHeadLinksLinkset
         _:dataResourceHeadLinksLinkset
+        _:createWithForgedLinksetLinkLinksLinkset
     ) ;
 ] .
 
@@ -994,6 +995,16 @@ _:dataResourceHeadLinksLinkset
     :assertion _:linksetLink ;
 .
 
+_:createWithForgedLinksetLinkLinksLinkset
+    :name "Create with forged linkset Link links linkset" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createResourceWithForgedLinkset
+    ) ;
+    :assertion _:linksetLink ;
+.
+
 # Steps
 _:discoverStorageRoot
     :name "Discover storage root" ;
@@ -1197,6 +1208,7 @@ _:createResourceWithForgedLinkset
     ] ;
     :extractors (
         _:status
+        _:linksetLinks
     ) ;
 .
 
