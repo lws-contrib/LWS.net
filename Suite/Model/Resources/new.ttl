@@ -69,6 +69,7 @@
         _:containerGetAsJsonLdReturnsJsonLdMediaType
         _:containerGetAsJsonReturns200
         _:containerGetAsJsonReturnsJsonMediaType
+        _:storageDescriptionAsCidReturnsStorageType
     ) ;
 ] .
 
@@ -832,6 +833,19 @@ _:containerGetAsJsonReturnsJsonMediaType
     ] ;
 .
 
+_:storageDescriptionAsCidReturnsStorageType
+    :name "Storage description as CID returns Storage type" ;
+    :steps (
+        _:getStorageDescriptionAsCidType
+    ) ;
+    :assertion [
+        :input [
+            :param "type" ;
+        ] ;
+        :regex "^Storage$|\"Storage\"" ;
+    ] ;
+.
+
 # Steps
 _:discoverStorageRoot
     :name "Discover storage root" ;
@@ -1502,6 +1516,14 @@ _:getContainerAsJsonContentType
     :request _:getContainerAsJson ;
     :extractors (
         _:contentType
+    ) ;
+.
+
+_:getStorageDescriptionAsCidType
+    :name "Get storage description as CID type" ;
+    :request _:getStorageDescriptionAsCid ;
+    :extractors (
+        _:type
     ) ;
 .
 
