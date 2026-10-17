@@ -62,6 +62,7 @@
         _:containerHeadLinksContainerType
         _:createBeneathDataResourceReturnsAllow
         _:containerGetWithWeightedAcceptReturnsJsonLdMediaType
+        _:containerGetWithWeightedAcceptReturnsContainerType
     ) ;
 ] .
 
@@ -760,6 +761,16 @@ _:containerGetWithWeightedAcceptReturnsJsonLdMediaType
     ] ;
 .
 
+_:containerGetWithWeightedAcceptReturnsContainerType
+    :name "Container GET with weighted Accept returns Container type" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:getContainerWithWeightedAcceptType
+    ) ;
+    :assertion _:containerType ;
+.
+
 # Steps
 _:discoverStorageRoot
     :name "Discover storage root" ;
@@ -1384,6 +1395,14 @@ _:getContainerWithWeightedAcceptContentType
     :request _:getContainerWithWeightedAccept ;
     :extractors (
         _:contentType
+    ) ;
+.
+
+_:getContainerWithWeightedAcceptType
+    :name "Get container with weighted Accept type" ;
+    :request _:getContainerWithWeightedAccept ;
+    :extractors (
+        _:type
     ) ;
 .
 
