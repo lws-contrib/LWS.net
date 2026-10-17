@@ -14,7 +14,7 @@ public sealed class TestSuite
         {
             yield return new TestDataRow<TestCase>(test)
             {
-                DisplayName = $"{manifest.Name}: {test.Name}"
+                DisplayName = $"{manifest.ManifestName}: {test.TestName}"
                 // TODO: ignore
                 // TODO: categories
             };

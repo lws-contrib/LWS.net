@@ -6,7 +6,7 @@ public partial class Step
 {
     public async Task Execute(Context context)
     {
-        using var activity = Executor.ActivitySource.StartActivity(Name, ActivityKind.Internal, Activity.Current?.Context ?? default);
+        using var activity = Executor.ActivitySource.StartActivity(StepName, ActivityKind.Internal, Activity.Current?.Context ?? default);
 
         try
         {

@@ -12,7 +12,11 @@ internal static class Vocabulary
 
     internal static INode Include { get; } = factory.CreateUriNode(UriFactory.Create($"{NS}include"));
 
-    internal static INode Name { get; } = factory.CreateUriNode(UriFactory.Create($"{NS}name"));
+    internal static INode StepName { get; } = factory.CreateUriNode(UriFactory.Create($"{NS}stepName"));
+
+    internal static INode ManifestName { get; } = factory.CreateUriNode(UriFactory.Create($"{NS}manifestName"));
+
+    internal static INode TestName { get; } = factory.CreateUriNode(UriFactory.Create($"{NS}testName"));
 
     internal static INode Steps { get; } = factory.CreateUriNode(UriFactory.Create($"{NS}steps"));
 

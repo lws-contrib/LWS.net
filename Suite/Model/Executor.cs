@@ -20,7 +20,7 @@ public class Executor(ILoggerFactory loggerFactory, IOptions<SuiteOptions> optio
         assertor.Title = "NAME OF ASSERTOR"; // TODO: Don't hardcode
 
         var suiteRequirement = TestRequirement.Create(graph);
-        suiteRequirement.Title = Resources.Graph.Manifest.Name;
+        suiteRequirement.Title = Resources.Graph.Manifest.ManifestName;
 
         await Execute(Resources.Graph.Manifest, graph, assertor, suiteRequirement);
 
@@ -29,20 +29,20 @@ public class Executor(ILoggerFactory loggerFactory, IOptions<SuiteOptions> optio
 
     private async Task Execute(Manifest manifest, EarlGraph graph, Assertor assertor, TestRequirement suiteRequirement)
     {
-        using var activity = ActivitySource.StartActivity(manifest.Name)?.SetTag("test.suite.name", manifest.Name);
+        using var activity = ActivitySource.StartActivity(manifest.ManifestName)?.SetTag("test.suite.name", manifest.ManifestName);
 
         foreach (var testCase in manifest.Tests)
         {
             var result3 = await Execute(testCase);
             var entryRequirement = TestRequirement.Create(graph);
-            entryRequirement.Title = testCase.Name;
+            entryRequirement.Title = testCase.TestName;
             entryRequirement.IsPartOf = suiteRequirement;
 
             var assertion = EARL.Assertion.Create(graph);
             assertion.AssertedBy = assertor;
 
             var test = assertion.Test = EARL.TestCase.Create(graph);
-            test.Title = testCase.Name;
+            test.Title = testCase.TestName;
             test.IsPartOf = entryRequirement;
 
             var result = assertion.Result = TestResult.Create(graph);
@@ -64,7 +64,7 @@ public class Executor(ILoggerFactory loggerFactory, IOptions<SuiteOptions> optio
 
     public async Task<Result> Execute(NewModel.TestCase test, ActivityContext parentContext = default)
     {
-        using var activity = ActivitySource.StartActivity(test.Name, ActivityKind.Internal, parentContext)?.SetTag("test.case.name", test.Name);
+        using var activity = ActivitySource.StartActivity(test.TestName, ActivityKind.Internal, parentContext)?.SetTag("test.case.name", test.TestName);
 
         var result = await test.Execute(new Context(loggerFactory, options, client));
 

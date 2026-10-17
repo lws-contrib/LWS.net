@@ -4,7 +4,7 @@ public partial class Step : GraphWrapperNode
 {
     protected Step(INode node, IGraph graph) : base(node, graph) { }
 
-    public string Name => this.Singular(Vocabulary.Name, ValueMappings.As<string>);
+    public string StepName => this.Singular(Vocabulary.StepName, ValueMappings.As<string>);
 
     public Request Request => this.Singular(Vocabulary.Request, Request.Wrap);
 

@@ -1,12 +1,12 @@
 ﻿@prefix : <http://example.com/> .
 
 [
-    :name "Example" ;
+    :manifestName "Example" ;
     :tests [
-        :name "Delete returns 999 (intentionally failing)" ;
+        :testName "Delete returns 999 (intentionally failing)" ;
         :steps (
             [
-                :name "Discover storage root" ;
+                :stepName "Discover storage root" ;
                 :request [
                     :method "GET" ;
                     :uri [
@@ -26,7 +26,7 @@
                 ) ;
             ]
             [
-                :name "Create resource" ;
+                :stepName "Create resource" ;
                 :request [
                     :method "POST" ;
                     :uri [
@@ -41,7 +41,7 @@
                 ) ;
             ]
             [
-                :name "Delete resource" ;
+                :stepName "Delete resource" ;
                 :request [
                     :method "DELETE" ;
                     :uri [

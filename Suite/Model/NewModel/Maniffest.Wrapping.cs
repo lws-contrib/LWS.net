@@ -4,7 +4,7 @@ public class Manifest : GraphWrapperNode
 {
     protected Manifest(INode node, IGraph graph) : base(node, graph) { }
 
-    public string Name => this.Singular(Vocabulary.Name, ValueMappings.As<string>);
+    public string ManifestName => this.Singular(Vocabulary.ManifestName, ValueMappings.As<string>);
 
     public ISet<TestCase> Tests => this.Objects(Vocabulary.Tests, TestCase.Wrap, TestCase.Wrap);
 

@@ -31,7 +31,7 @@ internal static class SuiteApplication
         host = builder.Build();
         await host.StartAsync(context.CancellationToken);
 
-        activity = activitySource.StartActivity(Resources.Graph.Manifest.Name)?.SetTag("test.suite.name", Resources.Graph.Manifest.Name);
+        activity = activitySource.StartActivity(Resources.Graph.Manifest.ManifestName)?.SetTag("test.suite.name", Resources.Graph.Manifest.ManifestName);
     }
 
     [AssemblyCleanup]

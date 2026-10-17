@@ -2,7 +2,7 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 [
-    :name "LWS Test Suite" ;
+    :manifestName "LWS Test Suite" ;
     :include "example.ttl"^^xsd:anyURI ;
     :include "touchstone.ttl"^^xsd:anyURI ;
 ] .

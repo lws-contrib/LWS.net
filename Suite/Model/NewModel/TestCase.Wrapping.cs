@@ -6,7 +6,7 @@ public partial class TestCase : GraphWrapperNode
 
     public Assertion Assertion => this.Singular(Vocabulary.Assertion, Assertion.Choose);
 
-    public string Name => this.Singular(Vocabulary.Name, ValueMappings.As<string>);
+    public string TestName => this.Singular(Vocabulary.TestName, ValueMappings.As<string>);
 
     public IList<Step> Steps => this.List(Vocabulary.Steps, Step.Wrap, Step.Wrap);
 
