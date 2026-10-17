@@ -67,6 +67,7 @@
         _:containerGetAsJsonLdWithLwsProfileReturnsItemsArray
         _:containerGetAsJsonLdReturns200
         _:containerGetAsJsonLdReturnsJsonLdMediaType
+        _:containerGetAsJsonReturns200
     ) ;
 ] .
 
@@ -803,6 +804,16 @@ _:containerGetAsJsonLdReturnsJsonLdMediaType
     :assertion _:jsonLdContentType ;
 .
 
+_:containerGetAsJsonReturns200
+    :name "Container GET as JSON returns 200" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:getContainerAsJsonStatus
+    ) ;
+    :assertion _:200 ;
+.
+
 # Steps
 _:discoverStorageRoot
     :name "Discover storage root" ;
@@ -1460,6 +1471,14 @@ _:getContainerAsJsonLdContentType
     ) ;
 .
 
+_:getContainerAsJsonStatus
+    :name "Get container as JSON status" ;
+    :request _:getContainerAsJson ;
+    :extractors (
+        _:status
+    ) ;
+.
+
 # Requests
 _:getContainer
     :method "GET" ;
@@ -1576,6 +1595,15 @@ _:getContainerAsJsonLd
     :headers [
         :header "Accept" ;
         :value "application/ld+json" ;
+    ] ;
+.
+
+_:getContainerAsJson
+    :method "GET" ;
+    :uri _:container ;
+    :headers [
+        :header "Accept" ;
+        :value "application/json" ;
     ] ;
 .
 
