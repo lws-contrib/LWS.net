@@ -108,7 +108,7 @@ _:createdDataResourceReturnsPostedBody
         :input [
             :variable "body" ;
         ] ;
-        :value "milk\neggs\nbread\nbutter\napples\norange juice\n" ;
+        :equals "milk\neggs\nbread\nbutter\napples\norange juice\n" ;
     ] ;
 .
 
@@ -511,7 +511,7 @@ _:storageDescriptionFirstContextIsCid
         :input [
             :variable "context" ;
         ] ;
-        :value "https://www.w3.org/ns/cid/v1" ;
+        :equals "https://www.w3.org/ns/cid/v1" ;
     ] ;
 .
 
@@ -524,7 +524,7 @@ _:storageDescriptionSecondContextIsLws
         :input [
             :variable "context" ;
         ] ;
-        :value "https://www.w3.org/ns/lws/v1" ;
+        :equals "https://www.w3.org/ns/lws/v1" ;
     ] ;
 .
 
@@ -1022,7 +1022,7 @@ _:discoverStorageRoot
                 :variable "baseUri" ;
             ] ;
             :relative [
-                :value "/" ;
+                :constant "/" ;
             ] ;
         ] ;
     ] ;
@@ -1262,7 +1262,7 @@ _:createResourceInMissingContainer
         :uri [
             :base _:container ;
             :relative [
-                :value "missing-container/" ;
+                :constant "missing-container/" ;
             ] ;
         ] ;
         :headers _:contentTypeTextPlain ;
@@ -1801,7 +1801,7 @@ _:getMissingResource
     :uri [
         :base _:container ;
         :relative [
-            :value "missing-resource" ;
+            :constant "missing-resource" ;
         ] ;
     ] ;
 .
@@ -1920,7 +1920,7 @@ _:storage
         :variable "baseUri" ;
     ] ;
     :relative [
-        :value "/" ;
+        :constant "/" ;
     ] ;
 .
 
@@ -1986,56 +1986,56 @@ _:200
     :input [
         :variable "status" ;
     ] ;
-    :value "200" ;
+    :equals "200" ;
 .
 
 _:201
     :input [
         :variable "status" ;
     ] ;
-    :value "201" ;
+    :equals "201" ;
 .
 
 _:206
     :input [
         :variable "status" ;
     ] ;
-    :value "206" ;
+    :equals "206" ;
 .
 
 _:404
     :input [
         :variable "status" ;
     ] ;
-    :value "404" ;
+    :equals "404" ;
 .
 
 _:405
     :input [
         :variable "status" ;
     ] ;
-    :value "405" ;
+    :equals "405" ;
 .
 
 _:416
     :input [
         :variable "status" ;
     ] ;
-    :value "416" ;
+    :equals "416" ;
 .
 
 _:emptyItems
     :input [
         :variable "items" ;
     ] ;
-    :value "[]" ;
+    :equals "[]" ;
 .
 
 _:emptyBody
     :input [
         :variable "body" ;
     ] ;
-    :value "" ;
+    :equals "" ;
 .
 
 _:sameBytesBody

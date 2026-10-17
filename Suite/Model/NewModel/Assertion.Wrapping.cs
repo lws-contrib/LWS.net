@@ -10,7 +10,7 @@ public abstract partial class Assertion : GraphWrapperNode
 
     internal static Assertion? Choose(GraphWrapperNode node)
     {
-        if (node.Graph.GetTriplesWithSubjectPredicate(node, Vocabulary.Value).Any())
+        if (node.Graph.GetTriplesWithSubjectPredicate(node, Vocabulary.EqualsValue).Any())
         {
             return EqualityAssertion.Wrap(node);
         }

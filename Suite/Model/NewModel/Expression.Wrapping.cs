@@ -8,7 +8,7 @@ public abstract partial class Expression : GraphWrapperNode
 
     internal static Expression? Choose(GraphWrapperNode node)
     {
-        if (node.Graph.GetTriplesWithSubjectPredicate(node, Vocabulary.Value).Any())
+        if (node.Graph.GetTriplesWithSubjectPredicate(node, Vocabulary.Constant).Any())
         {
             return ConstantExpression.Wrap(node);
         }

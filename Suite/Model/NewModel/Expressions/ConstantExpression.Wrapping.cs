@@ -4,7 +4,7 @@ public partial class ConstantExpression : Expression
 {
     protected ConstantExpression(INode node, IGraph graph) : base(node, graph) { }
 
-    public string Value => this.Singular(Vocabulary.Value, ValueMappings.As<string>);
+    public string Constant => this.Singular(Vocabulary.Constant, ValueMappings.As<string>);
 
     public static ConstantExpression Wrap(INode node, IGraph graph) => new(node, graph);
 

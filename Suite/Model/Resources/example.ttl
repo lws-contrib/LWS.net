@@ -14,7 +14,7 @@
                             :variable "baseUri" ;
                         ] ;
                         :relative [
-                            :value "/" ;
+                            :constant "/" ;
                         ] ;
                     ] ;
                 ] ;
@@ -62,7 +62,7 @@
             :input [
                 :variable "status" ;
             ] ;
-            :value "999" ;
+            :equals "999" ;
         ] ;
     ] ;
 ] .
