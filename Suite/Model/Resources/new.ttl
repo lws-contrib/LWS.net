@@ -82,6 +82,7 @@
         _:containerHeadLinksLinkset
         _:dataResourceHeadLinksLinkset
         _:createWithForgedLinksetLinkLinksLinkset
+        _:resourceCreatedWithForgedLinksetLinkGetLinksLinkset
     ) ;
 ] .
 
@@ -1005,6 +1006,17 @@ _:createWithForgedLinksetLinkLinksLinkset
     :assertion _:linksetLink ;
 .
 
+_:resourceCreatedWithForgedLinksetLinkGetLinksLinkset
+    :name "Resource created with forged linkset Link GET links linkset" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createResourceWithForgedLinkset
+        _:getForgedLinksetResourceLinksetLinks
+    ) ;
+    :assertion _:linksetLink ;
+.
+
 # Steps
 _:discoverStorageRoot
     :name "Discover storage root" ;
@@ -1209,6 +1221,10 @@ _:createResourceWithForgedLinkset
     :extractors (
         _:status
         _:linksetLinks
+        [
+            :param "forgedLinksetLocation" ;
+            :header "Location" ;
+        ]
     ) ;
 .
 
@@ -1746,6 +1762,24 @@ _:headContainerLinksetLinks
 _:headTextResourceLinksetLinks
     :name "Head text resource linkset links" ;
     :request _:headTextResource ;
+    :extractors (
+        _:linksetLinks
+    ) ;
+.
+
+_:getForgedLinksetResourceLinksetLinks
+    :name "Get forged linkset resource linkset links" ;
+    :request [
+        :method "GET" ;
+        :uri [
+            :base _:storageRoot ;
+            :relative [
+                :single [
+                    :param "forgedLinksetLocation" ;
+                ] ;
+            ] ;
+        ] ;
+    ] ;
     :extractors (
         _:linksetLinks
     ) ;
