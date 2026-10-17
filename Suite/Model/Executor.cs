@@ -12,12 +12,8 @@ public class Executor(ILoggerFactory loggerFactory, IOptions<SuiteOptions> optio
 
     public static IEnumerable<NewModel.TestCase> Tests => Resources.Graph.Manifest.Tests;
 
-    public static Activity? StartSuiteActivity() => ActivitySource.StartActivity("Suite", ActivityKind.Internal, parentContext: default, tags: [new("test.suite.name", Resources.Graph.Manifest.Name)]);
-
     public async Task<EarlGraph> Execute()
     {
-        using var activity = StartSuiteActivity();
-
         var graph = new EarlGraph(new VDS.RDF.Graph());
 
         var assertor = Assertor.Create(graph);
@@ -33,6 +29,8 @@ public class Executor(ILoggerFactory loggerFactory, IOptions<SuiteOptions> optio
 
     private async Task Execute(Manifest manifest, EarlGraph graph, Assertor assertor, TestRequirement suiteRequirement)
     {
+        using var activity = ActivitySource.StartActivity(manifest.Name)?.SetTag("test.suite.name", manifest.Name);
+
         foreach (var testCase in manifest.Tests)
         {
             var result3 = await Execute(testCase);
@@ -72,7 +70,7 @@ public class Executor(ILoggerFactory loggerFactory, IOptions<SuiteOptions> optio
 
     private async Task<Result> Execute(NewModel.TestCase test, ActivityContext parentContext = default)
     {
-        using var activity = ActivitySource.StartActivity(test.Name, ActivityKind.Internal, parentContext, [new("test.case.name", test.Name)]);
+        using var activity = ActivitySource.StartActivity(test.Name, ActivityKind.Internal, parentContext)?.SetTag("test.case.name", test.Name);
 
         var result = await test.Execute(new Context(loggerFactory, options, client));
 

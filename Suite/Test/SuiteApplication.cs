@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Testing.Platform.Services;
 using Model;
 using Model.NewModel;
+using OpenTelemetry.Trace;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 
@@ -10,6 +11,7 @@ namespace Test;
 
 internal static class SuiteApplication
 {
+    private static readonly ActivitySource activitySource = new(typeof(SuiteApplication).FullName!);
     private static IHost? host;
     private static Activity? activity;
 
@@ -24,11 +26,12 @@ internal static class SuiteApplication
 
         builder.Logging.ClearProviders().AddTestContext();
         builder.Services.AddSuite(builder.Configuration);
+        builder.Services.ConfigureOpenTelemetryTracerProvider(tracing => tracing.AddSource(activitySource.Name));
 
         host = builder.Build();
         await host.StartAsync(context.CancellationToken);
 
-        activity = Executor.StartSuiteActivity();
+        activity = activitySource.StartActivity(Resources.Graph.Manifest.Name)?.SetTag("test.suite.name", Resources.Graph.Manifest.Name);
     }
 
     [AssemblyCleanup]
