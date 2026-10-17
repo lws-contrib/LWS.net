@@ -1,13 +1,14 @@
 using Model;
+using Model.NewModel;
 
 namespace Test;
 
 [TestClass]
 public sealed class TestSuite
 {
-    private static IEnumerable<TestDataRow<string>> TestCases =>
+    private static IEnumerable<TestDataRow<TestCase>> TestCases =>
         Executor.Tests.Select(test =>
-            new TestDataRow<string>(test.Name)
+            new TestDataRow<TestCase>(test)
             {
                 DisplayName = test.Name
                 // TODO: ignore
@@ -16,7 +17,7 @@ public sealed class TestSuite
 
     [TestMethod]
     [DynamicData(nameof(TestCases))]
-    public async Task Entry(string testCase)
+    public async Task Entry(TestCase testCase)
     {
         var result = await SuiteApplication.Test(testCase);
 

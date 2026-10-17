@@ -49,12 +49,12 @@ internal static class SuiteApplication
         host.Dispose();
     }
 
-    internal static async Task<Result> Test(string name)
+    internal static async Task<Result> Test(TestCase test)
     {
         var services = host?.Services ?? throw new InvalidOperationException("Host not initialised");
 
         var executor = services.GetRequiredService<Executor>();
 
-        return await executor.Execute(name, activity?.Context ?? default);
+        return await executor.Execute(test, activity?.Context ?? default);
     }
 }

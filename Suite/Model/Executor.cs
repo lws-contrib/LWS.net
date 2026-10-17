@@ -62,13 +62,7 @@ public class Executor(ILoggerFactory loggerFactory, IOptions<SuiteOptions> optio
         }
     }
 
-    public async Task<Result> Execute(string name, ActivityContext parentContext = default)
-    {
-        var test = Tests.Single(test => test.Name == name);
-        return await Execute(test, parentContext);
-    }
-
-    private async Task<Result> Execute(NewModel.TestCase test, ActivityContext parentContext = default)
+    public async Task<Result> Execute(NewModel.TestCase test, ActivityContext parentContext = default)
     {
         using var activity = ActivitySource.StartActivity(test.Name, ActivityKind.Internal, parentContext)?.SetTag("test.case.name", test.Name);
 
