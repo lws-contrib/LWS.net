@@ -15,7 +15,7 @@ public abstract partial class Assertion : GraphWrapperNode
             return EqualityAssertion.Wrap(node);
         }
 
-        if (node.Graph.GetTriplesWithSubjectPredicate(node, Vocabulary.Regex).Any())
+        if (node.Graph.GetTriplesWithSubjectPredicate(node, Vocabulary.Matches).Any())
         {
             return RegexAssertion.Wrap(node);
         }

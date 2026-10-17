@@ -6,7 +6,7 @@ public partial class RegexAssertion : Assertion
 {
     protected RegexAssertion(INode node, IGraph graph) : base(node, graph) { }
 
-    public Regex Pattern => this.Singular(Vocabulary.Regex, ValueMappings.RegexFromStringLiteral);
+    public Regex Matches => this.Singular(Vocabulary.Matches, ValueMappings.RegexFromStringLiteral);
 
     public static RegexAssertion Wrap(INode node, IGraph graph) => new(node, graph);
 

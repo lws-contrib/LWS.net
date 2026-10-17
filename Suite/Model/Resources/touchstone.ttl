@@ -230,7 +230,7 @@ _:containerResponseVariesByAccept
                 :variable "vary" ;
             ] ;
         ] ;
-        :regex "(?i)(^|[\\s,])accept($|[\\s,])" ;
+        :matches "(?i)(^|[\\s,])accept($|[\\s,])" ;
     ] ;
 .
 
@@ -248,7 +248,7 @@ _:dataResourceAdvertisesByteRanges
                 :variable "acceptRanges" ;
             ] ;
         ] ;
-        :regex "(?i)\\bbytes\\b" ;
+        :matches "(?i)\\bbytes\\b" ;
     ] ;
 .
 
@@ -264,7 +264,7 @@ _:suffixByteRangeReturnsLastBytes
         :that [
             :variable "body" ;
         ] ;
-        :regex "^89$" ;
+        :matches "^89$" ;
     ] ;
 .
 
@@ -282,7 +282,7 @@ _:byteRangeReturnsContentRange
                 :variable "contentRange" ;
             ] ;
         ] ;
-        :regex "^bytes 0-3/10$" ;
+        :matches "^bytes 0-3/10$" ;
     ] ;
 .
 
@@ -298,7 +298,7 @@ _:byteRangeReturnsRequestedBytes
         :that [
             :variable "body" ;
         ] ;
-        :regex "^0123$" ;
+        :matches "^0123$" ;
     ] ;
 .
 
@@ -381,7 +381,7 @@ _:missingResourceReturnsProblemDetails
                 :variable "contentType" ;
             ] ;
         ] ;
-        :regex "(?i)^application/problem\\+json\\s*(;|$)" ;
+        :matches "(?i)^application/problem\\+json\\s*(;|$)" ;
     ] ;
 .
 
@@ -421,7 +421,7 @@ _:dataResourceGetReturnsETag
                 :variable "etag" ;
             ] ;
         ] ;
-        :regex "." ;
+        :matches "." ;
     ] ;
 .
 
@@ -570,7 +570,7 @@ _:createInMissingContainerReturnsClientError
         :that [
             :variable "status" ;
         ] ;
-        :regex "^4\\d\\d$" ;
+        :matches "^4\\d\\d$" ;
     ] ;
 .
 
@@ -595,7 +595,7 @@ _:containerGetReturnsETag
                 :variable "etag" ;
             ] ;
         ] ;
-        :regex "." ;
+        :matches "." ;
     ] ;
 .
 
@@ -820,7 +820,7 @@ _:containerGetAsJsonReturnsJsonMediaType
                 :variable "contentType" ;
             ] ;
         ] ;
-        :regex "(?i)^application/json\\s*(;|$)" ;
+        :matches "(?i)^application/json\\s*(;|$)" ;
     ] ;
 .
 
@@ -833,7 +833,7 @@ _:storageDescriptionAsCidReturnsStorageType
         :that [
             :variable "type" ;
         ] ;
-        :regex "^Storage$|\"Storage\"" ;
+        :matches "^Storage$|\"Storage\"" ;
     ] ;
 .
 
@@ -846,7 +846,7 @@ _:storageDescriptionContextIsArray
         :that [
             :variable "context" ;
         ] ;
-        :regex "^\\[" ;
+        :matches "^\\[" ;
     ] ;
 .
 
@@ -859,7 +859,7 @@ _:storageDescriptionServiceIsArray
         :that [
             :variable "service" ;
         ] ;
-        :regex "^\\[" ;
+        :matches "^\\[" ;
     ] ;
 .
 
@@ -874,7 +874,7 @@ _:missingResourceProblemDetailsIsObject
         :that [
             :variable "body" ;
         ] ;
-        :regex "^\\s*\\{" ;
+        :matches "^\\s*\\{" ;
     ] ;
 .
 
@@ -2042,7 +2042,7 @@ _:sameBytesBody
     :that [
         :variable "body" ;
     ] ;
-    :regex "^same bytes$" ;
+    :matches "^same bytes$" ;
 .
 
 _:textPlainContentType
@@ -2051,7 +2051,7 @@ _:textPlainContentType
             :variable "contentType" ;
         ] ;
     ] ;
-    :regex "(?i)^text/plain\\s*(;|$)" ;
+    :matches "(?i)^text/plain\\s*(;|$)" ;
 .
 
 _:lwsJsonContentType
@@ -2060,7 +2060,7 @@ _:lwsJsonContentType
             :variable "contentType" ;
         ] ;
     ] ;
-    :regex "(?i)^application/lws\\+json\\s*(;|$)" ;
+    :matches "(?i)^application/lws\\+json\\s*(;|$)" ;
 .
 
 _:lwsCidContentType
@@ -2069,14 +2069,14 @@ _:lwsCidContentType
             :variable "contentType" ;
         ] ;
     ] ;
-    :regex "(?i)^application/lws\\+cid\\s*(;|$)" ;
+    :matches "(?i)^application/lws\\+cid\\s*(;|$)" ;
 .
 
 _:containerType
     :that [
         :variable "type" ;
     ] ;
-    :regex "^Container$|\"Container\"" ;
+    :matches "^Container$|\"Container\"" ;
 .
 
 _:containerTypeLink
@@ -2097,7 +2097,7 @@ _:itemsArray
     :that [
         :variable "items" ;
     ] ;
-    :regex "^\\[" ;
+    :matches "^\\[" ;
 .
 
 _:jsonLdContentType
@@ -2106,7 +2106,7 @@ _:jsonLdContentType
             :variable "contentType" ;
         ] ;
     ] ;
-    :regex "(?i)^application/ld\\+json\\s*(;|$)" ;
+    :matches "(?i)^application/ld\\+json\\s*(;|$)" ;
 .
 
 _:linksetLink
