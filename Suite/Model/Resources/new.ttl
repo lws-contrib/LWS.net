@@ -68,6 +68,7 @@
         _:containerGetAsJsonLdReturns200
         _:containerGetAsJsonLdReturnsJsonLdMediaType
         _:containerGetAsJsonReturns200
+        _:containerGetAsJsonReturnsJsonMediaType
     ) ;
 ] .
 
@@ -814,6 +815,23 @@ _:containerGetAsJsonReturns200
     :assertion _:200 ;
 .
 
+_:containerGetAsJsonReturnsJsonMediaType
+    :name "Container GET as JSON returns JSON media type" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:getContainerAsJsonContentType
+    ) ;
+    :assertion [
+        :input [
+            :single [
+                :param "contentType" ;
+            ] ;
+        ] ;
+        :regex "(?i)^application/json\\s*(;|$)" ;
+    ] ;
+.
+
 # Steps
 _:discoverStorageRoot
     :name "Discover storage root" ;
@@ -1476,6 +1494,14 @@ _:getContainerAsJsonStatus
     :request _:getContainerAsJson ;
     :extractors (
         _:status
+    ) ;
+.
+
+_:getContainerAsJsonContentType
+    :name "Get container as JSON Content-Type" ;
+    :request _:getContainerAsJson ;
+    :extractors (
+        _:contentType
     ) ;
 .
 
