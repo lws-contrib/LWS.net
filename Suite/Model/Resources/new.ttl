@@ -71,6 +71,7 @@
         _:containerGetAsJsonReturnsJsonMediaType
         _:storageDescriptionAsCidReturnsStorageType
         _:storageDescriptionContextIsArray
+        _:storageDescriptionServiceIsArray
     ) ;
 ] .
 
@@ -860,6 +861,19 @@ _:storageDescriptionContextIsArray
     ] ;
 .
 
+_:storageDescriptionServiceIsArray
+    :name "Storage description service is array" ;
+    :steps (
+        _:getStorageDescriptionService
+    ) ;
+    :assertion [
+        :input [
+            :param "service" ;
+        ] ;
+        :regex "^\\[" ;
+    ] ;
+.
+
 # Steps
 _:discoverStorageRoot
     :name "Discover storage root" ;
@@ -1548,6 +1562,17 @@ _:getStorageDescriptionContext
         [
             :param "context" ;
             :path "$['@context']" ;
+        ]
+    ) ;
+.
+
+_:getStorageDescriptionService
+    :name "Get storage description service" ;
+    :request _:getStorageDescriptionAsCid ;
+    :extractors (
+        [
+            :param "service" ;
+            :path "$.service" ;
         ]
     ) ;
 .
