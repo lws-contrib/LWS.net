@@ -80,6 +80,7 @@
         _:containerGetLinksLinkset
         _:dataResourceGetLinksLinkset
         _:containerHeadLinksLinkset
+        _:dataResourceHeadLinksLinkset
     ) ;
 ] .
 
@@ -982,6 +983,17 @@ _:containerHeadLinksLinkset
     :assertion _:linksetLink ;
 .
 
+_:dataResourceHeadLinksLinkset
+    :name "Data resource HEAD links linkset" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:headTextResourceLinksetLinks
+    ) ;
+    :assertion _:linksetLink ;
+.
+
 # Steps
 _:discoverStorageRoot
     :name "Discover storage root" ;
@@ -1714,6 +1726,14 @@ _:getTextResourceLinksetLinks
 _:headContainerLinksetLinks
     :name "Head container linkset links" ;
     :request _:headContainer ;
+    :extractors (
+        _:linksetLinks
+    ) ;
+.
+
+_:headTextResourceLinksetLinks
+    :name "Head text resource linkset links" ;
+    :request _:headTextResource ;
     :extractors (
         _:linksetLinks
     ) ;
