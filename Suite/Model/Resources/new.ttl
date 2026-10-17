@@ -65,6 +65,7 @@
         _:containerGetWithWeightedAcceptReturnsContainerType
         _:containerGetAsJsonLdWithLwsProfileReturnsContainerType
         _:containerGetAsJsonLdWithLwsProfileReturnsItemsArray
+        _:containerGetAsJsonLdReturns200
     ) ;
 ] .
 
@@ -788,6 +789,16 @@ _:containerGetAsJsonLdWithLwsProfileReturnsItemsArray
     :assertion _:itemsArray ;
 .
 
+_:containerGetAsJsonLdReturns200
+    :name "Container GET as JSON-LD returns 200" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:getContainerAsJsonLdStatus
+    ) ;
+    :assertion _:200 ;
+.
+
 # Steps
 _:discoverStorageRoot
     :name "Discover storage root" ;
@@ -1429,6 +1440,14 @@ _:getContainerWithLwsProfileAcceptItems
     ) ;
 .
 
+_:getContainerAsJsonLdStatus
+    :name "Get container as JSON-LD status" ;
+    :request _:getContainerAsJsonLd ;
+    :extractors (
+        _:status
+    ) ;
+.
+
 # Requests
 _:getContainer
     :method "GET" ;
@@ -1536,6 +1555,15 @@ _:getContainerWithLwsProfileAccept
     :headers [
         :header "Accept" ;
         :value "application/ld+json; profile=\"https://www.w3.org/ns/lws/v1\"" ;
+    ] ;
+.
+
+_:getContainerAsJsonLd
+    :method "GET" ;
+    :uri _:container ;
+    :headers [
+        :header "Accept" ;
+        :value "application/ld+json" ;
     ] ;
 .
 
