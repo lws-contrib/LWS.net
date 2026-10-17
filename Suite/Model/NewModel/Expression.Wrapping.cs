@@ -13,7 +13,7 @@ public abstract partial class Expression : GraphWrapperNode
             return ConstantExpression.Wrap(node);
         }
 
-        if (node.Graph.GetTriplesWithSubjectPredicate(node, Vocabulary.Param).Any())
+        if (node.Graph.GetTriplesWithSubjectPredicate(node, Vocabulary.Variable).Any())
         {
             return ParamRefExpression.Wrap(node);
         }

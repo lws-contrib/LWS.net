@@ -11,7 +11,7 @@
                     :method "GET" ;
                     :uri [
                         :base [
-                            :param "baseUri" ;
+                            :variable "baseUri" ;
                         ] ;
                         :relative [
                             :value "/" ;
@@ -20,7 +20,7 @@
                 ] ;
                 :extractors (
                     [
-                        :param "storageRoot" ;
+                        :to "storageRoot" ;
                         :path "$.service[?@.type == 'StorageRoot'].serviceEndpoint" ;
                     ]
                 ) ;
@@ -30,12 +30,12 @@
                 :request [
                     :method "POST" ;
                     :uri [
-                        :param "storageRoot" ;
+                        :variable "storageRoot" ;
                     ] ;
                 ] ;
                 :extractors (
                     [
-                        :param "newResource" ;
+                        :to "newResource" ;
                         :header "Location" ;
                     ]
                 ) ;
@@ -46,21 +46,21 @@
                     :method "DELETE" ;
                     :uri [
                         :single [
-                            :param "newResource" ;
+                            :variable "newResource" ;
                         ] ;
                     ] ;
                 ] ;
                 :extractors (
                     [
                         a :StatusCodeExtractor ;
-                        :param "status" ;
+                        :to "status" ;
                     ]
                 ) ;
             ]
         ) ;
         :assertion [
             :input [
-                :param "status" ;
+                :variable "status" ;
             ] ;
             :value "999" ;
         ] ;

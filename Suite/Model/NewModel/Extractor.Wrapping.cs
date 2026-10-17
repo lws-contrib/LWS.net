@@ -6,7 +6,7 @@ public abstract partial class Extractor : GraphWrapperNode
 {
     protected Extractor(INode node, IGraph graph) : base(node, graph) { }
 
-    public string ParamName => this.Singular(Vocabulary.Param, ValueMappings.As<string>);
+    public string To => this.Singular(Vocabulary.To, ValueMappings.As<string>);
 
     internal static Extractor? Choose(GraphWrapperNode node)
     {

@@ -106,7 +106,7 @@ _:createdDataResourceReturnsPostedBody
     ) ;
     :assertion [
         :input [
-            :param "body" ;
+            :variable "body" ;
         ] ;
         :value "milk\neggs\nbread\nbutter\napples\norange juice\n" ;
     ] ;
@@ -227,7 +227,7 @@ _:containerResponseVariesByAccept
     :assertion [
         :input [
             :single [
-                :param "vary" ;
+                :variable "vary" ;
             ] ;
         ] ;
         :regex "(?i)(^|[\\s,])accept($|[\\s,])" ;
@@ -245,7 +245,7 @@ _:dataResourceAdvertisesByteRanges
     :assertion [
         :input [
             :single [
-                :param "acceptRanges" ;
+                :variable "acceptRanges" ;
             ] ;
         ] ;
         :regex "(?i)\\bbytes\\b" ;
@@ -262,7 +262,7 @@ _:suffixByteRangeReturnsLastBytes
     ) ;
     :assertion [
         :input [
-            :param "body" ;
+            :variable "body" ;
         ] ;
         :regex "^89$" ;
     ] ;
@@ -279,7 +279,7 @@ _:byteRangeReturnsContentRange
     :assertion [
         :input [
             :single [
-                :param "contentRange" ;
+                :variable "contentRange" ;
             ] ;
         ] ;
         :regex "^bytes 0-3/10$" ;
@@ -296,7 +296,7 @@ _:byteRangeReturnsRequestedBytes
     ) ;
     :assertion [
         :input [
-            :param "body" ;
+            :variable "body" ;
         ] ;
         :regex "^0123$" ;
     ] ;
@@ -378,7 +378,7 @@ _:missingResourceReturnsProblemDetails
     :assertion [
         :input [
             :single [
-                :param "contentType" ;
+                :variable "contentType" ;
             ] ;
         ] ;
         :regex "(?i)^application/problem\\+json\\s*(;|$)" ;
@@ -418,7 +418,7 @@ _:dataResourceGetReturnsETag
     :assertion [
         :input [
             :single [
-                :param "etag" ;
+                :variable "etag" ;
             ] ;
         ] ;
         :regex "." ;
@@ -509,7 +509,7 @@ _:storageDescriptionFirstContextIsCid
     ) ;
     :assertion [
         :input [
-            :param "context" ;
+            :variable "context" ;
         ] ;
         :value "https://www.w3.org/ns/cid/v1" ;
     ] ;
@@ -522,7 +522,7 @@ _:storageDescriptionSecondContextIsLws
     ) ;
     :assertion [
         :input [
-            :param "context" ;
+            :variable "context" ;
         ] ;
         :value "https://www.w3.org/ns/lws/v1" ;
     ] ;
@@ -568,7 +568,7 @@ _:createInMissingContainerReturnsClientError
     ) ;
     :assertion [
         :input [
-            :param "status" ;
+            :variable "status" ;
         ] ;
         :regex "^4\\d\\d$" ;
     ] ;
@@ -592,7 +592,7 @@ _:containerGetReturnsETag
     :assertion [
         :input [
             :single [
-                :param "etag" ;
+                :variable "etag" ;
             ] ;
         ] ;
         :regex "." ;
@@ -730,7 +730,7 @@ _:createBeneathDataResourceReturnsAllow
     :assertion [
         :input [
             :count [
-                :param "allow" ;
+                :variable "allow" ;
             ] ;
         ] ;
         :greaterThan 0 ;
@@ -817,7 +817,7 @@ _:containerGetAsJsonReturnsJsonMediaType
     :assertion [
         :input [
             :single [
-                :param "contentType" ;
+                :variable "contentType" ;
             ] ;
         ] ;
         :regex "(?i)^application/json\\s*(;|$)" ;
@@ -831,7 +831,7 @@ _:storageDescriptionAsCidReturnsStorageType
     ) ;
     :assertion [
         :input [
-            :param "type" ;
+            :variable "type" ;
         ] ;
         :regex "^Storage$|\"Storage\"" ;
     ] ;
@@ -844,7 +844,7 @@ _:storageDescriptionContextIsArray
     ) ;
     :assertion [
         :input [
-            :param "context" ;
+            :variable "context" ;
         ] ;
         :regex "^\\[" ;
     ] ;
@@ -857,7 +857,7 @@ _:storageDescriptionServiceIsArray
     ) ;
     :assertion [
         :input [
-            :param "service" ;
+            :variable "service" ;
         ] ;
         :regex "^\\[" ;
     ] ;
@@ -872,7 +872,7 @@ _:missingResourceProblemDetailsIsObject
     ) ;
     :assertion [
         :input [
-            :param "body" ;
+            :variable "body" ;
         ] ;
         :regex "^\\s*\\{" ;
     ] ;
@@ -887,7 +887,7 @@ _:createContainerReturnsLocation
     :assertion [
         :input [
             :count [
-                :param "containerLocation" ;
+                :variable "containerLocation" ;
             ] ;
         ] ;
         :greaterThan 0 ;
@@ -914,7 +914,7 @@ _:createDataResourceReturnsLocation
     :assertion [
         :input [
             :count [
-                :param "textResourceLocation" ;
+                :variable "textResourceLocation" ;
             ] ;
         ] ;
         :greaterThan 0 ;
@@ -1005,7 +1005,7 @@ _:containerHeadLinksUp
     :assertion [
         :input [
             :count [
-                :param "upLinks" ;
+                :variable "upLinks" ;
             ] ;
         ] ;
         :greaterThan 0 ;
@@ -1019,7 +1019,7 @@ _:discoverStorageRoot
         :method "GET" ;
         :uri [
             :base [
-                :param "baseUri" ;
+                :variable "baseUri" ;
             ] ;
             :relative [
                 :value "/" ;
@@ -1028,7 +1028,7 @@ _:discoverStorageRoot
     ] ;
     :extractors (
         [
-            :param "storageRoot" ;
+            :to "storageRoot" ;
             :path "$.service[?@.type == 'StorageRoot'].serviceEndpoint" ;
         ]
     ) ;
@@ -1064,7 +1064,7 @@ _:createTextResource
     ] ;
     :extractors (
         [
-            :param "textResourceLocation" ;
+            :to "textResourceLocation" ;
             :header "Location" ;
         ]
         _:status
@@ -1089,7 +1089,7 @@ _:createDigitsResource
     ] ;
     :extractors (
         [
-            :param "digitsResourceLocation" ;
+            :to "digitsResourceLocation" ;
             :header "Location" ;
         ]
     ) ;
@@ -1181,7 +1181,7 @@ _:createResourceWithForgedLinkset
         _:status
         _:linksetLinks
         [
-            :param "forgedLinksetLocation" ;
+            :to "forgedLinksetLocation" ;
             :header "Location" ;
         ]
     ) ;
@@ -1208,7 +1208,7 @@ _:getContainerVary
     :request _:getContainer ;
     :extractors (
         [
-            :param "vary" ;
+            :to "vary" ;
             :header "Vary" ;
         ]
     ) ;
@@ -1222,7 +1222,7 @@ _:getDigitsResourceAcceptRanges
     ] ;
     :extractors (
         [
-            :param "acceptRanges" ;
+            :to "acceptRanges" ;
             :header "Accept-Ranges" ;
         ]
     ) ;
@@ -1241,7 +1241,7 @@ _:getDigitsResourceFirstFourBytesContentRange
     :request _:getDigitsResourceFirstFourBytes ;
     :extractors (
         [
-            :param "contentRange" ;
+            :to "contentRange" ;
             :header "Content-Range" ;
         ]
     ) ;
@@ -1278,7 +1278,7 @@ _:createFirstSameBytesResource
     :request _:createSameBytesResource ;
     :extractors (
         [
-            :param "firstSameBytesLocation" ;
+            :to "firstSameBytesLocation" ;
             :header "Location" ;
         ]
     ) ;
@@ -1289,7 +1289,7 @@ _:createSecondSameBytesResource
     :request _:createSameBytesResource ;
     :extractors (
         [
-            :param "secondSameBytesLocation" ;
+            :to "secondSameBytesLocation" ;
             :header "Location" ;
         ]
         _:status
@@ -1304,7 +1304,7 @@ _:getFirstSameBytesResourceBody
             :base _:storageRoot ;
             :relative [
                 :single [
-                    :param "firstSameBytesLocation" ;
+                    :variable "firstSameBytesLocation" ;
                 ] ;
             ] ;
         ] ;
@@ -1322,7 +1322,7 @@ _:getSecondSameBytesResourceBody
             :base _:storageRoot ;
             :relative [
                 :single [
-                    :param "secondSameBytesLocation" ;
+                    :variable "secondSameBytesLocation" ;
                 ] ;
             ] ;
         ] ;
@@ -1342,7 +1342,7 @@ _:createDataResource
     ] ;
     :extractors (
         [
-            :param "notAContainerLocation" ;
+            :to "notAContainerLocation" ;
             :header "Location" ;
         ]
     ) ;
@@ -1393,7 +1393,7 @@ _:getTextResourceETag
     :request _:getTextResource ;
     :extractors (
         [
-            :param "etag" ;
+            :to "etag" ;
             :header "ETag" ;
         ]
     ) ;
@@ -1476,7 +1476,7 @@ _:getStorageDescriptionFirstContext
     :request _:getStorageDescriptionAsCid ;
     :extractors (
         [
-            :param "context" ;
+            :to "context" ;
             :path "$['@context'][0]" ;
         ]
     ) ;
@@ -1487,7 +1487,7 @@ _:getStorageDescriptionSecondContext
     :request _:getStorageDescriptionAsCid ;
     :extractors (
         [
-            :param "context" ;
+            :to "context" ;
             :path "$['@context'][1]" ;
         ]
     ) ;
@@ -1498,7 +1498,7 @@ _:getContainerETag
     :request _:getContainer ;
     :extractors (
         [
-            :param "etag" ;
+            :to "etag" ;
             :header "ETag" ;
         ]
     ) ;
@@ -1586,7 +1586,7 @@ _:createResourceBeneathDataResourceAllow
     :request _:createResourceBeneathDataResource ;
     :extractors (
         [
-            :param "allow" ;
+            :to "allow" ;
             :header "Allow" ;
         ]
     ) ;
@@ -1669,7 +1669,7 @@ _:getStorageDescriptionContext
     :request _:getStorageDescriptionAsCid ;
     :extractors (
         [
-            :param "context" ;
+            :to "context" ;
             :path "$['@context']" ;
         ]
     ) ;
@@ -1680,7 +1680,7 @@ _:getStorageDescriptionService
     :request _:getStorageDescriptionAsCid ;
     :extractors (
         [
-            :param "service" ;
+            :to "service" ;
             :path "$.service" ;
         ]
     ) ;
@@ -1734,7 +1734,7 @@ _:getForgedLinksetResourceLinksetLinks
             :base _:storageRoot ;
             :relative [
                 :single [
-                    :param "forgedLinksetLocation" ;
+                    :variable "forgedLinksetLocation" ;
                 ] ;
             ] ;
         ] ;
@@ -1749,7 +1749,7 @@ _:headContainerUpLinks
     :request _:headContainer ;
     :extractors (
         [
-            :param "upLinks" ;
+            :to "upLinks" ;
             :link "up" ;
         ]
     ) ;
@@ -1839,7 +1839,7 @@ _:createResourceBeneathDataResource
         :base _:storageRoot ;
         :relative [
             :single [
-                :param "notAContainerLocation" ;
+                :variable "notAContainerLocation" ;
             ] ;
         ] ;
     ] ;
@@ -1885,14 +1885,14 @@ _:getContainerAsJson
 
 # URIs
 _:storageRoot
-    :param "storageRoot" ;
+    :variable "storageRoot" ;
 .
 
 _:container
     :base _:storageRoot ;
     :relative [
         :single [
-            :param "containerLocation" ;
+            :variable "containerLocation" ;
         ] ;
     ] ;
 .
@@ -1901,7 +1901,7 @@ _:textResource
     :base _:storageRoot ;
     :relative [
         :single [
-            :param "textResourceLocation" ;
+            :variable "textResourceLocation" ;
         ] ;
     ] ;
 .
@@ -1910,14 +1910,14 @@ _:digitsResource
     :base _:storageRoot ;
     :relative [
         :single [
-            :param "digitsResourceLocation" ;
+            :variable "digitsResourceLocation" ;
         ] ;
     ] ;
 .
 
 _:storage
     :base [
-        :param "baseUri" ;
+        :variable "baseUri" ;
     ] ;
     :relative [
         :value "/" ;
@@ -1943,104 +1943,104 @@ _:contentTypeTextPlain
 # Extractors
 _:status
     a :StatusCodeExtractor ;
-    :param "status" ;
+    :to "status" ;
 .
 
 _:containerLocation
-    :param "containerLocation" ;
+    :to "containerLocation" ;
     :header "Location" ;
 .
 
 _:body
     a :BodyExtractor ;
-    :param "body" ;
+    :to "body" ;
 .
 
 _:contentType
-    :param "contentType" ;
+    :to "contentType" ;
     :header "Content-Type" ;
 .
 
 _:type
-    :param "type" ;
+    :to "type" ;
     :path "$.type" ;
 .
 
 _:items
-    :param "items" ;
+    :to "items" ;
     :path "$.items" ;
 .
 
 _:typeLinks
-    :param "typeLinks" ;
+    :to "typeLinks" ;
     :link "type" ;
 .
 
 _:linksetLinks
-    :param "linksetLinks" ;
+    :to "linksetLinks" ;
     :link "linkset" ;
 .
 
 # Assertions
 _:200
     :input [
-        :param "status" ;
+        :variable "status" ;
     ] ;
     :value "200" ;
 .
 
 _:201
     :input [
-        :param "status" ;
+        :variable "status" ;
     ] ;
     :value "201" ;
 .
 
 _:206
     :input [
-        :param "status" ;
+        :variable "status" ;
     ] ;
     :value "206" ;
 .
 
 _:404
     :input [
-        :param "status" ;
+        :variable "status" ;
     ] ;
     :value "404" ;
 .
 
 _:405
     :input [
-        :param "status" ;
+        :variable "status" ;
     ] ;
     :value "405" ;
 .
 
 _:416
     :input [
-        :param "status" ;
+        :variable "status" ;
     ] ;
     :value "416" ;
 .
 
 _:emptyItems
     :input [
-        :param "items" ;
+        :variable "items" ;
     ] ;
     :value "[]" ;
 .
 
 _:emptyBody
     :input [
-        :param "body" ;
+        :variable "body" ;
     ] ;
     :value "" ;
 .
 
 _:sameBytesBody
     :input [
-        :param "body" ;
+        :variable "body" ;
     ] ;
     :regex "^same bytes$" ;
 .
@@ -2048,7 +2048,7 @@ _:sameBytesBody
 _:textPlainContentType
     :input [
         :single [
-            :param "contentType" ;
+            :variable "contentType" ;
         ] ;
     ] ;
     :regex "(?i)^text/plain\\s*(;|$)" ;
@@ -2057,7 +2057,7 @@ _:textPlainContentType
 _:lwsJsonContentType
     :input [
         :single [
-            :param "contentType" ;
+            :variable "contentType" ;
         ] ;
     ] ;
     :regex "(?i)^application/lws\\+json\\s*(;|$)" ;
@@ -2066,7 +2066,7 @@ _:lwsJsonContentType
 _:lwsCidContentType
     :input [
         :single [
-            :param "contentType" ;
+            :variable "contentType" ;
         ] ;
     ] ;
     :regex "(?i)^application/lws\\+cid\\s*(;|$)" ;
@@ -2074,28 +2074,28 @@ _:lwsCidContentType
 
 _:containerType
     :input [
-        :param "type" ;
+        :variable "type" ;
     ] ;
     :regex "^Container$|\"Container\"" ;
 .
 
 _:containerTypeLink
     :input [
-        :param "typeLinks" ;
+        :variable "typeLinks" ;
     ] ;
     :contains "https://www.w3.org/ns/lws#Container" ;
 .
 
 _:dataResourceTypeLink
     :input [
-        :param "typeLinks" ;
+        :variable "typeLinks" ;
     ] ;
     :contains "https://www.w3.org/ns/lws#DataResource" ;
 .
 
 _:itemsArray
     :input [
-        :param "items" ;
+        :variable "items" ;
     ] ;
     :regex "^\\[" ;
 .
@@ -2103,7 +2103,7 @@ _:itemsArray
 _:jsonLdContentType
     :input [
         :single [
-            :param "contentType" ;
+            :variable "contentType" ;
         ] ;
     ] ;
     :regex "(?i)^application/ld\\+json\\s*(;|$)" ;
@@ -2112,7 +2112,7 @@ _:jsonLdContentType
 _:linksetLink
     :input [
         :count [
-            :param "linksetLinks" ;
+            :variable "linksetLinks" ;
         ] ;
     ] ;
     :greaterThan 0 ;

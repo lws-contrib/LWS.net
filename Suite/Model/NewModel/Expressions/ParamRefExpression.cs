@@ -4,9 +4,9 @@ public partial class ParamRefExpression
 {
     public override async Task<object> Evaluate(Context context)
     {
-        var value = context.Get(Param);
+        var value = context.Get(Variable);
 
-        context.Log<ParamRefExpression>("Evaluate: [{Param}] = [{Value}]", Param, value);
+        context.Log<ParamRefExpression>("Evaluate: [{Variable}] = [{Value}]", Variable, value);
 
         return value;
     }

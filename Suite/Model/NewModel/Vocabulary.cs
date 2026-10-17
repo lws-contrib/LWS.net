@@ -38,7 +38,9 @@ internal static class Vocabulary
 
     internal static INode Extractors { get; } = factory.CreateUriNode(UriFactory.Create($"{NS}extractors"));
 
-    internal static INode Param { get; } = factory.CreateUriNode(UriFactory.Create($"{NS}param"));
+    internal static INode To { get; } = factory.CreateUriNode(UriFactory.Create($"{NS}to"));
+
+    internal static INode Variable { get; } = factory.CreateUriNode(UriFactory.Create($"{NS}variable"));
 
     internal static INode Path { get; } = factory.CreateUriNode(UriFactory.Create($"{NS}path"));
 
