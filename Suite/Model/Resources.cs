@@ -57,16 +57,7 @@ public class Resources
         }
     }
 
-    public static NewModel.Graph Graph
-    {
-        get
-        {
-            var g = new Graph();
-            new TurtleParser().Load(g, Reader("new.ttl"));
-
-            return new NewModel.Graph(g);
-        }
-    }
+    public static NewModel.Graph Graph => Parse(new(Base, "new.ttl"));
 
     private static Type ThisClass => typeof(Resources);
 
@@ -90,6 +81,14 @@ public class Resources
         }
 
         return new RemoteDocument { Document = String(Base.MakeRelativeUri(uri).ToString()) };
+    }
+
+    internal static NewModel.Graph Parse(Uri uri)
+    {
+        var g = new Graph { BaseUri = uri };
+        new TurtleParser().Load(g, Reader(Base.MakeRelativeUri(uri).ToString()));
+
+        return new NewModel.Graph(g);
     }
 
     // Workaround for https://github.com/dotnetrdf/dotnetrdf/issues/893: the JSON-LD parser
