@@ -23,6 +23,11 @@ public abstract partial class Expression : GraphWrapperNode
             return ResolveExpression.Wrap(node);
         }
 
+        if (node.Graph.GetTriplesWithSubjectPredicate(node, Vocabulary.Single).Any())
+        {
+            return SingleExpression.Wrap(node);
+        }
+
         throw new InvalidOperationException();
     }
 }
