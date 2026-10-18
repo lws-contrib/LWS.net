@@ -5,4 +5,5 @@
     :manifestName "LWS Test Suite" ;
     :include "example.ttl"^^xsd:anyURI ;
     :include "touchstone.ttl"^^xsd:anyURI ;
+    :include "oldmanifest.ttl"^^xsd:anyURI ;
 ] .

@@ -1,0 +1,63 @@
+﻿@prefix : <http://example.com/> .
+
+[
+    :manifestName "LWS Protocol 1.0 Test Suite" ;
+    :test
+        _:storageContentTypeIsLwsCid ;
+] .
+
+# Tests
+
+_:storageContentTypeIsLwsCid
+    :testName "Storage content-type is LWS CID" ;
+    :steps (
+        _:getStorageContentType
+    ) ;
+    :assert _:lwsCidContentType ;
+.
+
+# Steps
+
+_:getStorageContentType
+    :stepName "Get storage Content-Type" ;
+    :request _:getStorage ;
+    :extract (
+        _:contentType
+    ) ;
+.
+
+# Requests
+
+_:getStorage
+    :method "GET" ;
+    :uri _:storage ;
+.
+
+# URIs
+
+_:storage
+    :base [
+        :variable "baseUri" ;
+    ] ;
+    :relative [
+        :constant "/" ;
+    ] ;
+.
+
+# Extractors
+
+_:contentType
+    :header "Content-Type" ;
+    :to "contentType" ;
+.
+
+# Assertions
+
+_:lwsCidContentType
+    :that [
+        :single [
+            :variable "contentType" ;
+        ] ;
+    ] ;
+    :matches "(?i)^application/lws\\+cid\\s*(;|$)" ;
+.
