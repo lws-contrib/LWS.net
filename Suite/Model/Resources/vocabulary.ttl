@@ -1,0 +1,394 @@
+﻿@prefix : <http://example.com/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# Properties
+
+:manifestName
+    a rdf:Property ;
+    rdfs:label "manifest name"@en ;
+    rdfs:comment "Human-readable name of the manifest."@en ;
+    rdfs:domain :Manifest ;
+    rdfs:range xsd:string ;
+.
+
+:include
+    a rdf:Property ;
+    rdfs:label "include"@en ;
+    rdfs:comment "Reference to another manifest whose test cases are run as part of this manifest. Relative references are resolved against the base of the including manifest."@en ;
+    rdfs:domain :Manifest ;
+    rdfs:range xsd:anyURI ;
+.
+
+:test
+    a rdf:Property ;
+    rdfs:label "test"@en ;
+    rdfs:comment "A test case belonging to the manifest."@en ;
+    rdfs:domain :Manifest ;
+    rdfs:range :TestCase ;
+.
+
+:testName
+    a rdf:Property ;
+    rdfs:label "test name"@en ;
+    rdfs:comment "Human-readable name of the test case."@en ;
+    rdfs:domain :TestCase ;
+    rdfs:range xsd:string ;
+.
+
+:steps
+    a rdf:Property ;
+    rdfs:label "steps"@en ;
+    rdfs:comment "Ordered list of steps executed one after the other before the assertion of the test case is evaluated. Each item is a step."@en ;
+    rdfs:domain :TestCase ;
+    rdfs:range rdf:List ;
+.
+
+:assert
+    a rdf:Property ;
+    rdfs:label "assert"@en ;
+    rdfs:comment "Assertion evaluated after all steps of the test case have executed. Its result is the outcome of the test case."@en ;
+    rdfs:domain :TestCase ;
+    rdfs:range :Assertion ;
+.
+
+:stepName
+    a rdf:Property ;
+    rdfs:label "step name"@en ;
+    rdfs:comment "Human-readable name of the step."@en ;
+    rdfs:domain :Step ;
+    rdfs:range xsd:string ;
+.
+
+:request
+    a rdf:Property ;
+    rdfs:label "request"@en ;
+    rdfs:comment "HTTP request sent by the step."@en ;
+    rdfs:domain :Step ;
+    rdfs:range :Request ;
+.
+
+:extract
+    a rdf:Property ;
+    rdfs:label "extract"@en ;
+    rdfs:comment "Ordered list of extractors applied to the response of the request of the step. Each item is an extractor."@en ;
+    rdfs:domain :Step ;
+    rdfs:range rdf:List ;
+.
+
+:method
+    a rdf:Property ;
+    rdfs:label "method"@en ;
+    rdfs:comment "HTTP method of the request, such as GET, POST or DELETE."@en ;
+    rdfs:domain :Request ;
+    rdfs:range xsd:string ;
+.
+
+:uri
+    a rdf:Property ;
+    rdfs:label "URI"@en ;
+    rdfs:comment "Expression evaluating to the absolute target URI of the request."@en ;
+    rdfs:domain :Request ;
+    rdfs:range :Expression ;
+.
+
+:headers
+    a rdf:Property ;
+    rdfs:label "headers"@en ;
+    rdfs:comment "A header field sent with the request."@en ;
+    rdfs:domain :Request ;
+    rdfs:range :RequestHeader ;
+.
+
+:body
+    a rdf:Property ;
+    rdfs:label "body"@en ;
+    rdfs:comment "Content sent as the body of the request."@en ;
+    rdfs:domain :Request ;
+    rdfs:range xsd:string ;
+.
+
+:key
+    a rdf:Property ;
+    rdfs:label "key"@en ;
+    rdfs:comment "Name of the HTTP header field sent with the request."@en ;
+    rdfs:domain :RequestHeader ;
+    rdfs:range xsd:string ;
+.
+
+:value
+    a rdf:Property ;
+    rdfs:label "value"@en ;
+    rdfs:comment "Value of the HTTP header field sent with the request."@en ;
+    rdfs:domain :RequestHeader ;
+    rdfs:range xsd:string ;
+.
+
+:to
+    a rdf:Property ;
+    rdfs:label "to"@en ;
+    rdfs:comment "Name of the parameter of the test context in which the extracted value is stored."@en ;
+    rdfs:domain :Extractor ;
+    rdfs:range xsd:string ;
+.
+
+:header
+    a rdf:Property ;
+    rdfs:label "header"@en ;
+    rdfs:comment "Name of the HTTP response header field whose values are extracted as a list of strings."@en ;
+    rdfs:domain :HeaderExtractor ;
+    rdfs:range xsd:string ;
+.
+
+:path
+    a rdf:Property ;
+    rdfs:label "path"@en ;
+    rdfs:comment "JSONPath query selecting exactly one value from the JSON body of the response."@en ;
+    rdfs:domain :JsonPathExtractor ;
+    rdfs:range xsd:string ;
+.
+
+:link
+    a rdf:Property ;
+    rdfs:label "link"@en ;
+    rdfs:comment "Link relation type. The targets of the links in the response having this relation type are extracted as a list of absolute URIs, resolved against the request URI. Registered relation types match case-insensitively, extension relation types exactly."@en ;
+    rdfs:domain :LinkExtractor ;
+    rdfs:range xsd:string ;
+.
+
+:constant
+    a rdf:Property ;
+    rdfs:label "constant"@en ;
+    rdfs:comment "String the constant expression evaluates to."@en ;
+    rdfs:domain :ConstantExpression ;
+    rdfs:range xsd:string ;
+.
+
+:variable
+    a rdf:Property ;
+    rdfs:label "variable"@en ;
+    rdfs:comment "Name of the parameter of the test context whose value the expression evaluates to. The parameter baseUri holds the base URI of the server under test."@en ;
+    rdfs:domain :ParamRefExpression ;
+    rdfs:range xsd:string ;
+.
+
+:base
+    a rdf:Property ;
+    rdfs:label "base"@en ;
+    rdfs:comment "Expression evaluating to the base URI against which the relative reference is resolved."@en ;
+    rdfs:domain :ResolveExpression ;
+    rdfs:range :Expression ;
+.
+
+:relative
+    a rdf:Property ;
+    rdfs:label "relative"@en ;
+    rdfs:comment "Expression evaluating to the relative reference resolved against the base URI."@en ;
+    rdfs:domain :ResolveExpression ;
+    rdfs:range :Expression ;
+.
+
+:single
+    a rdf:Property ;
+    rdfs:label "single"@en ;
+    rdfs:comment "Expression evaluating to a list of strings that must contain exactly one item. The single expression evaluates to that item."@en ;
+    rdfs:domain :SingleExpression ;
+    rdfs:range :Expression ;
+.
+
+:count
+    a rdf:Property ;
+    rdfs:label "count"@en ;
+    rdfs:comment "Expression evaluating to a list of strings. The count expression evaluates to the number of items in that list."@en ;
+    rdfs:domain :CountExpression ;
+    rdfs:range :Expression ;
+.
+
+:that
+    a rdf:Property ;
+    rdfs:label "that"@en ;
+    rdfs:comment "Expression whose value is tested by the assertion."@en ;
+    rdfs:domain :Assertion ;
+    rdfs:range :Expression ;
+.
+
+:equals
+    a rdf:Property ;
+    rdfs:label "equals"@en ;
+    rdfs:comment "String the input string must equal."@en ;
+    rdfs:domain :EqualityAssertion ;
+    rdfs:range xsd:string ;
+.
+
+:matches
+    a rdf:Property ;
+    rdfs:label "matches"@en ;
+    rdfs:comment "Regular expression the input string must match."@en ;
+    rdfs:domain :RegexAssertion ;
+    rdfs:range xsd:string ;
+.
+
+:contains
+    a rdf:Property ;
+    rdfs:label "contains"@en ;
+    rdfs:comment "String the input list of strings must contain."@en ;
+    rdfs:domain :ContainsAssertion ;
+    rdfs:range xsd:string ;
+.
+
+:greaterThan
+    a rdf:Property ;
+    rdfs:label "greater than"@en ;
+    rdfs:comment "Integer the input integer must be greater than."@en ;
+    rdfs:domain :GreaterThanAssertion ;
+    rdfs:range xsd:integer ;
+.
+
+# Classes
+
+:Manifest
+    a rdfs:Class ;
+    rdfs:label "Manifest"@en ;
+    rdfs:comment "Named collection of test cases, possibly including other manifests."@en ;
+.
+
+:TestCase
+    a rdfs:Class ;
+    rdfs:label "Test case"@en ;
+    rdfs:comment "Sequence of steps followed by an assertion."@en ;
+.
+
+:Step
+    a rdfs:Class ;
+    rdfs:label "Step"@en ;
+    rdfs:comment "HTTP request whose response is processed by extractors."@en ;
+.
+
+:Request
+    a rdfs:Class ;
+    rdfs:label "Request"@en ;
+    rdfs:comment "HTTP request."@en ;
+.
+
+:RequestHeader
+    a rdfs:Class ;
+    rdfs:label "Request header"@en ;
+    rdfs:comment "HTTP header field sent with a request."@en ;
+.
+
+:Extractor
+    a rdfs:Class ;
+    rdfs:label "Extractor"@en ;
+    rdfs:comment "Extracts a value from a response and stores it in a parameter of the test context."@en ;
+.
+
+:BodyExtractor
+    a rdfs:Class ;
+    rdfs:subClassOf :Extractor ;
+    rdfs:label "Body extractor"@en ;
+    rdfs:comment "Extracts the body of the response as a string."@en ;
+.
+
+:StatusCodeExtractor
+    a rdfs:Class ;
+    rdfs:subClassOf :Extractor ;
+    rdfs:label "Status code extractor"@en ;
+    rdfs:comment "Extracts the status code of the response as a string."@en ;
+.
+
+:HeaderExtractor
+    a rdfs:Class ;
+    rdfs:subClassOf :Extractor ;
+    rdfs:label "Header extractor"@en ;
+    rdfs:comment "Extracts the values of a response header field."@en ;
+.
+
+:LinkExtractor
+    a rdfs:Class ;
+    rdfs:subClassOf :Extractor ;
+    rdfs:label "Link extractor"@en ;
+    rdfs:comment "Extracts the targets of response links having a relation type."@en ;
+.
+
+:JsonPathExtractor
+    a rdfs:Class ;
+    rdfs:subClassOf :Extractor ;
+    rdfs:label "JSONPath extractor"@en ;
+    rdfs:comment "Extracts a value from the JSON body of the response."@en ;
+.
+
+:Expression
+    a rdfs:Class ;
+    rdfs:label "Expression"@en ;
+    rdfs:comment "Evaluates to a value in the test context."@en ;
+.
+
+:ConstantExpression
+    a rdfs:Class ;
+    rdfs:subClassOf :Expression ;
+    rdfs:label "Constant expression"@en ;
+    rdfs:comment "Evaluates to a constant string."@en ;
+.
+
+:ParamRefExpression
+    a rdfs:Class ;
+    rdfs:subClassOf :Expression ;
+    rdfs:label "Parameter reference expression"@en ;
+    rdfs:comment "Evaluates to the value of a parameter."@en ;
+.
+
+:ResolveExpression
+    a rdfs:Class ;
+    rdfs:subClassOf :Expression ;
+    rdfs:label "Resolve expression"@en ;
+    rdfs:comment "Evaluates to a relative reference resolved against a base URI."@en ;
+.
+
+:SingleExpression
+    a rdfs:Class ;
+    rdfs:subClassOf :Expression ;
+    rdfs:label "Single expression"@en ;
+    rdfs:comment "Evaluates to the only item of a list."@en ;
+.
+
+:CountExpression
+    a rdfs:Class ;
+    rdfs:subClassOf :Expression ;
+    rdfs:label "Count expression"@en ;
+    rdfs:comment "Evaluates to the number of items in a list."@en ;
+.
+
+:Assertion
+    a rdfs:Class ;
+    rdfs:label "Assertion"@en ;
+    rdfs:comment "Tests the value of an expression."@en ;
+.
+
+:EqualityAssertion
+    a rdfs:Class ;
+    rdfs:subClassOf :Assertion ;
+    rdfs:label "Equality assertion"@en ;
+    rdfs:comment "Passes when the input equals a string."@en ;
+.
+
+:RegexAssertion
+    a rdfs:Class ;
+    rdfs:subClassOf :Assertion ;
+    rdfs:label "Regular expression assertion"@en ;
+    rdfs:comment "Passes when the input matches a regular expression."@en ;
+.
+
+:ContainsAssertion
+    a rdfs:Class ;
+    rdfs:subClassOf :Assertion ;
+    rdfs:label "Contains assertion"@en ;
+    rdfs:comment "Passes when the input list contains a string."@en ;
+.
+
+:GreaterThanAssertion
+    a rdfs:Class ;
+    rdfs:subClassOf :Assertion ;
+    rdfs:label "Greater than assertion"@en ;
+    rdfs:comment "Passes when the input is greater than an integer."@en ;
+.
