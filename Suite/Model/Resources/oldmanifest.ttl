@@ -6,7 +6,9 @@
         _:storageContentTypeIsLwsCid ,
         _:storageRootIsContainer ,
         _:storageRootIsContainerStatus ,
-        _:storageRootIsContainerTypeLink ;
+        _:storageRootIsContainerTypeLink ,
+        _:discoveryStorageDescriptionStatus ,
+        _:discoveryStorageDescriptionContentType ;
 ] .
 
 # Tests
@@ -44,6 +46,22 @@ _:storageRootIsContainerTypeLink
     :assert _:containerTypeLink ;
 .
 
+_:discoveryStorageDescriptionStatus
+    :testName "discovery-storage-description-status" ;
+    :steps (
+        _:getStorageAsLwsJsonStatus
+    ) ;
+    :assert _:200 ;
+.
+
+_:discoveryStorageDescriptionContentType
+    :testName "discovery-storage-description-content-type" ;
+    :steps (
+        _:getStorageAsLwsJsonContentType
+    ) ;
+    :assert _:lwsJsonContentType ;
+.
+
 # Steps
 
 _:getStorageFirst
@@ -76,11 +94,33 @@ _:getStorageStatus
     ) ;
 .
 
+_:getStorageAsLwsJsonStatus
+    :stepName "Get storage as LWS JSON status" ;
+    :request _:getStorageAsLwsJson ;
+    :extract (
+        _:status
+    ) ;
+.
+
+_:getStorageAsLwsJsonContentType
+    :stepName "Get storage as LWS JSON Content-Type" ;
+    :request _:getStorageAsLwsJson ;
+    :extract (
+        _:contentType
+    ) ;
+.
+
 # Requests
 
 _:getStorage
     :method "GET" ;
     :uri _:storage ;
+.
+
+_:getStorageAsLwsJson
+    :method "GET" ;
+    :uri _:storage ;
+    :headers _:acceptLwsJson ;
 .
 
 # URIs
@@ -92,6 +132,13 @@ _:storage
     :relative [
         :constant "/" ;
     ] ;
+.
+
+# Headers
+
+_:acceptLwsJson
+    :key "Accept" ;
+    :value "application/lws+json" ;
 .
 
 # Extractors
@@ -134,4 +181,13 @@ _:200
         :variable "status" ;
     ] ;
     :equals "200" ;
+.
+
+_:lwsJsonContentType
+    :that [
+        :single [
+            :variable "contentType" ;
+        ] ;
+    ] ;
+    :matches "(?i)^application/lws\\+json\\s*(;|$)" ;
 .
