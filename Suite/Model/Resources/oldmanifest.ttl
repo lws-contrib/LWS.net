@@ -547,7 +547,9 @@ _:storage
 .
 
 _:storageRoot
-    :variable "storageRoot" ;
+    :single [
+        :variable "storageRoot" ;
+    ] ;
 .
 
 _:container
@@ -569,7 +571,9 @@ _:shoppingList
 .
 
 _:authorizationServer
-    :variable "authorizationServer" ;
+    :single [
+        :variable "authorizationServer" ;
+    ] ;
 .
 
 _:tokenEndpoint

@@ -51,7 +51,9 @@ _:exchangeTokenWithoutCredentialStatus
         :method "POST" ;
         :uri [
             :base [
-                :variable "authorizationServer" ;
+                :single [
+                    :variable "authorizationServer" ;
+                ] ;
             ] ;
             :relative [
                 :constant "/token" ;

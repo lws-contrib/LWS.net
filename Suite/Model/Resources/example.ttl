@@ -30,7 +30,9 @@
                 :request [
                     :method "POST" ;
                     :uri [
-                        :variable "storageRoot" ;
+                        :single [
+                            :variable "storageRoot" ;
+                        ] ;
                     ] ;
                 ] ;
                 :extract (

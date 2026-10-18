@@ -12,12 +12,10 @@ public partial class JsonPathExtractor
         var node = await response.Content.ReadFromJsonAsync<JsonNode>();
         var result = path.Evaluate(node);
 
-        // TODO: <1?
-        // TODO: >1?
-        var value = result.Matches.Single().Value;
+        var value = result.Matches.Select(match => match.Value.ToString()).ToArray();
 
         context.Log<JsonPathExtractor>("Extract: path = [{Path}], value = [{Value}]", Path, value);
 
-        return value.ToString();
+        return value;
     }
 }
