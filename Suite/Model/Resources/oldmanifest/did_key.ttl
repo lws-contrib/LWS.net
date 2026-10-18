@@ -1,0 +1,72 @@
+﻿@prefix : <http://example.com/> .
+
+[
+    :manifestName "LWS Authentication: Self-signed Identity using did:key" ;
+    :test
+        _:tokenExchangeWithoutCredentialReturns400 ;
+] .
+
+# Tests
+
+_:tokenExchangeWithoutCredentialReturns400
+    :testName "authn-didkey-missing-credential-status" ;
+    :steps (
+        _:discoverAuthorizationServer
+        _:exchangeTokenWithoutCredentialStatus
+    ) ;
+    :assert [
+        :that [
+            :variable "status" ;
+        ] ;
+        :equals "400" ;
+    ] ;
+.
+
+# Steps
+
+_:discoverAuthorizationServer
+    :stepName "Discover authorization server" ;
+    :request [
+        :method "GET" ;
+        :uri [
+            :base [
+                :variable "baseUri" ;
+            ] ;
+            :relative [
+                :constant "/" ;
+            ] ;
+        ] ;
+    ] ;
+    :extract (
+        [
+            :path "$.service[?@.type == 'AuthorizationServer'].serviceEndpoint" ;
+            :to "authorizationServer" ;
+        ]
+    ) ;
+.
+
+_:exchangeTokenWithoutCredentialStatus
+    :stepName "Exchange token without credential status" ;
+    :request [
+        :method "POST" ;
+        :uri [
+            :base [
+                :variable "authorizationServer" ;
+            ] ;
+            :relative [
+                :constant "/token" ;
+            ] ;
+        ] ;
+        :headers [
+            :key "Content-Type" ;
+            :value "application/x-www-form-urlencoded" ;
+        ] ;
+        :body "grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Atoken-exchange&resource=https%3A%2F%2Fstorage.example%2Falice%2F" ;
+    ] ;
+    :extract (
+        [
+            a :StatusCodeExtractor ;
+            :to "status" ;
+        ]
+    ) ;
+.

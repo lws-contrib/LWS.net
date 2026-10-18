@@ -66,7 +66,6 @@
             "body": "grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Atoken-exchange&resource=https%3A%2F%2Fstorage.example%2Falice%2F"
           },
           "response": {
-            "statusCode": 400,
             "bodyURL": "../../resources/token_response_400.json"
           }
         }
