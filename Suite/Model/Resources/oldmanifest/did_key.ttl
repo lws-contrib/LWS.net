@@ -1,7 +1,7 @@
 ﻿@prefix : <http://example.com/> .
 
 [
-    :manifestName "LWS Authentication: Self-signed Identity using did:key" ;
+    :manifestName "Ported from manifest.jsonld: LWS Authentication: Self-signed Identity using did:key" ;
     :test
         _:tokenExchangeWithoutCredentialReturns400 ;
 ] .
