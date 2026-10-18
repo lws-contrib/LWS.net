@@ -16,7 +16,9 @@
         _:readDataResourceReturns200 ,
         _:readDataResourceReturnsTextPlain ,
         _:readDataResourceLinksDataResourceType ,
-        _:readDataResourceReturnsBody ;
+        _:readDataResourceReturnsBody ,
+        _:getLinksetReturns200 ,
+        _:getLinksetReturnsLinksetJsonMediaType ;
 ] .
 
 # Tests
@@ -156,6 +158,35 @@ _:readDataResourceReturnsBody
             :variable "body" ;
         ] ;
         :equals "milk\neggs\nbread\nbutter\napples\norange juice\n" ;
+    ] ;
+.
+
+_:getLinksetReturns200
+    :testName "getLinkset-status" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:getContainerLinksetLinks
+        _:getLinksetStatus
+    ) ;
+    :assert _:200 ;
+.
+
+_:getLinksetReturnsLinksetJsonMediaType
+    :testName "getLinkset-content-type" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:getContainerLinksetLinks
+        _:getLinksetContentType
+    ) ;
+    :assert [
+        :that [
+            :single [
+                :variable "contentType" ;
+            ] ;
+        ] ;
+        :matches "(?i)^application/linkset\\+json\\s*(;|$)" ;
     ] ;
 .
 
@@ -313,6 +344,33 @@ _:getShoppingListBody
     ) ;
 .
 
+_:getContainerLinksetLinks
+    :stepName "Get container linkset links" ;
+    :request _:getContainer ;
+    :extract (
+        [
+            :link "linkset" ;
+            :to "linksetLinks" ;
+        ]
+    ) ;
+.
+
+_:getLinksetStatus
+    :stepName "Get linkset status" ;
+    :request _:getLinkset ;
+    :extract (
+        _:status
+    ) ;
+.
+
+_:getLinksetContentType
+    :stepName "Get linkset Content-Type" ;
+    :request _:getLinkset ;
+    :extract (
+        _:contentType
+    ) ;
+.
+
 # Requests
 
 _:getStorage
@@ -340,6 +398,19 @@ _:getContainerAsLwsJson
 _:getShoppingList
     :method "GET" ;
     :uri _:shoppingList ;
+.
+
+_:getLinkset
+    :method "GET" ;
+    :uri [
+        :single [
+            :variable "linksetLinks" ;
+        ] ;
+    ] ;
+    :headers [
+        :key "Accept" ;
+        :value "application/linkset+json" ;
+    ] ;
 .
 
 # URIs
