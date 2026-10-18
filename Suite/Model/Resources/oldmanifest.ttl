@@ -22,7 +22,8 @@
         _:containerWithMemberReturns200 ,
         _:containerWithMemberReturnsLwsJsonMediaType ,
         _:authorizationServerMetadataReturns200 ,
-        _:authorizationServerMetadataReturnsJsonMediaType ;
+        _:authorizationServerMetadataReturnsJsonMediaType ,
+        _:tokenExchangeForUnknownResourceReturns400 ;
 ] .
 
 # Tests
@@ -241,6 +242,20 @@ _:authorizationServerMetadataReturnsJsonMediaType
     ] ;
 .
 
+_:tokenExchangeForUnknownResourceReturns400
+    :testName "authz-token-exchange-invalid-resource-status" ;
+    :steps (
+        _:discoverAuthorizationServer
+        _:exchangeTokenForUnknownResourceStatus
+    ) ;
+    :assert [
+        :that [
+            :variable "status" ;
+        ] ;
+        :equals "400" ;
+    ] ;
+.
+
 # Steps
 
 _:getStorageFirst
@@ -449,6 +464,19 @@ _:getAuthorizationServerMetadataContentType
     ) ;
 .
 
+_:exchangeTokenForUnknownResourceStatus
+    :stepName "Exchange token for unknown resource status" ;
+    :request [
+        :method "POST" ;
+        :uri _:tokenEndpoint ;
+        :headers _:contentTypeFormUrlEncoded ;
+        :body "grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Atoken-exchange&resource=https%3A%2F%2Funknown.example%2F&subject_token_type=urn%3Aietf%3Aparams%3Aoauth%3Atoken-type%3Aid_token&subject_token=<subject-token>" ;
+    ] ;
+    :extract (
+        _:status
+    ) ;
+.
+
 # Requests
 
 _:getStorage
@@ -542,6 +570,13 @@ _:authorizationServer
     :variable "authorizationServer" ;
 .
 
+_:tokenEndpoint
+    :base _:authorizationServer ;
+    :relative [
+        :constant "/token" ;
+    ] ;
+.
+
 # Headers
 
 _:acceptLwsJson
@@ -557,6 +592,11 @@ _:linkTypeContainer
 _:contentTypeTextPlain
     :key "Content-Type" ;
     :value "text/plain" ;
+.
+
+_:contentTypeFormUrlEncoded
+    :key "Content-Type" ;
+    :value "application/x-www-form-urlencoded" ;
 .
 
 # Extractors
