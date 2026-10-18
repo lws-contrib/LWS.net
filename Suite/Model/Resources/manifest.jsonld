@@ -21,29 +21,6 @@
 			"entries": [
 
 				{
-					"@id": "#storage-root-is-container",
-					"name": "Storage root is container",
-					"request": [
-						{
-							"method": "GET",
-							"url": "/"
-						},
-						{
-							"method": "GET",
-							"url": "/"
-						}
-					],
-					"response": {
-						"linkHeaders": [
-							{
-								"rel": "type",
-								"href": "https://www.w3.org/ns/lws#Container"
-							}
-						]
-					}
-				},
-
-				{
 					"@type": "ValidationTest",
 					"@id": "#storage-root-is-container",
 					"name": "storage-root-is-container",

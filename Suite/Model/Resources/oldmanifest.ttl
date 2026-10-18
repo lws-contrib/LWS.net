@@ -3,7 +3,8 @@
 [
     :manifestName "LWS Protocol 1.0 Test Suite" ;
     :test
-        _:storageContentTypeIsLwsCid ;
+        _:storageContentTypeIsLwsCid ,
+        _:storageRootIsContainer ;
 ] .
 
 # Tests
@@ -16,13 +17,36 @@ _:storageContentTypeIsLwsCid
     :assert _:lwsCidContentType ;
 .
 
+_:storageRootIsContainer
+    :testName "Storage root is container" ;
+    :steps (
+        _:getStorageFirst
+        _:getStorageTypeLinks
+    ) ;
+    :assert _:containerTypeLink ;
+.
+
 # Steps
+
+_:getStorageFirst
+    :stepName "Get storage first" ;
+    :request _:getStorage ;
+    :extract () ;
+.
 
 _:getStorageContentType
     :stepName "Get storage Content-Type" ;
     :request _:getStorage ;
     :extract (
         _:contentType
+    ) ;
+.
+
+_:getStorageTypeLinks
+    :stepName "Get storage type links" ;
+    :request _:getStorage ;
+    :extract (
+        _:typeLinks
     ) ;
 .
 
@@ -51,6 +75,11 @@ _:contentType
     :to "contentType" ;
 .
 
+_:typeLinks
+    :link "type" ;
+    :to "typeLinks" ;
+.
+
 # Assertions
 
 _:lwsCidContentType
@@ -60,4 +89,11 @@ _:lwsCidContentType
         ] ;
     ] ;
     :matches "(?i)^application/lws\\+cid\\s*(;|$)" ;
+.
+
+_:containerTypeLink
+    :that [
+        :variable "typeLinks" ;
+    ] ;
+    :contains "https://www.w3.org/ns/lws#Container" ;
 .
