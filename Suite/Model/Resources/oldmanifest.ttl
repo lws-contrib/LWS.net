@@ -18,7 +18,9 @@
         _:readDataResourceLinksDataResourceType ,
         _:readDataResourceReturnsBody ,
         _:getLinksetReturns200 ,
-        _:getLinksetReturnsLinksetJsonMediaType ;
+        _:getLinksetReturnsLinksetJsonMediaType ,
+        _:containerWithMemberReturns200 ,
+        _:containerWithMemberReturnsLwsJsonMediaType ;
 ] .
 
 # Tests
@@ -188,6 +190,28 @@ _:getLinksetReturnsLinksetJsonMediaType
         ] ;
         :matches "(?i)^application/linkset\\+json\\s*(;|$)" ;
     ] ;
+.
+
+_:containerWithMemberReturns200
+    :testName "getContainer-containmentIntegrity-status" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createShoppingList
+        _:getContainerAsLwsJsonStatus
+    ) ;
+    :assert _:200 ;
+.
+
+_:containerWithMemberReturnsLwsJsonMediaType
+    :testName "getContainer-containmentIntegrity-content-type" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createShoppingList
+        _:getContainerAsLwsJsonContentType
+    ) ;
+    :assert _:lwsJsonContentType ;
 .
 
 # Steps
