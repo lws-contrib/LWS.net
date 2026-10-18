@@ -15,7 +15,7 @@ public abstract partial class Expression : GraphWrapperNode
 
         if (node.Graph.GetTriplesWithSubjectPredicate(node, Vocabulary.Variable).Any())
         {
-            return ParamRefExpression.Wrap(node);
+            return VariableExpression.Wrap(node);
         }
 
         if (node.Graph.GetTriplesWithSubjectPredicate(node, Vocabulary.Base).Any())

@@ -169,7 +169,7 @@
     a rdf:Property ;
     rdfs:label "variable"@en ;
     rdfs:comment "Name of the variable whose value the expression evaluates to. The variable must have been set, either by an earlier extractor or, for baseUri, to the base URI of the server under test."@en ;
-    rdfs:domain :ParamRefExpression ;
+    rdfs:domain :VariableExpression ;
     rdfs:range xsd:string ;
 .
 
@@ -331,10 +331,10 @@
     rdfs:comment "Evaluates to a constant string."@en ;
 .
 
-:ParamRefExpression
+:VariableExpression
     a rdfs:Class ;
     rdfs:subClassOf :Expression ;
-    rdfs:label "Parameter reference expression"@en ;
+    rdfs:label "Variable expression"@en ;
     rdfs:comment "Evaluates to the value of a variable."@en ;
 .
 
