@@ -9,7 +9,10 @@
         _:storageRootIsContainerTypeLink ,
         _:discoveryStorageDescriptionStatus ,
         _:discoveryStorageDescriptionContentType ,
-        _:discoveryGetLinksStorageDescriptionStatus ;
+        _:discoveryGetLinksStorageDescriptionStatus ,
+        _:getContainerReturns200 ,
+        _:getContainerReturnsLwsJsonMediaType ,
+        _:getContainerLinksContainerType ;
 ] .
 
 # Tests
@@ -71,6 +74,36 @@ _:discoveryGetLinksStorageDescriptionStatus
         _:getContainerStatus
     ) ;
     :assert _:200 ;
+.
+
+_:getContainerReturns200
+    :testName "getContainer-status" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:getContainerAsLwsJsonStatus
+    ) ;
+    :assert _:200 ;
+.
+
+_:getContainerReturnsLwsJsonMediaType
+    :testName "getContainer-content-type" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:getContainerAsLwsJsonContentType
+    ) ;
+    :assert _:lwsJsonContentType ;
+.
+
+_:getContainerLinksContainerType
+    :testName "getContainer-type-link" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:getContainerAsLwsJsonTypeLinks
+    ) ;
+    :assert _:containerTypeLink ;
 .
 
 # Steps
@@ -155,6 +188,30 @@ _:getContainerStatus
     ) ;
 .
 
+_:getContainerAsLwsJsonStatus
+    :stepName "Get container as LWS JSON status" ;
+    :request _:getContainerAsLwsJson ;
+    :extract (
+        _:status
+    ) ;
+.
+
+_:getContainerAsLwsJsonContentType
+    :stepName "Get container as LWS JSON Content-Type" ;
+    :request _:getContainerAsLwsJson ;
+    :extract (
+        _:contentType
+    ) ;
+.
+
+_:getContainerAsLwsJsonTypeLinks
+    :stepName "Get container as LWS JSON type links" ;
+    :request _:getContainerAsLwsJson ;
+    :extract (
+        _:typeLinks
+    ) ;
+.
+
 # Requests
 
 _:getStorage
@@ -171,6 +228,12 @@ _:getStorageAsLwsJson
 _:getContainer
     :method "GET" ;
     :uri _:container ;
+.
+
+_:getContainerAsLwsJson
+    :method "GET" ;
+    :uri _:container ;
+    :headers _:acceptLwsJson ;
 .
 
 # URIs

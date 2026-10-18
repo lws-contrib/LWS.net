@@ -162,8 +162,6 @@
 						]
 					},
 					"response": {
-						"statusCode": 200,
-						"contentType": "application/lws+json",
 						"linkHeaders": [
 							{
 								"rel": "linkset",
@@ -173,10 +171,6 @@
 							{
 								"rel": "up",
 								"hrefTemplate": "/alice/"
-							},
-							{
-								"rel": "type",
-								"href": "https://www.w3.org/ns/lws#Container"
 							},
 							{
 								"rel": "storageDescription",
