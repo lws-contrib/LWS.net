@@ -389,8 +389,6 @@
 						"url": "/alice/notes/shoppinglist.txt"
 					},
 					"response": {
-						"statusCode": 200,
-						"contentType": "text/plain",
 						"linkHeaders": [
 							{
 								"rel": "linkset",
@@ -402,15 +400,10 @@
 								"hrefTemplate": "/alice/notes/"
 							},
 							{
-								"rel": "type",
-								"href": "https://www.w3.org/ns/lws#DataResource"
-							},
-							{
 								"rel": "storageDescription",
 								"hrefTemplate": "/alice/description"
 							}
-						],
-						"bodyURL": "resources/shoppinglist.txt"
+						]
 					}
 				},
 

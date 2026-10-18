@@ -12,7 +12,11 @@
         _:discoveryGetLinksStorageDescriptionStatus ,
         _:getContainerReturns200 ,
         _:getContainerReturnsLwsJsonMediaType ,
-        _:getContainerLinksContainerType ;
+        _:getContainerLinksContainerType ,
+        _:readDataResourceReturns200 ,
+        _:readDataResourceReturnsTextPlain ,
+        _:readDataResourceLinksDataResourceType ,
+        _:readDataResourceReturnsBody ;
 ] .
 
 # Tests
@@ -104,6 +108,55 @@ _:getContainerLinksContainerType
         _:getContainerAsLwsJsonTypeLinks
     ) ;
     :assert _:containerTypeLink ;
+.
+
+_:readDataResourceReturns200
+    :testName "readDataResource-status" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createShoppingList
+        _:getShoppingListStatus
+    ) ;
+    :assert _:200 ;
+.
+
+_:readDataResourceReturnsTextPlain
+    :testName "readDataResource-content-type" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createShoppingList
+        _:getShoppingListContentType
+    ) ;
+    :assert _:textPlainContentType ;
+.
+
+_:readDataResourceLinksDataResourceType
+    :testName "readDataResource-type-link" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createShoppingList
+        _:getShoppingListTypeLinks
+    ) ;
+    :assert _:dataResourceTypeLink ;
+.
+
+_:readDataResourceReturnsBody
+    :testName "readDataResource-body" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createShoppingList
+        _:getShoppingListBody
+    ) ;
+    :assert [
+        :that [
+            :variable "body" ;
+        ] ;
+        :equals "milk\neggs\nbread\nbutter\napples\norange juice\n" ;
+    ] ;
 .
 
 # Steps
@@ -212,6 +265,54 @@ _:getContainerAsLwsJsonTypeLinks
     ) ;
 .
 
+_:createShoppingList
+    :stepName "Create shopping list" ;
+    :request [
+        :method "POST" ;
+        :uri _:container ;
+        :headers _:contentTypeTextPlain ;
+        :body "milk\neggs\nbread\nbutter\napples\norange juice\n" ;
+    ] ;
+    :extract (
+        [
+            :header "Location" ;
+            :to "shoppingListLocation" ;
+        ]
+    ) ;
+.
+
+_:getShoppingListStatus
+    :stepName "Get shopping list status" ;
+    :request _:getShoppingList ;
+    :extract (
+        _:status
+    ) ;
+.
+
+_:getShoppingListContentType
+    :stepName "Get shopping list Content-Type" ;
+    :request _:getShoppingList ;
+    :extract (
+        _:contentType
+    ) ;
+.
+
+_:getShoppingListTypeLinks
+    :stepName "Get shopping list type links" ;
+    :request _:getShoppingList ;
+    :extract (
+        _:typeLinks
+    ) ;
+.
+
+_:getShoppingListBody
+    :stepName "Get shopping list body" ;
+    :request _:getShoppingList ;
+    :extract (
+        _:body
+    ) ;
+.
+
 # Requests
 
 _:getStorage
@@ -234,6 +335,11 @@ _:getContainerAsLwsJson
     :method "GET" ;
     :uri _:container ;
     :headers _:acceptLwsJson ;
+.
+
+_:getShoppingList
+    :method "GET" ;
+    :uri _:shoppingList ;
 .
 
 # URIs
@@ -260,6 +366,15 @@ _:container
     ] ;
 .
 
+_:shoppingList
+    :base _:storageRoot ;
+    :relative [
+        :single [
+            :variable "shoppingListLocation" ;
+        ] ;
+    ] ;
+.
+
 # Headers
 
 _:acceptLwsJson
@@ -270,6 +385,11 @@ _:acceptLwsJson
 _:linkTypeContainer
     :key "Link" ;
     :value "<https://www.w3.org/ns/lws#Container>; rel=\"type\"" ;
+.
+
+_:contentTypeTextPlain
+    :key "Content-Type" ;
+    :value "text/plain" ;
 .
 
 # Extractors
@@ -287,6 +407,11 @@ _:typeLinks
 _:status
     a :StatusCodeExtractor ;
     :to "status" ;
+.
+
+_:body
+    a :BodyExtractor ;
+    :to "body" ;
 .
 
 # Assertions
@@ -321,4 +446,20 @@ _:lwsJsonContentType
         ] ;
     ] ;
     :matches "(?i)^application/lws\\+json\\s*(;|$)" ;
+.
+
+_:textPlainContentType
+    :that [
+        :single [
+            :variable "contentType" ;
+        ] ;
+    ] ;
+    :matches "(?i)^text/plain\\s*(;|$)" ;
+.
+
+_:dataResourceTypeLink
+    :that [
+        :variable "typeLinks" ;
+    ] ;
+    :contains "https://www.w3.org/ns/lws#DataResource" ;
 .
