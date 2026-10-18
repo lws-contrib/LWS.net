@@ -20,7 +20,9 @@
         _:getLinksetReturns200 ,
         _:getLinksetReturnsLinksetJsonMediaType ,
         _:containerWithMemberReturns200 ,
-        _:containerWithMemberReturnsLwsJsonMediaType ;
+        _:containerWithMemberReturnsLwsJsonMediaType ,
+        _:authorizationServerMetadataReturns200 ,
+        _:authorizationServerMetadataReturnsJsonMediaType ;
 ] .
 
 # Tests
@@ -214,6 +216,31 @@ _:containerWithMemberReturnsLwsJsonMediaType
     :assert _:lwsJsonContentType ;
 .
 
+_:authorizationServerMetadataReturns200
+    :testName "authz-server-metadata-well-known-status" ;
+    :steps (
+        _:discoverAuthorizationServer
+        _:getAuthorizationServerMetadataStatus
+    ) ;
+    :assert _:200 ;
+.
+
+_:authorizationServerMetadataReturnsJsonMediaType
+    :testName "authz-server-metadata-well-known-content-type" ;
+    :steps (
+        _:discoverAuthorizationServer
+        _:getAuthorizationServerMetadataContentType
+    ) ;
+    :assert [
+        :that [
+            :single [
+                :variable "contentType" ;
+            ] ;
+        ] ;
+        :matches "(?i)^application/json\\s*(;|$)" ;
+    ] ;
+.
+
 # Steps
 
 _:getStorageFirst
@@ -395,6 +422,33 @@ _:getLinksetContentType
     ) ;
 .
 
+_:discoverAuthorizationServer
+    :stepName "Discover authorization server" ;
+    :request _:getStorage ;
+    :extract (
+        [
+            :path "$.service[?@.type == 'AuthorizationServer'].serviceEndpoint" ;
+            :to "authorizationServer" ;
+        ]
+    ) ;
+.
+
+_:getAuthorizationServerMetadataStatus
+    :stepName "Get authorization server metadata status" ;
+    :request _:getAuthorizationServerMetadata ;
+    :extract (
+        _:status
+    ) ;
+.
+
+_:getAuthorizationServerMetadataContentType
+    :stepName "Get authorization server metadata Content-Type" ;
+    :request _:getAuthorizationServerMetadata ;
+    :extract (
+        _:contentType
+    ) ;
+.
+
 # Requests
 
 _:getStorage
@@ -437,6 +491,20 @@ _:getLinkset
     ] ;
 .
 
+_:getAuthorizationServerMetadata
+    :method "GET" ;
+    :uri [
+        :base _:authorizationServer ;
+        :relative [
+            :constant "/.well-known/lws-configuration" ;
+        ] ;
+    ] ;
+    :headers [
+        :key "Accept" ;
+        :value "application/json" ;
+    ] ;
+.
+
 # URIs
 
 _:storage
@@ -468,6 +536,10 @@ _:shoppingList
             :variable "shoppingListLocation" ;
         ] ;
     ] ;
+.
+
+_:authorizationServer
+    :variable "authorizationServer" ;
 .
 
 # Headers
