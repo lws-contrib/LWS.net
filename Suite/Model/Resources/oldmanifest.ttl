@@ -8,7 +8,8 @@
         _:storageRootIsContainerStatus ,
         _:storageRootIsContainerTypeLink ,
         _:discoveryStorageDescriptionStatus ,
-        _:discoveryStorageDescriptionContentType ;
+        _:discoveryStorageDescriptionContentType ,
+        _:discoveryGetLinksStorageDescriptionStatus ;
 ] .
 
 # Tests
@@ -62,6 +63,16 @@ _:discoveryStorageDescriptionContentType
     :assert _:lwsJsonContentType ;
 .
 
+_:discoveryGetLinksStorageDescriptionStatus
+    :testName "discovery-get-links-storageDescription-status" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:getContainerStatus
+    ) ;
+    :assert _:200 ;
+.
+
 # Steps
 
 _:getStorageFirst
@@ -110,6 +121,40 @@ _:getStorageAsLwsJsonContentType
     ) ;
 .
 
+_:discoverStorageRoot
+    :stepName "Discover storage root" ;
+    :request _:getStorage ;
+    :extract (
+        [
+            :path "$.service[?@.type == 'StorageRoot'].serviceEndpoint" ;
+            :to "storageRoot" ;
+        ]
+    ) ;
+.
+
+_:createContainer
+    :stepName "Create container" ;
+    :request [
+        :method "POST" ;
+        :uri _:storageRoot ;
+        :headers _:linkTypeContainer ;
+    ] ;
+    :extract (
+        [
+            :header "Location" ;
+            :to "containerLocation" ;
+        ]
+    ) ;
+.
+
+_:getContainerStatus
+    :stepName "Get container status" ;
+    :request _:getContainer ;
+    :extract (
+        _:status
+    ) ;
+.
+
 # Requests
 
 _:getStorage
@@ -123,6 +168,11 @@ _:getStorageAsLwsJson
     :headers _:acceptLwsJson ;
 .
 
+_:getContainer
+    :method "GET" ;
+    :uri _:container ;
+.
+
 # URIs
 
 _:storage
@@ -134,11 +184,29 @@ _:storage
     ] ;
 .
 
+_:storageRoot
+    :variable "storageRoot" ;
+.
+
+_:container
+    :base _:storageRoot ;
+    :relative [
+        :single [
+            :variable "containerLocation" ;
+        ] ;
+    ] ;
+.
+
 # Headers
 
 _:acceptLwsJson
     :key "Accept" ;
     :value "application/lws+json" ;
+.
+
+_:linkTypeContainer
+    :key "Link" ;
+    :value "<https://www.w3.org/ns/lws#Container>; rel=\"type\"" ;
 .
 
 # Extractors
