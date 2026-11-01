@@ -90,7 +90,8 @@
         _:linksetAdvertisesPatch ,
         _:linksetAdvertisesJsonPatch ,
         _:containerHeadLinksUp ,
-        _:leafUpLinkNamesInnerContainer ;
+        _:leafUpLinkNamesInnerContainer ,
+        _:innerContainerListsLeaf ;
 ] .
 
 # Tests
@@ -1180,6 +1181,29 @@ _:leafUpLinkNamesInnerContainer
     ] ;
 .
 
+_:innerContainerListsLeaf
+    :testName "Inner container lists leaf" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createOuterContainer
+        _:createInnerContainer
+        _:createLeafResource
+        _:getInnerContainerItemIds
+    ) ;
+    :assert [
+        :that [
+            :base _:inner ;
+            :relative [
+                :single [
+                    :variable "itemIds" ;
+                ] ;
+            ] ;
+        ] ;
+        :equals _:leaf ;
+    ] ;
+.
+
 # Steps
 _:discoverStorageRoot
     :stepName "Discover storage root" ;
@@ -2042,6 +2066,14 @@ _:headLeafUpLinks
     ) ;
 .
 
+_:getInnerContainerItemIds
+    :stepName "Get inner container item ids" ;
+    :request _:getInnerContainer ;
+    :extract (
+        _:itemIds
+    ) ;
+.
+
 # Requests
 _:getContainer
     :method "GET" ;
@@ -2225,6 +2257,12 @@ _:headLeaf
     :uri _:leaf ;
 .
 
+_:getInnerContainer
+    :method "GET" ;
+    :uri _:inner ;
+    :headers _:acceptLwsJson ;
+.
+
 # URIs
 _:storageRoot
     :single [
@@ -2361,6 +2399,11 @@ _:typeLinks
 _:linksetLinks
     :link "linkset" ;
     :to "linksetLinks" ;
+.
+
+_:itemIds
+    :path "$.items[*].id" ;
+    :to "itemIds" ;
 .
 
 _:upLinks
