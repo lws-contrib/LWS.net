@@ -63,7 +63,7 @@ _:exchangeTokenWithoutCredentialStatus
             :key "Content-Type" ;
             :value [ :constant "application/x-www-form-urlencoded" ] ;
         ] ;
-        :body "grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Atoken-exchange&resource=https%3A%2F%2Fstorage.example%2Falice%2F" ;
+        :body [ :constant "grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Atoken-exchange&resource=https%3A%2F%2Fstorage.example%2Falice%2F" ] ;
     ] ;
     :extract (
         [

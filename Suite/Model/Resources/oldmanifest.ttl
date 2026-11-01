@@ -370,7 +370,7 @@ _:createShoppingList
         :method "POST" ;
         :uri _:container ;
         :headers _:contentTypeTextPlain ;
-        :body "milk\neggs\nbread\nbutter\napples\norange juice\n" ;
+        :body [ :constant "milk\neggs\nbread\nbutter\napples\norange juice\n" ] ;
     ] ;
     :extract (
         [
@@ -472,7 +472,7 @@ _:exchangeTokenForUnknownResourceStatus
         :method "POST" ;
         :uri _:tokenEndpoint ;
         :headers _:contentTypeFormUrlEncoded ;
-        :body "grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Atoken-exchange&resource=https%3A%2F%2Funknown.example%2F&subject_token_type=urn%3Aietf%3Aparams%3Aoauth%3Atoken-type%3Aid_token&subject_token=<subject-token>" ;
+        :body [ :constant "grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Atoken-exchange&resource=https%3A%2F%2Funknown.example%2F&subject_token_type=urn%3Aietf%3Aparams%3Aoauth%3Atoken-type%3Aid_token&subject_token=<subject-token>" ] ;
     ] ;
     :extract (
         _:status

@@ -1520,7 +1520,7 @@ _:createTextResource
         :method "POST" ;
         :uri _:container ;
         :headers _:contentTypeTextPlain ;
-        :body "milk\neggs\nbread\nbutter\napples\norange juice\n" ;
+        :body [ :constant "milk\neggs\nbread\nbutter\napples\norange juice\n" ] ;
     ] ;
     :extract (
         [
@@ -1546,7 +1546,7 @@ _:createDigitsResource
         :method "POST" ;
         :uri _:container ;
         :headers _:contentTypeTextPlain ;
-        :body "0123456789" ;
+        :body [ :constant "0123456789" ] ;
     ] ;
     :extract (
         [
@@ -1636,7 +1636,7 @@ _:createResourceWithForgedLinkset
                 :key "Link" ;
                 :value [ :constant "<https://linkset.invalid/forged>; rel=\"linkset\"" ] ;
             ] ;
-        :body "metadata override attempt" ;
+        :body [ :constant "metadata override attempt" ] ;
     ] ;
     :extract (
         _:status
@@ -1719,7 +1719,7 @@ _:createResourceInMissingContainer
             ] ;
         ] ;
         :headers _:contentTypeTextPlain ;
-        :body "lost letter" ;
+        :body [ :constant "lost letter" ] ;
     ] ;
     :extract (
         _:status
@@ -1791,7 +1791,7 @@ _:createDataResource
         :method "POST" ;
         :uri _:container ;
         :headers _:contentTypeTextPlain ;
-        :body "not a container" ;
+        :body [ :constant "not a container" ] ;
     ] ;
     :extract (
         [
@@ -2070,7 +2070,7 @@ _:createTypedResource
         :method "POST" ;
         :uri _:container ;
         :headers _:contentTypeTextPlain ;
-        :body "typed on creation" ;
+        :body [ :constant "typed on creation" ] ;
     ] ;
     :extract (
         _:typeLinks
@@ -2357,7 +2357,7 @@ _:createLeafResource
         :method "POST" ;
         :uri _:inner ;
         :headers _:contentTypeTextPlain ;
-        :body "two containers deep" ;
+        :body [ :constant "two containers deep" ] ;
     ] ;
     :extract (
         [
@@ -2526,7 +2526,7 @@ _:patchLinksetStaleIfMatch
         :key "If-Match" ;
         :value [ :constant "\"touchstone-stale-etag\"" ] ;
     ] ;
-    :body "[{\"op\":\"add\",\"path\":\"/linkset/0/license\",\"value\":[{\"href\":\"https://creativecommons.org/licenses/by/4.0/\"}]}]" ;
+    :body [ :constant "[{\"op\":\"add\",\"path\":\"/linkset/0/license\",\"value\":[{\"href\":\"https://creativecommons.org/licenses/by/4.0/\"}]}]" ] ;
 .
 
 _:getTextResource
@@ -2648,7 +2648,7 @@ _:createSameBytesResource
     :method "POST" ;
     :uri _:container ;
     :headers _:contentTypeTextPlain ;
-    :body "same bytes" ;
+    :body [ :constant "same bytes" ] ;
 .
 
 _:getStorageRoot
@@ -2668,7 +2668,7 @@ _:createResourceBeneathDataResource
         ] ;
     ] ;
     :headers _:contentTypeTextPlain ;
-    :body "should be refused" ;
+    :body [ :constant "should be refused" ] ;
 .
 
 _:getContainerWithWeightedAccept

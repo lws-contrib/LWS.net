@@ -11,7 +11,9 @@ public partial class Request
 
         if (Body is { } body)
         {
-            re.Content = new StringContent(body, null as MediaTypeHeaderValue);
+            var content = await body.Evaluate(context) as string ?? throw new InvalidOperationException("Body is not a string.");
+
+            re.Content = new StringContent(content, null as MediaTypeHeaderValue);
         }
 
         foreach (var header in Headers)

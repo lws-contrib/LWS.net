@@ -551,7 +551,7 @@ _:createTextResource
         :method "POST" ;
         :uri _:container ;
         :headers _:contentTypeTextPlain ;
-        :body "milk\neggs\nbread\nbutter\napples\norange juice\n" ;
+        :body [ :constant "milk\neggs\nbread\nbutter\napples\norange juice\n" ] ;
     ] ;
     :extract (
         _:textResourceLocation

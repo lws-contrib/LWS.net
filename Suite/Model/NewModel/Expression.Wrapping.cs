@@ -6,8 +6,13 @@ public abstract partial class Expression : GraphWrapperNode
 {
     protected Expression(INode node, IGraph graph) : base(node, graph) { }
 
-    internal static Expression? Choose(GraphWrapperNode node)
+    internal static Expression? Choose(GraphWrapperNode? node)
     {
+        if (node is null)
+        {
+            return null;
+        }
+
         if (node.Graph.GetTriplesWithSubjectPredicate(node, Vocabulary.Constant).Any())
         {
             return ConstantExpression.Wrap(node);

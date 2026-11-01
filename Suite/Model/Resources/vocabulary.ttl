@@ -112,9 +112,9 @@
 :body
     a rdf:Property ;
     rdfs:label "body"@en ;
-    rdfs:comment "Content of the request, sent as UTF-8 text. No media type is sent unless a Content-Type header field is given."@en ;
+    rdfs:comment "Expression evaluating to the content of the request, which must be a string, sent as UTF-8 text. No media type is sent unless a Content-Type header field is given."@en ;
     rdfs:domain :Request ;
-    rdfs:range xsd:string ;
+    rdfs:range :Expression ;
 .
 
 :key

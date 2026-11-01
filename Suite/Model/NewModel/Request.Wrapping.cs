@@ -8,7 +8,7 @@ public partial class Request : GraphWrapperNode
 
     public ISet<RequestHeader> Headers => this.Objects(Vocabulary.Headers, RequestHeader.Wrap, RequestHeader.Wrap);
 
-    public string? Body => this.Singular(Vocabulary.Body, ValueMappings.As<string>);
+    public Expression? Body => this.Singular(Vocabulary.Body, Expression.Choose);
 
     public string Method => this.Singular(Vocabulary.Method, ValueMappings.As<string>);
 
