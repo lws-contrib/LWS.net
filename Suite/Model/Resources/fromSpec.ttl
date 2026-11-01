@@ -168,6 +168,7 @@ _:storageRootServiceEndpointIsUri
 _:getDataResourceLinksStorage
     :testName "GET data resource links canonical URI of storage" ;
     :specification "https://www.w3.org/TR/lws10-core/#storage-description-binding"^^xsd:anyURI ;
+    :specification "https://www.w3.org/TR/lws10-core/#metadata-0"^^xsd:anyURI ;
     :steps (
         _:discoverStorageRoot
         _:createContainer
@@ -180,6 +181,7 @@ _:getDataResourceLinksStorage
 _:getContainerLinksStorage
     :testName "GET container links canonical URI of storage" ;
     :specification "https://www.w3.org/TR/lws10-core/#storage-description-binding"^^xsd:anyURI ;
+    :specification "https://www.w3.org/TR/lws10-core/#metadata-0"^^xsd:anyURI ;
     :steps (
         _:discoverStorageRoot
         _:createContainer
@@ -191,6 +193,7 @@ _:getContainerLinksStorage
 _:headDataResourceLinksStorage
     :testName "HEAD data resource links canonical URI of storage" ;
     :specification "https://www.w3.org/TR/lws10-core/#storage-description-binding"^^xsd:anyURI ;
+    :specification "https://www.w3.org/TR/lws10-core/#metadata-0"^^xsd:anyURI ;
     :steps (
         _:discoverStorageRoot
         _:createContainer
@@ -203,6 +206,7 @@ _:headDataResourceLinksStorage
 _:headContainerLinksStorage
     :testName "HEAD container links canonical URI of storage" ;
     :specification "https://www.w3.org/TR/lws10-core/#storage-description-binding"^^xsd:anyURI ;
+    :specification "https://www.w3.org/TR/lws10-core/#metadata-0"^^xsd:anyURI ;
     :steps (
         _:discoverStorageRoot
         _:createContainer
@@ -312,6 +316,7 @@ _:headStorageRootContainerLinksStorage
 _:getNonRootDataResourceLinksParentContainerAsUp
     :testName "GET non-root data resource links parent container as up" ;
     :specification "https://www.w3.org/TR/lws10-core/#containment"^^xsd:anyURI ;
+    :specification "https://www.w3.org/TR/lws10-core/#metadata-0"^^xsd:anyURI ;
     :steps (
         _:discoverStorageRoot
         _:createContainer
@@ -329,6 +334,7 @@ _:getNonRootDataResourceLinksParentContainerAsUp
 _:getNonRootContainerLinksParentContainerAsUp
     :testName "GET non-root container links parent container as up" ;
     :specification "https://www.w3.org/TR/lws10-core/#containment"^^xsd:anyURI ;
+    :specification "https://www.w3.org/TR/lws10-core/#metadata-0"^^xsd:anyURI ;
     :steps (
         _:discoverStorageRoot
         _:createContainer
@@ -345,6 +351,7 @@ _:getNonRootContainerLinksParentContainerAsUp
 _:headNonRootDataResourceLinksParentContainerAsUp
     :testName "HEAD non-root data resource links parent container as up" ;
     :specification "https://www.w3.org/TR/lws10-core/#containment"^^xsd:anyURI ;
+    :specification "https://www.w3.org/TR/lws10-core/#metadata-0"^^xsd:anyURI ;
     :steps (
         _:discoverStorageRoot
         _:createContainer
@@ -362,6 +369,7 @@ _:headNonRootDataResourceLinksParentContainerAsUp
 _:headNonRootContainerLinksParentContainerAsUp
     :testName "HEAD non-root container links parent container as up" ;
     :specification "https://www.w3.org/TR/lws10-core/#containment"^^xsd:anyURI ;
+    :specification "https://www.w3.org/TR/lws10-core/#metadata-0"^^xsd:anyURI ;
     :steps (
         _:discoverStorageRoot
         _:createContainer
@@ -485,6 +493,7 @@ _:createdContainerIsAddedToParentContainerItems
 _:getNestedContainerLinksParentContainerAsUp
     :testName "GET nested container links parent container as up" ;
     :specification "https://www.w3.org/TR/lws10-core/#containment"^^xsd:anyURI ;
+    :specification "https://www.w3.org/TR/lws10-core/#metadata-0"^^xsd:anyURI ;
     :steps (
         _:discoverStorageRoot
         _:createContainer
