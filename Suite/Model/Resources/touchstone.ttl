@@ -37,6 +37,7 @@
         _:ifModifiedSinceEpochReturns200 ,
         _:ifModifiedSinceEpochReturnsPostedBody ,
         _:ifUnmodifiedSinceLastModifiedReturns200 ,
+        _:ifUnmodifiedSinceEpochReturns412 ,
         _:dataResourceHeadReturns200 ,
         _:dataResourceHeadReturnsItsMediaType ,
         _:nestedContainerGetReturnsLwsMediaType ,
@@ -523,6 +524,18 @@ _:ifUnmodifiedSinceLastModifiedReturns200
         _:conditionalGetTextResourceIfUnmodifiedSinceStatus
     ) ;
     :assert _:200 ;
+.
+
+_:ifUnmodifiedSinceEpochReturns412
+    :testName "If-Unmodified-Since at the epoch returns 412" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:getTextResourceLastModified
+        _:conditionalGetTextResourceIfUnmodifiedSinceEpochStatus
+    ) ;
+    :assert _:412 ;
 .
 
 _:dataResourceHeadReturns200
@@ -1523,6 +1536,14 @@ _:conditionalGetTextResourceIfUnmodifiedSinceStatus
     ) ;
 .
 
+_:conditionalGetTextResourceIfUnmodifiedSinceEpochStatus
+    :stepName "Conditional get text resource If-Unmodified-Since epoch status" ;
+    :request _:conditionalGetTextResourceIfUnmodifiedSinceEpoch ;
+    :extract (
+        _:status
+    ) ;
+.
+
 _:headTextResourceStatus
     :stepName "Head text resource status" ;
     :request _:headTextResource ;
@@ -1921,6 +1942,15 @@ _:conditionalGetTextResourceIfUnmodifiedSince
     ] ;
 .
 
+_:conditionalGetTextResourceIfUnmodifiedSinceEpoch
+    :method "GET" ;
+    :uri _:textResource ;
+    :headers [
+        :key "If-Unmodified-Since" ;
+        :value [ :constant "Thu, 01 Jan 1970 00:00:00 GMT" ] ;
+    ] ;
+.
+
 _:getDigitsResourceFirstFourBytes
     :method "GET" ;
     :uri _:digitsResource ;
@@ -2137,6 +2167,13 @@ _:304
         :variable "status" ;
     ] ;
     :equals "304" ;
+.
+
+_:412
+    :that [
+        :variable "status" ;
+    ] ;
+    :equals "412" ;
 .
 
 _:404
