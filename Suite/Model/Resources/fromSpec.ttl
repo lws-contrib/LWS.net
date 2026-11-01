@@ -34,7 +34,8 @@
         _:deletingNonEmptyContainerReturns409 ,
         _:createdContainerIsAddedToParentContainerItems ,
         _:getNestedContainerLinksParentContainerAsUp ,
-        _:containerRepresentationHasIdProperty ;
+        _:containerRepresentationHasIdProperty ,
+        _:containerRepresentationIdIsUriOfContainer ;
 ] .
 
 # Tests
@@ -504,6 +505,27 @@ _:containerRepresentationHasIdProperty
             ] ;
         ] ;
         :matches [ :constant ".+" ] ;
+    ] ;
+.
+
+_:containerRepresentationIdIsUriOfContainer
+    :testName "Container representation id is URI of container" ;
+    :specification "https://www.w3.org/TR/lws10-core/#container-properties"^^xsd:anyURI ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:getContainerId
+    ) ;
+    :assert [
+        :that [
+            :base _:container ;
+            :relative [
+                :single [
+                    :variable "containerId" ;
+                ] ;
+            ] ;
+        ] ;
+        :equals _:container ;
     ] ;
 .
 
