@@ -37,7 +37,8 @@
         _:containerRepresentationHasIdProperty ,
         _:containerRepresentationIdIsUriOfContainer ,
         _:containerRepresentationTypeIsContainer ,
-        _:containerRepresentationTotalItemsIsInteger ;
+        _:containerRepresentationTotalItemsIsInteger ,
+        _:containerRepresentationItemsIsArrayOfContainedResourceDescriptions ;
 ] .
 
 # Tests
@@ -567,6 +568,25 @@ _:containerRepresentationTotalItemsIsInteger
     ] ;
 .
 
+_:containerRepresentationItemsIsArrayOfContainedResourceDescriptions
+    :testName "Container representation items is an array of contained resource descriptions" ;
+    :specification "https://www.w3.org/TR/lws10-core/#container-properties"^^xsd:anyURI ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:getContainerItemsArray
+    ) ;
+    :assert [
+        :that [
+            :single [
+                :variable "itemsArray" ;
+            ] ;
+        ] ;
+        :matches [ :constant "^\\[\\s*\\{" ] ;
+    ] ;
+.
+
 # Steps
 _:getStorageDescriptionId
     :stepName "Get storage description id" ;
@@ -874,6 +894,17 @@ _:getContainerTotalItems
         [
             :path "$.totalItems" ;
             :to "totalItems" ;
+        ]
+    ) ;
+.
+
+_:getContainerItemsArray
+    :stepName "Get container items array" ;
+    :request _:getContainer ;
+    :extract (
+        [
+            :path "$.items" ;
+            :to "itemsArray" ;
         ]
     ) ;
 .
