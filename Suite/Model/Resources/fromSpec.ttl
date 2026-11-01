@@ -14,7 +14,8 @@
         _:getDataResourceLinksStorage ,
         _:getContainerLinksStorage ,
         _:headDataResourceLinksStorage ,
-        _:headContainerLinksStorage ;
+        _:headContainerLinksStorage ,
+        _:getStorageDescriptionLinksStorage ;
 ] .
 
 # Tests
@@ -181,6 +182,15 @@ _:headContainerLinksStorage
     :assert _:storageLinkTargetsStorage ;
 .
 
+_:getStorageDescriptionLinksStorage
+    :testName "GET storage description links canonical URI of storage" ;
+    :specification "https://www.w3.org/TR/lws10-core/#storage-description-binding"^^xsd:anyURI ;
+    :steps (
+        _:getStorageDescriptionStorageLinks
+    ) ;
+    :assert _:storageLinkTargetsStorage ;
+.
+
 # Steps
 _:getStorageDescriptionId
     :stepName "Get storage description id" ;
@@ -278,6 +288,14 @@ _:headTextResourceStorageLinks
 _:headContainerStorageLinks
     :stepName "Head container storage links" ;
     :request _:headContainer ;
+    :extract (
+        _:storageLinks
+    ) ;
+.
+
+_:getStorageDescriptionStorageLinks
+    :stepName "Get storage description storage links" ;
+    :request _:getStorageDescription ;
     :extract (
         _:storageLinks
     ) ;
