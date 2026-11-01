@@ -42,6 +42,7 @@
         _:conditionalPutStaleIfMatchLeavesResourceUntouched ,
         _:conditionalGetNeverMatchingValidatorReturns200 ,
         _:conditionalGetNeverMatchingValidatorReturnsPostedBody ,
+        _:conditionalGetStaleValidatorReturns200 ,
         _:dataResourceHeadReturns200 ,
         _:dataResourceHeadReturnsItsMediaType ,
         _:nestedContainerGetReturnsLwsMediaType ,
@@ -624,6 +625,19 @@ _:conditionalGetNeverMatchingValidatorReturnsPostedBody
         ] ;
         :equals [ :constant "milk\neggs\nbread\nbutter\napples\norange juice\n" ] ;
     ] ;
+.
+
+_:conditionalGetStaleValidatorReturns200
+    :testName "GET with a stale If-None-Match returns 200" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:getTextResourceETag
+        _:conditionalPutTextResourceIfMatchStatus
+        _:conditionalGetTextResourceStatus
+    ) ;
+    :assert _:200 ;
 .
 
 _:dataResourceHeadReturns200
