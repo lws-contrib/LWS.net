@@ -33,7 +33,8 @@
         _:containerRepresentationIncludesAllContainedResources ,
         _:deletingNonEmptyContainerReturns409 ,
         _:createdContainerIsAddedToParentContainerItems ,
-        _:getNestedContainerLinksParentContainerAsUp ;
+        _:getNestedContainerLinksParentContainerAsUp ,
+        _:containerRepresentationHasIdProperty ;
 ] .
 
 # Tests
@@ -488,6 +489,24 @@ _:getNestedContainerLinksParentContainerAsUp
     ] ;
 .
 
+_:containerRepresentationHasIdProperty
+    :testName "Container representation has id property" ;
+    :specification "https://www.w3.org/TR/lws10-core/#container-properties"^^xsd:anyURI ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:getContainerId
+    ) ;
+    :assert [
+        :that [
+            :single [
+                :variable "containerId" ;
+            ] ;
+        ] ;
+        :matches [ :constant ".+" ] ;
+    ] ;
+.
+
 # Steps
 _:getStorageDescriptionId
     :stepName "Get storage description id" ;
@@ -763,6 +782,17 @@ _:getNestedContainerUpLinks
     :request _:getNestedContainer ;
     :extract (
         _:upLinks
+    ) ;
+.
+
+_:getContainerId
+    :stepName "Get container id" ;
+    :request _:getContainer ;
+    :extract (
+        [
+            :path "$.id" ;
+            :to "containerId" ;
+        ]
     ) ;
 .
 
