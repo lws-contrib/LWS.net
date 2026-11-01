@@ -52,6 +52,7 @@
         _:nestedContainerGetReturnsLwsMediaType ,
         _:containerHeadReturns200 ,
         _:containerHeadReturnsLwsMediaType ,
+        _:containerHeadReturnsGetETag ,
         _:storageDescriptionDefaultsToCidMediaType ,
         _:storageDescriptionAsCidReturns200 ,
         _:storageDescriptionAsCidReturnsCidMediaType ,
@@ -763,6 +764,28 @@ _:containerHeadReturnsLwsMediaType
         _:headContainerContentType
     ) ;
     :assert _:lwsJsonContentType ;
+.
+
+_:containerHeadReturnsGetETag
+    :testName "Container HEAD returns the GET ETag" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:getContainerETag
+        _:headContainerETag
+    ) ;
+    :assert [
+        :that [
+            :single [
+                :variable "headEtag" ;
+            ] ;
+        ] ;
+        :equals [
+            :single [
+                :variable "etag" ;
+            ] ;
+        ] ;
+    ] ;
 .
 
 _:storageDescriptionDefaultsToCidMediaType
@@ -2352,6 +2375,17 @@ _:headContainerContentType
     :request _:headContainer ;
     :extract (
         _:contentType
+    ) ;
+.
+
+_:headContainerETag
+    :stepName "Head container ETag" ;
+    :request _:headContainer ;
+    :extract (
+        [
+            :header "ETag" ;
+            :to "headEtag" ;
+        ]
     ) ;
 .
 
