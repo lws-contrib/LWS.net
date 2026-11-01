@@ -54,7 +54,8 @@
         _:allowHeaderOfLinksetAdvertisesGet ,
         _:allowHeaderOfLinksetAdvertisesPatch ,
         _:acceptPatchHeaderOfLinksetAdvertisesJsonPatch ,
-        _:linksetGetResponseIncludesEtagHeader ;
+        _:linksetGetResponseIncludesEtagHeader ,
+        _:linksetHeadResponseIncludesEtagHeader ;
 ] .
 
 # Tests
@@ -878,6 +879,19 @@ _:linksetGetResponseIncludesEtagHeader
     :assert _:entityTag ;
 .
 
+_:linksetHeadResponseIncludesEtagHeader
+    :testName "Linkset HEAD response includes ETag header" ;
+    :specification "https://www.w3.org/TR/lws10-core/#metadata-0"^^xsd:anyURI ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:getTextResourceLinksetLinks
+        _:headLinksetEtag
+    ) ;
+    :assert _:entityTag ;
+.
+
 # Steps
 _:getStorageDescriptionId
     :stepName "Get storage description id" ;
@@ -1284,6 +1298,14 @@ _:headLinksetAcceptPatch
 _:getLinksetEtag
     :stepName "Get linkset ETag" ;
     :request _:getLinkset ;
+    :extract (
+        _:etag
+    ) ;
+.
+
+_:headLinksetEtag
+    :stepName "Head linkset ETag" ;
+    :request _:headLinkset ;
     :extract (
         _:etag
     ) ;
