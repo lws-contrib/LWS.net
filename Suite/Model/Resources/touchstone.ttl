@@ -93,6 +93,7 @@
         _:dataResourceHeadLinksStorage ,
         _:missingResourceProblemDetailsIsObject ,
         _:createContainerReturnsLocation ,
+        _:createContainerLinksUp ,
         _:createDataResourceReturns201 ,
         _:createDataResourceReturnsLocation ,
         _:secondOfTwoIdenticalCreatesReturns201 ,
@@ -1300,6 +1301,22 @@ _:createContainerReturnsLocation
     ] ;
 .
 
+_:createContainerLinksUp
+    :testName "Create container links up" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+    ) ;
+    :assert [
+        :that [
+            :single [
+                :variable "upLinks" ;
+            ] ;
+        ] ;
+        :equals _:storageRoot ;
+    ] ;
+.
+
 _:createDataResourceReturns201
     :testName "Create data resource returns 201" ;
     :steps (
@@ -1858,6 +1875,7 @@ _:createContainer
     ] ;
     :extract (
         _:containerLocation
+        _:upLinks
     ) ;
 .
 
