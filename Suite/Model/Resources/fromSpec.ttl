@@ -21,7 +21,8 @@
         _:storageDescriptionSerializableAsLwsCid ,
         _:storageRootServiceEndpointIsStorageRootContainer ,
         _:storageDescriptionContextStartsWithCidAndLws ,
-        _:headStorageDescriptionLinksStorage ;
+        _:headStorageDescriptionLinksStorage ,
+        _:getStorageRootContainerLinksStorage ;
 ] .
 
 # Tests
@@ -266,6 +267,16 @@ _:headStorageDescriptionLinksStorage
     :assert _:storageLinkTargetsStorage ;
 .
 
+_:getStorageRootContainerLinksStorage
+    :testName "GET storage root container links canonical URI of storage" ;
+    :specification "https://www.w3.org/TR/lws10-core/#storage-description-binding"^^xsd:anyURI ;
+    :steps (
+        _:discoverStorageRoot
+        _:getStorageRootStorageLinks
+    ) ;
+    :assert _:storageLinkTargetsStorage ;
+.
+
 # Steps
 _:getStorageDescriptionId
     :stepName "Get storage description id" ;
@@ -425,6 +436,14 @@ _:getStorageDescriptionAsCidContext
 _:headStorageDescriptionStorageLinks
     :stepName "Head storage description storage links" ;
     :request _:headStorageDescription ;
+    :extract (
+        _:storageLinks
+    ) ;
+.
+
+_:getStorageRootStorageLinks
+    :stepName "Get storage root storage links" ;
+    :request _:getStorageRoot ;
     :extract (
         _:storageLinks
     ) ;
