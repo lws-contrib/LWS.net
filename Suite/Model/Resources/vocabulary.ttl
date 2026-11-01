@@ -216,7 +216,7 @@
 :equals
     a rdf:Property ;
     rdfs:label "equals"@en ;
-    rdfs:comment "Expression evaluating to the string the value must equal exactly. The result of the expression and the value must be strings."@en ;
+    rdfs:comment "Expression evaluating to the value the value must equal exactly. Values of different types, such as the string \"0\" and the integer 0, are not equal."@en ;
     rdfs:domain :EqualityAssertion ;
     rdfs:range :Expression ;
 .
@@ -369,7 +369,7 @@
     a rdfs:Class ;
     rdfs:subClassOf :Assertion ;
     rdfs:label "Equality assertion"@en ;
-    rdfs:comment "Passes when the value equals a string."@en ;
+    rdfs:comment "Passes when the value equals another value."@en ;
 .
 
 :RegexAssertion
