@@ -59,7 +59,7 @@
         _:dataResourceHeadLinksDataResourceType ,
         _:containerHeadLinksContainerType ,
         _:createBeneathDataResourceReturnsAllow ,
-        _:containerGetWithWeightedAcceptReturnsJsonLdMediaType ,
+        _:containerGetWithWeightedAcceptReturnsLwsMediaType ,
         _:containerGetWithWeightedAcceptReturnsContainerType ,
         _:containerGetAsJsonLdWithLwsProfileReturnsContainerType ,
         _:containerGetAsJsonLdWithLwsProfileReturnsItemsArray ,
@@ -737,14 +737,14 @@ _:createBeneathDataResourceReturnsAllow
     ] ;
 .
 
-_:containerGetWithWeightedAcceptReturnsJsonLdMediaType
-    :testName "Container GET with weighted Accept returns JSON-LD media type" ;
+_:containerGetWithWeightedAcceptReturnsLwsMediaType
+    :testName "Container GET with weighted Accept returns LWS media type" ;
     :steps (
         _:discoverStorageRoot
         _:createContainer
         _:getContainerWithWeightedAcceptContentType
     ) ;
-    :assert _:jsonLdContentType ;
+    :assert _:lwsJsonContentType ;
 .
 
 _:containerGetWithWeightedAcceptReturnsContainerType
@@ -1779,7 +1779,7 @@ _:getContainerWithWeightedAccept
     :uri _:container ;
     :headers [
         :key "Accept" ;
-        :value "text/html;q=0.9, application/ld+json;q=0.5" ;
+        :value "application/x-touchstone-unservable;q=0.9, application/lws+json;q=0.5" ;
     ] ;
 .
 
@@ -2015,15 +2015,6 @@ _:itemsArray
         ] ;
     ] ;
     :matches "^\\[" ;
-.
-
-_:jsonLdContentType
-    :that [
-        :single [
-            :variable "contentType" ;
-        ] ;
-    ] ;
-    :matches "(?i)^application/ld\\+json\\s*(;|$)" ;
 .
 
 _:linksetLink
