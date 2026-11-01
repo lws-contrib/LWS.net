@@ -45,6 +45,7 @@
         _:conditionalGetStaleValidatorReturns200 ,
         _:conditionalDeleteStaleIfMatchReturns412 ,
         _:conditionalDeleteStaleIfMatchKeepsResourceReturns200 ,
+        _:conditionalDeleteStaleIfMatchLeavesResourceUntouched ,
         _:dataResourceHeadReturns200 ,
         _:dataResourceHeadReturnsItsMediaType ,
         _:nestedContainerGetReturnsLwsMediaType ,
@@ -667,6 +668,25 @@ _:conditionalDeleteStaleIfMatchKeepsResourceReturns200
         _:getTextResourceStatus
     ) ;
     :assert _:200 ;
+.
+
+_:conditionalDeleteStaleIfMatchLeavesResourceUntouched
+    :testName "DELETE with a stale If-Match leaves the resource untouched" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:getTextResourceETag
+        _:conditionalPutTextResourceIfMatchChangedContentStatus
+        _:conditionalDeleteTextResourceStaleIfMatchStatus
+        _:getTextResourceBody
+    ) ;
+    :assert [
+        :that [
+            :variable "body" ;
+        ] ;
+        :matches [ :constant "^changed content$" ] ;
+    ] ;
 .
 
 _:dataResourceHeadReturns200
