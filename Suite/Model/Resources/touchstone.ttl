@@ -30,6 +30,7 @@
         _:dataResourceGetReturnsItsMediaType ,
         _:dataResourceGetReturnsETag ,
         _:conditionalGetReturns304 ,
+        _:conditionalGetReturnsNoBody ,
         _:dataResourceHeadReturns200 ,
         _:dataResourceHeadReturnsItsMediaType ,
         _:nestedContainerGetReturnsLwsMediaType ,
@@ -419,6 +420,18 @@ _:conditionalGetReturns304
         _:conditionalGetTextResourceStatus
     ) ;
     :assert _:304 ;
+.
+
+_:conditionalGetReturnsNoBody
+    :testName "Conditional GET returns no body" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:getTextResourceETag
+        _:conditionalGetTextResourceBody
+    ) ;
+    :assert _:emptyBody ;
 .
 
 _:dataResourceHeadReturns200
@@ -1335,6 +1348,14 @@ _:conditionalGetTextResourceStatus
     :request _:conditionalGetTextResource ;
     :extract (
         _:status
+    ) ;
+.
+
+_:conditionalGetTextResourceBody
+    :stepName "Conditional get text resource body" ;
+    :request _:conditionalGetTextResource ;
+    :extract (
+        _:body
     ) ;
 .
 
