@@ -18,7 +18,8 @@
         _:getStorageDescriptionLinksStorage ,
         _:getStorageUriReturns200 ,
         _:getStorageUriReturnsLwsCid ,
-        _:storageDescriptionSerializableAsLwsCid ;
+        _:storageDescriptionSerializableAsLwsCid ,
+        _:storageRootServiceEndpointIsStorageRootContainer ;
 ] .
 
 # Tests
@@ -221,6 +222,23 @@ _:storageDescriptionSerializableAsLwsCid
     :assert _:lwsCidContentType ;
 .
 
+_:storageRootServiceEndpointIsStorageRootContainer
+    :testName "StorageRoot serviceEndpoint is storage root container" ;
+    :specification "https://www.w3.org/TR/lws10-core/#storage-description-services"^^xsd:anyURI ;
+    :steps (
+        _:discoverStorageRoot
+        _:getStorageRootType
+    ) ;
+    :assert [
+        :that [
+            :single [
+                :variable "type" ;
+            ] ;
+        ] ;
+        :matches [ :constant "^Container$|\"Container\"" ] ;
+    ] ;
+.
+
 # Steps
 _:getStorageDescriptionId
     :stepName "Get storage description id" ;
@@ -355,6 +373,17 @@ _:getStorageDescriptionAsCidContentType
     ) ;
 .
 
+_:getStorageRootType
+    :stepName "Get storage root type" ;
+    :request _:getStorageRoot ;
+    :extract (
+        [
+            :path "$.type" ;
+            :to "type" ;
+        ]
+    ) ;
+.
+
 # Requests
 _:getStorageDescription
     :method "GET" ;
@@ -390,6 +419,12 @@ _:getStorageDescriptionAsCid
         :key "Accept" ;
         :value [ :constant "application/lws+cid" ] ;
     ] ;
+.
+
+_:getStorageRoot
+    :method "GET" ;
+    :uri _:storageRoot ;
+    :headers _:acceptLwsJson ;
 .
 
 # URIs
