@@ -63,6 +63,7 @@
         _:containerGetReturnsItemsArray ,
         _:containerGetReturnsItsUri ,
         _:containerGetReturnsTotalItems ,
+        _:containerTotalItemsCountsBothMembers ,
         _:containerGetLinksUp ,
         _:containerGetLinksStorage ,
         _:nestedContainerGetReturns200 ,
@@ -922,6 +923,25 @@ _:containerGetReturnsTotalItems
             ] ;
         ] ;
         :matches [ :constant "^[0-9]+$" ] ;
+    ] ;
+.
+
+_:containerTotalItemsCountsBothMembers
+    :testName "Container totalItems counts both members" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:createSecondTextResource
+        _:getContainerTotalItems
+    ) ;
+    :assert [
+        :that [
+            :single [
+                :variable "totalItems" ;
+            ] ;
+        ] ;
+        :equals [ :constant "2" ] ;
     ] ;
 .
 
@@ -1921,6 +1941,22 @@ _:createTextResource
         _:status
         _:linksetLinks
         _:upLinks
+    ) ;
+.
+
+_:createSecondTextResource
+    :stepName "Create second text resource" ;
+    :request [
+        :method "POST" ;
+        :uri _:container ;
+        :headers _:contentTypeTextPlain ;
+        :body [ :constant "milk\neggs\nbread\nbutter\napples\norange juice\n" ] ;
+    ] ;
+    :extract (
+        [
+            :header "Location" ;
+            :to "secondTextResourceLocation" ;
+        ]
     ) ;
 .
 
