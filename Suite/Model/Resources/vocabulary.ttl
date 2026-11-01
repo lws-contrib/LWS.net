@@ -160,9 +160,9 @@
 :constant
     a rdf:Property ;
     rdfs:label "constant"@en ;
-    rdfs:comment "String the constant expression evaluates to."@en ;
+    rdfs:comment "Literal the constant expression evaluates to. A typed literal evaluates to its value, for example an xsd:integer literal to an integer, and a plain literal to a string."@en ;
     rdfs:domain :ConstantExpression ;
-    rdfs:range xsd:string ;
+    rdfs:range rdfs:Literal ;
 .
 
 :variable
@@ -321,14 +321,14 @@
 :Expression
     a rdfs:Class ;
     rdfs:label "Expression"@en ;
-    rdfs:comment "Evaluates to a string, a list of strings or an integer."@en ;
+    rdfs:comment "Evaluates to a value, such as a string, a list of strings or an integer."@en ;
 .
 
 :ConstantExpression
     a rdfs:Class ;
     rdfs:subClassOf :Expression ;
     rdfs:label "Constant expression"@en ;
-    rdfs:comment "Evaluates to a constant string."@en ;
+    rdfs:comment "Evaluates to a constant, such as an integer or a string."@en ;
 .
 
 :VariableExpression
