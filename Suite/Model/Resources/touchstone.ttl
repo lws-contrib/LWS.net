@@ -107,7 +107,8 @@
         _:nonEmptyContainerDeleteKeepsContainer ,
         _:authorizationServerMetadataReturns200 ,
         _:subjectTokenTypesMetadataIsArray ,
-        _:subjectIdentifierTypesMetadataIsArray ;
+        _:subjectIdentifierTypesMetadataIsArray ,
+        _:tokenExchangeWithoutSubjectTokenReturns400 ;
 ] .
 
 # Tests
@@ -1472,6 +1473,15 @@ _:subjectIdentifierTypesMetadataIsArray
     ] ;
 .
 
+_:tokenExchangeWithoutSubjectTokenReturns400
+    :testName "Token exchange without subject token returns 400" ;
+    :steps (
+        _:discoverAuthorizationServer
+        _:exchangeTokenWithoutSubjectTokenStatus
+    ) ;
+    :assert _:400 ;
+.
+
 # Steps
 _:discoverStorageRoot
     :stepName "Discover storage root" ;
@@ -2491,6 +2501,14 @@ _:getSubjectIdentifierTypes
     ) ;
 .
 
+_:exchangeTokenWithoutSubjectTokenStatus
+    :stepName "Exchange token without subject token status" ;
+    :request _:exchangeTokenWithoutSubjectToken ;
+    :extract (
+        _:status
+    ) ;
+.
+
 # Requests
 _:getContainer
     :method "GET" ;
@@ -2724,6 +2742,27 @@ _:getAuthorizationServerMetadata
     ] ;
 .
 
+_:exchangeTokenWithoutSubjectToken
+    :method "POST" ;
+    :uri _:tokenEndpoint ;
+    :body [
+        :form (
+            [
+                :formKey "grant_type" ;
+                :formValue [ :constant "urn:ietf:params:oauth:grant-type:token-exchange" ] ;
+            ]
+            [
+                :formKey "resource" ;
+                :formValue _:storage ;
+            ]
+            [
+                :formKey "subject_token_type" ;
+                :formValue [ :constant "urn:ietf:params:oauth:token-type:jwt" ] ;
+            ]
+        ) ;
+    ] ;
+.
+
 # URIs
 _:storageRoot
     :single [
@@ -2810,6 +2849,13 @@ _:authorizationServerMetadata
     :base _:authorizationServer ;
     :relative [
         :constant "/.well-known/lws-configuration" ;
+    ] ;
+.
+
+_:tokenEndpoint
+    :base _:authorizationServer ;
+    :relative [
+        :constant "/token" ;
     ] ;
 .
 
@@ -2934,6 +2980,13 @@ _:412
         :variable "status" ;
     ] ;
     :equals [ :constant "412" ] ;
+.
+
+_:400
+    :that [
+        :variable "status" ;
+    ] ;
+    :equals [ :constant "400" ] ;
 .
 
 _:404
