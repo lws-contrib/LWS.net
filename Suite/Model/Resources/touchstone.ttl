@@ -87,6 +87,7 @@
         _:resourceCreatedWithForgedLinksetLinkGetLinksLinkset ,
         _:linksetGetReturns200 ,
         _:linksetAdvertisesGet ,
+        _:linksetAdvertisesPatch ,
         _:containerHeadLinksUp ;
 ] .
 
@@ -1101,6 +1102,23 @@ _:linksetAdvertisesGet
             :variable "allow" ;
         ] ;
         :contains "GET" ;
+    ] ;
+.
+
+_:linksetAdvertisesPatch
+    :testName "Linkset advertises PATCH" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:getTextResourceLinksetLinks
+        _:getLinksetAllow
+    ) ;
+    :assert [
+        :that [
+            :variable "allow" ;
+        ] ;
+        :contains "PATCH" ;
     ] ;
 .
 
