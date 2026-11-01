@@ -5,7 +5,8 @@
     :manifestName "From specification: Linked Web Storage Protocol 1.0" ;
     :test
         _:storageDescriptionHasIdProperty ,
-        _:storageDescriptionIdIsCanonicalStorageUri ;
+        _:storageDescriptionIdIsCanonicalStorageUri ,
+        _:storageDescriptionHasTypeProperty ;
 ] .
 
 # Tests
@@ -45,6 +46,22 @@ _:storageDescriptionIdIsCanonicalStorageUri
     ] ;
 .
 
+_:storageDescriptionHasTypeProperty
+    :testName "Storage description has type property" ;
+    :specification "https://www.w3.org/TR/lws10-core/#storage-description-data-model"^^xsd:anyURI ;
+    :steps (
+        _:getStorageDescriptionType
+    ) ;
+    :assert [
+        :that [
+            :single [
+                :variable "type" ;
+            ] ;
+        ] ;
+        :matches [ :constant "^(?!\\[\\s*\\]$).+" ] ;
+    ] ;
+.
+
 # Steps
 _:getStorageDescriptionId
     :stepName "Get storage description id" ;
@@ -53,6 +70,17 @@ _:getStorageDescriptionId
         [
             :path "$.id" ;
             :to "id" ;
+        ]
+    ) ;
+.
+
+_:getStorageDescriptionType
+    :stepName "Get storage description type" ;
+    :request _:getStorageDescription ;
+    :extract (
+        [
+            :path "$.type" ;
+            :to "type" ;
         ]
     ) ;
 .
