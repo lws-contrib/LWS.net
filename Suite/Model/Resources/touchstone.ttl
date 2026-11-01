@@ -108,6 +108,7 @@
         _:linksetNamedByCreateReturns200 ,
         _:linksetNamedByCreateReturnsLinksetMediaType ,
         _:linksetNamedByCreateHasLinksetArray ,
+        _:linksetNamedByCreateReturnsETag ,
         _:containerHeadLinksUp ,
         _:leafUpLinkNamesInnerContainer ,
         _:innerContainerListsLeaf ,
@@ -1460,6 +1461,24 @@ _:linksetNamedByCreateHasLinksetArray
     :assert _:linksetArray ;
 .
 
+_:linksetNamedByCreateReturnsETag
+    :testName "Linkset named by create returns ETag" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:getLinksetETag
+    ) ;
+    :assert [
+        :that [
+            :single [
+                :variable "etag" ;
+            ] ;
+        ] ;
+        :matches [ :constant "." ] ;
+    ] ;
+.
+
 _:containerHeadLinksUp
     :testName "Container HEAD links up" ;
     :steps (
@@ -2640,6 +2659,17 @@ _:getLinksetMembers
     :request _:getLinkset ;
     :extract (
         _:linksetMembers
+    ) ;
+.
+
+_:getLinksetETag
+    :stepName "Get linkset ETag" ;
+    :request _:getLinkset ;
+    :extract (
+        [
+            :header "ETag" ;
+            :to "etag" ;
+        ]
     ) ;
 .
 
