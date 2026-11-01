@@ -48,6 +48,7 @@
         _:storageDescriptionWithoutAcceptReturns200 ,
         _:containerGetReturnsETag ,
         _:conditionalContainerGetReturns304 ,
+        _:conditionalContainerGetReturnsNoBody ,
         _:containerGetReturnsContainerType ,
         _:nestedContainerGetReturnsContainerType ,
         _:createNestedContainerReturns201 ,
@@ -622,6 +623,17 @@ _:conditionalContainerGetReturns304
         _:conditionalGetContainerStatus
     ) ;
     :assert _:304 ;
+.
+
+_:conditionalContainerGetReturnsNoBody
+    :testName "Conditional container GET returns no body" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:getContainerETag
+        _:conditionalGetContainerBody
+    ) ;
+    :assert _:emptyBody ;
 .
 
 _:containerGetReturnsContainerType
@@ -1481,6 +1493,14 @@ _:conditionalGetContainerStatus
     :request _:conditionalGetContainer ;
     :extract (
         _:status
+    ) ;
+.
+
+_:conditionalGetContainerBody
+    :stepName "Conditional get container body" ;
+    :request _:conditionalGetContainer ;
+    :extract (
+        _:body
     ) ;
 .
 
