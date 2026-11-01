@@ -29,6 +29,7 @@
         _:dataResourceGetReturns200 ,
         _:dataResourceGetReturnsItsMediaType ,
         _:dataResourceGetReturnsETag ,
+        _:conditionalGetReturns304 ,
         _:dataResourceHeadReturns200 ,
         _:dataResourceHeadReturnsItsMediaType ,
         _:nestedContainerGetReturnsLwsMediaType ,
@@ -406,6 +407,18 @@ _:dataResourceGetReturnsETag
         ] ;
         :matches "." ;
     ] ;
+.
+
+_:conditionalGetReturns304
+    :testName "Conditional GET returns 304" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:getTextResourceETag
+        _:conditionalGetTextResourceStatus
+    ) ;
+    :assert _:304 ;
 .
 
 _:dataResourceHeadReturns200
@@ -1317,6 +1330,14 @@ _:getTextResourceETag
     ) ;
 .
 
+_:conditionalGetTextResourceStatus
+    :stepName "Conditional get text resource status" ;
+    :request _:conditionalGetTextResource ;
+    :extract (
+        _:status
+    ) ;
+.
+
 _:headTextResourceStatus
     :stepName "Head text resource status" ;
     :request _:headTextResource ;
@@ -1637,6 +1658,19 @@ _:getTextResource
     :uri _:textResource ;
 .
 
+_:conditionalGetTextResource
+    :method "GET" ;
+    :uri _:textResource ;
+    :headers [
+        :key "If-None-Match" ;
+        :value [
+            :single [
+                :variable "etag" ;
+            ] ;
+        ] ;
+    ] ;
+.
+
 _:getDigitsResourceFirstFourBytes
     :method "GET" ;
     :uri _:digitsResource ;
@@ -1846,6 +1880,13 @@ _:206
         :variable "status" ;
     ] ;
     :equals "206" ;
+.
+
+_:304
+    :that [
+        :variable "status" ;
+    ] ;
+    :equals "304" ;
 .
 
 _:404
