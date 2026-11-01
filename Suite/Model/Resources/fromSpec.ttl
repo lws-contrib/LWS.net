@@ -12,7 +12,8 @@
         _:storageDescriptionServicesContainStorageRoot ,
         _:storageRootServiceEndpointIsUri ,
         _:getDataResourceLinksStorage ,
-        _:getContainerLinksStorage ;
+        _:getContainerLinksStorage ,
+        _:headDataResourceLinksStorage ;
 ] .
 
 # Tests
@@ -156,6 +157,18 @@ _:getContainerLinksStorage
     :assert _:storageLinkTargetsStorage ;
 .
 
+_:headDataResourceLinksStorage
+    :testName "HEAD data resource links canonical URI of storage" ;
+    :specification "https://www.w3.org/TR/lws10-core/#storage-description-binding"^^xsd:anyURI ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:headTextResourceStorageLinks
+    ) ;
+    :assert _:storageLinkTargetsStorage ;
+.
+
 # Steps
 _:getStorageDescriptionId
     :stepName "Get storage description id" ;
@@ -242,6 +255,14 @@ _:getContainerStorageLinks
     ) ;
 .
 
+_:headTextResourceStorageLinks
+    :stepName "Head text resource storage links" ;
+    :request _:headTextResource ;
+    :extract (
+        _:storageLinks
+    ) ;
+.
+
 # Requests
 _:getStorageDescription
     :method "GET" ;
@@ -257,6 +278,11 @@ _:getContainer
     :method "GET" ;
     :uri _:container ;
     :headers _:acceptLwsJson ;
+.
+
+_:headTextResource
+    :method "HEAD" ;
+    :uri _:textResource ;
 .
 
 # URIs
