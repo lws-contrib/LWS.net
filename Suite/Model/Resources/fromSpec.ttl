@@ -29,7 +29,8 @@
         _:headNonRootDataResourceLinksParentContainerAsUp ,
         _:headNonRootContainerLinksParentContainerAsUp ,
         _:createdResourceIsAddedToContainerItems ,
-        _:deletedResourceIsRemovedFromParentContainerItems ;
+        _:deletedResourceIsRemovedFromParentContainerItems ,
+        _:containerRepresentationIncludesAllContainedResources ;
 ] .
 
 # Tests
@@ -404,6 +405,26 @@ _:deletedResourceIsRemovedFromParentContainerItems
             ] ;
         ] ;
         :equals _:secondTextResource ;
+    ] ;
+.
+
+_:containerRepresentationIncludesAllContainedResources
+    :testName "Container representation includes identifiers of all contained resources" ;
+    :specification "https://www.w3.org/TR/lws10-core/#container-membership-and-authorization"^^xsd:anyURI ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:createSecondTextResource
+        _:getContainerItemIds
+    ) ;
+    :assert [
+        :that [
+            :count [
+                :variable "itemIds" ;
+            ] ;
+        ] ;
+        :equals [ :constant 2 ] ;
     ] ;
 .
 
