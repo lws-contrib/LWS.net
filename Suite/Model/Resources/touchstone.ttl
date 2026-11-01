@@ -39,6 +39,7 @@
         _:ifUnmodifiedSinceLastModifiedReturns200 ,
         _:ifUnmodifiedSinceEpochReturns412 ,
         _:conditionalPutStaleIfMatchReturns412 ,
+        _:conditionalPutStaleIfMatchLeavesResourceUntouched ,
         _:dataResourceHeadReturns200 ,
         _:dataResourceHeadReturnsItsMediaType ,
         _:nestedContainerGetReturnsLwsMediaType ,
@@ -575,6 +576,25 @@ _:conditionalPutStaleIfMatchReturns412
         _:conditionalPutTextResourceStaleIfMatchStatus
     ) ;
     :assert _:412 ;
+.
+
+_:conditionalPutStaleIfMatchLeavesResourceUntouched
+    :testName "PUT with a stale If-Match leaves the resource untouched" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:getTextResourceETag
+        _:conditionalPutTextResourceIfMatchStatus
+        _:conditionalPutTextResourceStaleIfMatchStatus
+        _:getTextResourceBody
+    ) ;
+    :assert [
+        :that [
+            :variable "body" ;
+        ] ;
+        :matches [ :constant "^second content$" ] ;
+    ] ;
 .
 
 _:dataResourceHeadReturns200
