@@ -43,7 +43,8 @@
         _:containedResourceDescriptionHasIdProperty ,
         _:containedResourceDescriptionIdIsUriOfContainedResource ,
         _:containedDataResourceDescriptionTypeEqualsOrContainsDataResource ,
-        _:containedContainerDescriptionTypeEqualsOrContainsContainer ;
+        _:containedContainerDescriptionTypeEqualsOrContainsContainer ,
+        _:containedDataResourceDescriptionFormatIsMediaTypeOfDataResource ;
 ] .
 
 # Tests
@@ -689,6 +690,25 @@ _:containedContainerDescriptionTypeEqualsOrContainsContainer
     ] ;
 .
 
+_:containedDataResourceDescriptionFormatIsMediaTypeOfDataResource
+    :testName "Contained data resource description format is media type of data resource" ;
+    :specification "https://www.w3.org/TR/lws10-core/#contained-resource-description"^^xsd:anyURI ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:getContainerItemFormats
+    ) ;
+    :assert [
+        :that [
+            :single [
+                :variable "itemFormats" ;
+            ] ;
+        ] ;
+        :matches [ :constant "(?i)^text/plain\\s*(;|$)" ] ;
+    ] ;
+.
+
 # Steps
 _:getStorageDescriptionId
     :stepName "Get storage description id" ;
@@ -1018,6 +1038,17 @@ _:getContainerItemTypes
         [
             :path "$.items[*].type" ;
             :to "itemTypes" ;
+        ]
+    ) ;
+.
+
+_:getContainerItemFormats
+    :stepName "Get container item formats" ;
+    :request _:getContainer ;
+    :extract (
+        [
+            :path "$.items[*].format" ;
+            :to "itemFormats" ;
         ]
     ) ;
 .
