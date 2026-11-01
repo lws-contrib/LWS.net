@@ -1,12 +1,10 @@
-﻿using System.Text.RegularExpressions;
-
-namespace Model.NewModel.Assertions;
+﻿namespace Model.NewModel.Assertions;
 
 public partial class RegexAssertion : Assertion
 {
     protected RegexAssertion(INode node, IGraph graph) : base(node, graph) { }
 
-    public Regex Matches => this.Singular(Vocabulary.Matches, ValueMappings.RegexFromStringLiteral);
+    public Expression Matches => this.Singular(Vocabulary.Matches, Expression.Choose);
 
     public static RegexAssertion Wrap(INode node, IGraph graph) => new(node, graph);
 

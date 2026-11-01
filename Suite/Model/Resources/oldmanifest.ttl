@@ -164,7 +164,7 @@ _:readDataResourceReturnsBody
         :that [
             :variable "body" ;
         ] ;
-        :equals "milk\neggs\nbread\nbutter\napples\norange juice\n" ;
+        :equals [ :constant "milk\neggs\nbread\nbutter\napples\norange juice\n" ] ;
     ] ;
 .
 
@@ -193,7 +193,7 @@ _:getLinksetReturnsLinksetJsonMediaType
                 :variable "contentType" ;
             ] ;
         ] ;
-        :matches "(?i)^application/linkset\\+json\\s*(;|$)" ;
+        :matches [ :constant "(?i)^application/linkset\\+json\\s*(;|$)" ] ;
     ] ;
 .
 
@@ -240,7 +240,7 @@ _:authorizationServerMetadataReturnsJsonMediaType
                 :variable "contentType" ;
             ] ;
         ] ;
-        :matches "(?i)^application/json\\s*(;|$)" ;
+        :matches [ :constant "(?i)^application/json\\s*(;|$)" ] ;
     ] ;
 .
 
@@ -254,7 +254,7 @@ _:tokenExchangeForUnknownResourceReturns400
         :that [
             :variable "status" ;
         ] ;
-        :equals "400" ;
+        :equals [ :constant "400" ] ;
     ] ;
 .
 
@@ -635,21 +635,21 @@ _:lwsCidContentType
             :variable "contentType" ;
         ] ;
     ] ;
-    :matches "(?i)^application/lws\\+cid\\s*(;|$)" ;
+    :matches [ :constant "(?i)^application/lws\\+cid\\s*(;|$)" ] ;
 .
 
 _:containerTypeLink
     :that [
         :variable "typeLinks" ;
     ] ;
-    :contains "https://www.w3.org/ns/lws#Container" ;
+    :contains [ :constant "https://www.w3.org/ns/lws#Container" ] ;
 .
 
 _:200
     :that [
         :variable "status" ;
     ] ;
-    :equals "200" ;
+    :equals [ :constant "200" ] ;
 .
 
 _:lwsJsonContentType
@@ -658,7 +658,7 @@ _:lwsJsonContentType
             :variable "contentType" ;
         ] ;
     ] ;
-    :matches "(?i)^application/lws\\+json\\s*(;|$)" ;
+    :matches [ :constant "(?i)^application/lws\\+json\\s*(;|$)" ] ;
 .
 
 _:textPlainContentType
@@ -667,12 +667,12 @@ _:textPlainContentType
             :variable "contentType" ;
         ] ;
     ] ;
-    :matches "(?i)^text/plain\\s*(;|$)" ;
+    :matches [ :constant "(?i)^text/plain\\s*(;|$)" ] ;
 .
 
 _:dataResourceTypeLink
     :that [
         :variable "typeLinks" ;
     ] ;
-    :contains "https://www.w3.org/ns/lws#DataResource" ;
+    :contains [ :constant "https://www.w3.org/ns/lws#DataResource" ] ;
 .

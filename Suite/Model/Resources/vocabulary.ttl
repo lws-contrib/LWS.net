@@ -216,33 +216,33 @@
 :equals
     a rdf:Property ;
     rdfs:label "equals"@en ;
-    rdfs:comment "String the value must equal exactly. The value must be a string."@en ;
+    rdfs:comment "Expression evaluating to the string the value must equal exactly. The result of the expression and the value must be strings."@en ;
     rdfs:domain :EqualityAssertion ;
-    rdfs:range xsd:string ;
+    rdfs:range :Expression ;
 .
 
 :matches
     a rdf:Property ;
     rdfs:label "matches"@en ;
-    rdfs:comment ".NET regular expression the value must match. The value must be a string. The match is case-sensitive and may occur anywhere in the value unless the expression says otherwise, for example with (?i), ^ or $."@en ;
+    rdfs:comment "Expression evaluating to the .NET regular expression the value must match. The result of the expression and the value must be strings. The match is case-sensitive and may occur anywhere in the value unless the expression says otherwise, for example with (?i), ^ or $."@en ;
     rdfs:domain :RegexAssertion ;
-    rdfs:range xsd:string ;
+    rdfs:range :Expression ;
 .
 
 :contains
     a rdf:Property ;
     rdfs:label "contains"@en ;
-    rdfs:comment "String one of the items of the value must equal exactly. The value must be a list of strings."@en ;
+    rdfs:comment "Expression evaluating to the string one of the items of the value must equal exactly. The result of the expression must be a string and the value must be a list of strings."@en ;
     rdfs:domain :ContainsAssertion ;
-    rdfs:range xsd:string ;
+    rdfs:range :Expression ;
 .
 
 :greaterThan
     a rdf:Property ;
     rdfs:label "greater than"@en ;
-    rdfs:comment "Integer the value must be greater than. The value must be an integer, such as the result of a count expression."@en ;
+    rdfs:comment "Expression evaluating to the integer the value must be greater than. The result of the expression must be an integer. The value must be an integer, such as the result of a count expression."@en ;
     rdfs:domain :GreaterThanAssertion ;
-    rdfs:range xsd:integer ;
+    rdfs:range :Expression ;
 .
 
 # Classes

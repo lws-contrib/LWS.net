@@ -4,7 +4,7 @@ public partial class GreaterThanAssertion : Assertion
 {
     protected GreaterThanAssertion(INode node, IGraph graph) : base(node, graph) { }
 
-    public long Value => this.Singular(Vocabulary.GreaterThan, ValueMappings.As<long>);
+    public Expression Value => this.Singular(Vocabulary.GreaterThan, Expression.Choose);
 
     public static GreaterThanAssertion Wrap(INode node, IGraph graph) => new(node, graph);
 

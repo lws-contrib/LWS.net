@@ -4,7 +4,7 @@ public partial class EqualityAssertion : Assertion
 {
     protected EqualityAssertion(INode node, IGraph graph) : base(node, graph) { }
 
-    public string EqualsValue => this.Singular(Vocabulary.EqualsValue, ValueMappings.As<string>);
+    public Expression EqualsValue => this.Singular(Vocabulary.EqualsValue, Expression.Choose);
 
     public static EqualityAssertion Wrap(INode node, IGraph graph) => new(node, graph);
 

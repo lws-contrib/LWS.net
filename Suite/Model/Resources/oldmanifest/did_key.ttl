@@ -18,7 +18,7 @@ _:tokenExchangeWithoutCredentialReturns400
         :that [
             :variable "status" ;
         ] ;
-        :equals "400" ;
+        :equals [ :constant "400" ] ;
     ] ;
 .
 

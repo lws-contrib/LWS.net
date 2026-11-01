@@ -116,7 +116,7 @@ _:createdDataResourceReturnsPostedBody
         :that [
             :variable "body" ;
         ] ;
-        :equals "milk\neggs\nbread\nbutter\napples\norange juice\n" ;
+        :equals [ :constant "milk\neggs\nbread\nbutter\napples\norange juice\n" ] ;
     ] ;
 .
 
@@ -228,7 +228,7 @@ _:containerResponseVariesByAccept
                 :variable "vary" ;
             ] ;
         ] ;
-        :matches "(?i)(^|[\\s,])accept($|[\\s,])" ;
+        :matches [ :constant "(?i)(^|[\\s,])accept($|[\\s,])" ] ;
     ] ;
 .
 
@@ -246,7 +246,7 @@ _:dataResourceAdvertisesByteRanges
                 :variable "acceptRanges" ;
             ] ;
         ] ;
-        :matches "(?i)\\bbytes\\b" ;
+        :matches [ :constant "(?i)\\bbytes\\b" ] ;
     ] ;
 .
 
@@ -262,7 +262,7 @@ _:suffixByteRangeReturnsLastBytes
         :that [
             :variable "body" ;
         ] ;
-        :matches "^89$" ;
+        :matches [ :constant "^89$" ] ;
     ] ;
 .
 
@@ -280,7 +280,7 @@ _:byteRangeReturnsContentRange
                 :variable "contentRange" ;
             ] ;
         ] ;
-        :matches "^bytes 0-3/10$" ;
+        :matches [ :constant "^bytes 0-3/10$" ] ;
     ] ;
 .
 
@@ -296,7 +296,7 @@ _:byteRangeReturnsRequestedBytes
         :that [
             :variable "body" ;
         ] ;
-        :matches "^0123$" ;
+        :matches [ :constant "^0123$" ] ;
     ] ;
 .
 
@@ -379,7 +379,7 @@ _:missingResourceReturnsProblemDetails
                 :variable "contentType" ;
             ] ;
         ] ;
-        :matches "(?i)^application/problem\\+json\\s*(;|$)" ;
+        :matches [ :constant "(?i)^application/problem\\+json\\s*(;|$)" ] ;
     ] ;
 .
 
@@ -419,7 +419,7 @@ _:dataResourceGetReturnsETag
                 :variable "etag" ;
             ] ;
         ] ;
-        :matches "." ;
+        :matches [ :constant "." ] ;
     ] ;
 .
 
@@ -437,7 +437,7 @@ _:dataResourceGetReturnsLastModified
                 :variable "lastModified" ;
             ] ;
         ] ;
-        :matches "." ;
+        :matches [ :constant "." ] ;
     ] ;
 .
 
@@ -514,7 +514,7 @@ _:ifModifiedSinceEpochReturnsPostedBody
         :that [
             :variable "body" ;
         ] ;
-        :equals "milk\neggs\nbread\nbutter\napples\norange juice\n" ;
+        :equals [ :constant "milk\neggs\nbread\nbutter\napples\norange juice\n" ] ;
     ] ;
 .
 
@@ -630,7 +630,7 @@ _:storageDescriptionFirstContextIsCid
                 :variable "context" ;
             ] ;
         ] ;
-        :equals "https://www.w3.org/ns/cid/v1" ;
+        :equals [ :constant "https://www.w3.org/ns/cid/v1" ] ;
     ] ;
 .
 
@@ -645,7 +645,7 @@ _:storageDescriptionSecondContextIsLws
                 :variable "context" ;
             ] ;
         ] ;
-        :equals "https://www.w3.org/ns/lws/v1" ;
+        :equals [ :constant "https://www.w3.org/ns/lws/v1" ] ;
     ] ;
 .
 
@@ -691,7 +691,7 @@ _:createInMissingContainerReturnsClientError
         :that [
             :variable "status" ;
         ] ;
-        :matches "^4\\d\\d$" ;
+        :matches [ :constant "^4\\d\\d$" ] ;
     ] ;
 .
 
@@ -716,7 +716,7 @@ _:containerGetReturnsETag
                 :variable "etag" ;
             ] ;
         ] ;
-        :matches "." ;
+        :matches [ :constant "." ] ;
     ] ;
 .
 
@@ -876,7 +876,7 @@ _:createBeneathDataResourceReturnsAllow
                 :variable "allow" ;
             ] ;
         ] ;
-        :greaterThan 0 ;
+        :greaterThan [ :constant 0 ] ;
     ] ;
 .
 
@@ -911,7 +911,7 @@ _:storageDescriptionAsCidReturnsStorageType
                 :variable "type" ;
             ] ;
         ] ;
-        :matches "^Storage$|\"Storage\"" ;
+        :matches [ :constant "^Storage$|\"Storage\"" ] ;
     ] ;
 .
 
@@ -926,7 +926,7 @@ _:storageDescriptionContextIsArray
                 :variable "context" ;
             ] ;
         ] ;
-        :matches "^\\[" ;
+        :matches [ :constant "^\\[" ] ;
     ] ;
 .
 
@@ -941,7 +941,7 @@ _:storageDescriptionServiceIsArray
                 :variable "service" ;
             ] ;
         ] ;
-        :matches "^\\[" ;
+        :matches [ :constant "^\\[" ] ;
     ] ;
 .
 
@@ -956,7 +956,7 @@ _:missingResourceProblemDetailsIsObject
         :that [
             :variable "body" ;
         ] ;
-        :matches "^\\s*\\{" ;
+        :matches [ :constant "^\\s*\\{" ] ;
     ] ;
 .
 
@@ -972,7 +972,7 @@ _:createContainerReturnsLocation
                 :variable "containerLocation" ;
             ] ;
         ] ;
-        :greaterThan 0 ;
+        :greaterThan [ :constant 0 ] ;
     ] ;
 .
 
@@ -999,7 +999,7 @@ _:createDataResourceReturnsLocation
                 :variable "textResourceLocation" ;
             ] ;
         ] ;
-        :greaterThan 0 ;
+        :greaterThan [ :constant 0 ] ;
     ] ;
 .
 
@@ -1102,7 +1102,7 @@ _:linksetAdvertisesGet
         :that [
             :variable "allow" ;
         ] ;
-        :contains "GET" ;
+        :contains [ :constant "GET" ] ;
     ] ;
 .
 
@@ -1119,7 +1119,7 @@ _:linksetAdvertisesPatch
         :that [
             :variable "allow" ;
         ] ;
-        :contains "PATCH" ;
+        :contains [ :constant "PATCH" ] ;
     ] ;
 .
 
@@ -1138,7 +1138,7 @@ _:linksetAdvertisesJsonPatch
                 :variable "acceptPatch" ;
             ] ;
         ] ;
-        :matches "(?i)application/json-patch\\+json" ;
+        :matches [ :constant "(?i)application/json-patch\\+json" ] ;
     ] ;
 .
 
@@ -1155,7 +1155,7 @@ _:containerHeadLinksUp
                 :variable "upLinks" ;
             ] ;
         ] ;
-        :greaterThan 0 ;
+        :greaterThan [ :constant 0 ] ;
     ] ;
 .
 
@@ -2261,56 +2261,56 @@ _:200
     :that [
         :variable "status" ;
     ] ;
-    :equals "200" ;
+    :equals [ :constant "200" ] ;
 .
 
 _:201
     :that [
         :variable "status" ;
     ] ;
-    :equals "201" ;
+    :equals [ :constant "201" ] ;
 .
 
 _:206
     :that [
         :variable "status" ;
     ] ;
-    :equals "206" ;
+    :equals [ :constant "206" ] ;
 .
 
 _:304
     :that [
         :variable "status" ;
     ] ;
-    :equals "304" ;
+    :equals [ :constant "304" ] ;
 .
 
 _:412
     :that [
         :variable "status" ;
     ] ;
-    :equals "412" ;
+    :equals [ :constant "412" ] ;
 .
 
 _:404
     :that [
         :variable "status" ;
     ] ;
-    :equals "404" ;
+    :equals [ :constant "404" ] ;
 .
 
 _:405
     :that [
         :variable "status" ;
     ] ;
-    :equals "405" ;
+    :equals [ :constant "405" ] ;
 .
 
 _:416
     :that [
         :variable "status" ;
     ] ;
-    :equals "416" ;
+    :equals [ :constant "416" ] ;
 .
 
 _:emptyItems
@@ -2319,21 +2319,21 @@ _:emptyItems
             :variable "items" ;
         ] ;
     ] ;
-    :equals "[]" ;
+    :equals [ :constant "[]" ] ;
 .
 
 _:emptyBody
     :that [
         :variable "body" ;
     ] ;
-    :equals "" ;
+    :equals [ :constant "" ] ;
 .
 
 _:sameBytesBody
     :that [
         :variable "body" ;
     ] ;
-    :matches "^same bytes$" ;
+    :matches [ :constant "^same bytes$" ] ;
 .
 
 _:textPlainContentType
@@ -2342,7 +2342,7 @@ _:textPlainContentType
             :variable "contentType" ;
         ] ;
     ] ;
-    :matches "(?i)^text/plain\\s*(;|$)" ;
+    :matches [ :constant "(?i)^text/plain\\s*(;|$)" ] ;
 .
 
 _:lwsJsonContentType
@@ -2351,7 +2351,7 @@ _:lwsJsonContentType
             :variable "contentType" ;
         ] ;
     ] ;
-    :matches "(?i)^application/lws\\+json\\s*(;|$)" ;
+    :matches [ :constant "(?i)^application/lws\\+json\\s*(;|$)" ] ;
 .
 
 _:lwsCidContentType
@@ -2360,7 +2360,7 @@ _:lwsCidContentType
             :variable "contentType" ;
         ] ;
     ] ;
-    :matches "(?i)^application/lws\\+cid\\s*(;|$)" ;
+    :matches [ :constant "(?i)^application/lws\\+cid\\s*(;|$)" ] ;
 .
 
 _:containerType
@@ -2369,21 +2369,21 @@ _:containerType
             :variable "type" ;
         ] ;
     ] ;
-    :matches "^Container$|\"Container\"" ;
+    :matches [ :constant "^Container$|\"Container\"" ] ;
 .
 
 _:containerTypeLink
     :that [
         :variable "typeLinks" ;
     ] ;
-    :contains "https://www.w3.org/ns/lws#Container" ;
+    :contains [ :constant "https://www.w3.org/ns/lws#Container" ] ;
 .
 
 _:dataResourceTypeLink
     :that [
         :variable "typeLinks" ;
     ] ;
-    :contains "https://www.w3.org/ns/lws#DataResource" ;
+    :contains [ :constant "https://www.w3.org/ns/lws#DataResource" ] ;
 .
 
 _:itemsArray
@@ -2392,7 +2392,7 @@ _:itemsArray
             :variable "items" ;
         ] ;
     ] ;
-    :matches "^\\[" ;
+    :matches [ :constant "^\\[" ] ;
 .
 
 _:linksetLink
@@ -2401,5 +2401,5 @@ _:linksetLink
             :variable "linksetLinks" ;
         ] ;
     ] ;
-    :greaterThan 0 ;
+    :greaterThan [ :constant 0 ] ;
 .

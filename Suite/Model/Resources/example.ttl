@@ -64,7 +64,7 @@
             :that [
                 :variable "status" ;
             ] ;
-            :equals "999" ;
+            :equals [ :constant "999" ] ;
         ] ;
     ] ;
 ] .
