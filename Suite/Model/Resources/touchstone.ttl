@@ -94,6 +94,7 @@
         _:linksetPatchWithStaleValidatorReturns412 ,
         _:linksetNamedByCreateReturns200 ,
         _:linksetNamedByCreateReturnsLinksetMediaType ,
+        _:linksetNamedByCreateHasLinksetArray ,
         _:containerHeadLinksUp ,
         _:leafUpLinkNamesInnerContainer ,
         _:innerContainerListsLeaf ,
@@ -1223,6 +1224,17 @@ _:linksetNamedByCreateReturnsLinksetMediaType
     :assert _:linksetJsonContentType ;
 .
 
+_:linksetNamedByCreateHasLinksetArray
+    :testName "Linkset named by create has linkset array" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:getLinksetMembers
+    ) ;
+    :assert _:linksetArray ;
+.
+
 _:containerHeadLinksUp
     :testName "Container HEAD links up" ;
     :steps (
@@ -2199,6 +2211,14 @@ _:getLinksetContentType
     ) ;
 .
 
+_:getLinksetMembers
+    :stepName "Get linkset members" ;
+    :request _:getLinkset ;
+    :extract (
+        _:linksetMembers
+    ) ;
+.
+
 _:headContainerUpLinks
     :stepName "Head container up links" ;
     :request _:headContainer ;
@@ -2658,6 +2678,11 @@ _:linksetLinks
     :to "linksetLinks" ;
 .
 
+_:linksetMembers
+    :path "$.linkset" ;
+    :to "linksetMembers" ;
+.
+
 _:itemIds
     :path "$.items[*].id" ;
     :to "itemIds" ;
@@ -2782,6 +2807,15 @@ _:linksetJsonContentType
         ] ;
     ] ;
     :matches [ :constant "(?i)^application/linkset\\+json\\s*(;|$)" ] ;
+.
+
+_:linksetArray
+    :that [
+        :single [
+            :variable "linksetMembers" ;
+        ] ;
+    ] ;
+    :matches [ :constant "^\\[" ] ;
 .
 
 _:containerType
