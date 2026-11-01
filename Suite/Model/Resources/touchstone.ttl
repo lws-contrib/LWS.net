@@ -62,6 +62,7 @@
         _:containerGetReturnsItsUri ,
         _:containerGetReturnsTotalItems ,
         _:containerGetLinksUp ,
+        _:containerGetLinksStorage ,
         _:nestedContainerGetReturns200 ,
         _:createInMissingContainerReturnsClientError ,
         _:storageDescriptionWithoutAcceptReturns200 ,
@@ -885,6 +886,23 @@ _:containerGetLinksUp
             ] ;
         ] ;
         :equals _:storageRoot ;
+    ] ;
+.
+
+_:containerGetLinksStorage
+    :testName "Container GET links storage" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:getContainerStorageLinks
+    ) ;
+    :assert [
+        :that [
+            :single [
+                :variable "storageLinks" ;
+            ] ;
+        ] ;
+        :equals _:storage ;
     ] ;
 .
 
@@ -1849,6 +1867,14 @@ _:getContainerUpLinks
     :request _:getContainer ;
     :extract (
         _:upLinks
+    ) ;
+.
+
+_:getContainerStorageLinks
+    :stepName "Get container storage links" ;
+    :request _:getContainer ;
+    :extract (
+        _:storageLinks
     ) ;
 .
 
