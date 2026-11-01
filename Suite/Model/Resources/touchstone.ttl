@@ -35,6 +35,7 @@
         _:ifModifiedSinceLastModifiedReturns304 ,
         _:ifModifiedSinceLastModifiedReturnsNoBody ,
         _:ifModifiedSinceEpochReturns200 ,
+        _:ifModifiedSinceEpochReturnsPostedBody ,
         _:dataResourceHeadReturns200 ,
         _:dataResourceHeadReturnsItsMediaType ,
         _:nestedContainerGetReturnsLwsMediaType ,
@@ -492,6 +493,23 @@ _:ifModifiedSinceEpochReturns200
         _:conditionalGetTextResourceIfModifiedSinceEpochStatus
     ) ;
     :assert _:200 ;
+.
+
+_:ifModifiedSinceEpochReturnsPostedBody
+    :testName "If-Modified-Since at the epoch returns posted body" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:getTextResourceLastModified
+        _:conditionalGetTextResourceIfModifiedSinceEpochBody
+    ) ;
+    :assert [
+        :that [
+            :variable "body" ;
+        ] ;
+        :equals "milk\neggs\nbread\nbutter\napples\norange juice\n" ;
+    ] ;
 .
 
 _:dataResourceHeadReturns200
@@ -1473,6 +1491,14 @@ _:conditionalGetTextResourceIfModifiedSinceEpochStatus
     :request _:conditionalGetTextResourceIfModifiedSinceEpoch ;
     :extract (
         _:status
+    ) ;
+.
+
+_:conditionalGetTextResourceIfModifiedSinceEpochBody
+    :stepName "Conditional get text resource If-Modified-Since epoch body" ;
+    :request _:conditionalGetTextResourceIfModifiedSinceEpoch ;
+    :extract (
+        _:body
     ) ;
 .
 
