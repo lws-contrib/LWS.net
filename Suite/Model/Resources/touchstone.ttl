@@ -110,6 +110,7 @@
         _:linksetNamedByCreateHasLinksetArray ,
         _:linksetNamedByCreateReturnsETag ,
         _:containerLinksetReturns200 ,
+        _:containerLinksetReturnsLinksetMediaType ,
         _:containerHeadLinksUp ,
         _:leafUpLinkNamesInnerContainer ,
         _:innerContainerListsLeaf ,
@@ -1489,6 +1490,17 @@ _:containerLinksetReturns200
         _:getLinksetStatus
     ) ;
     :assert _:200 ;
+.
+
+_:containerLinksetReturnsLinksetMediaType
+    :testName "Container linkset returns linkset media type" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:getContainerLinksetLinks
+        _:getLinksetContentType
+    ) ;
+    :assert _:linksetJsonContentType ;
 .
 
 _:containerHeadLinksUp
