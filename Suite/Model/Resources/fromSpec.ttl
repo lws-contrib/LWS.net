@@ -51,7 +51,8 @@
         _:containerLinksetIsDiscoverableViaLinkHeaderWithRelLinkset ,
         _:linksetResourceIsAvailableAsApplicationLinksetJson ,
         _:linksetResourceBodyIsRfc9264Linkset ,
-        _:allowHeaderOfLinksetAdvertisesGet ;
+        _:allowHeaderOfLinksetAdvertisesGet ,
+        _:allowHeaderOfLinksetAdvertisesPatch ;
 ] .
 
 # Tests
@@ -821,6 +822,24 @@ _:allowHeaderOfLinksetAdvertisesGet
             :variable "allow" ;
         ] ;
         :contains [ :constant "GET" ] ;
+    ] ;
+.
+
+_:allowHeaderOfLinksetAdvertisesPatch
+    :testName "Allow header of linkset advertises PATCH" ;
+    :specification "https://www.w3.org/TR/lws10-core/#metadata-0"^^xsd:anyURI ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:getTextResourceLinksetLinks
+        _:headLinksetAllow
+    ) ;
+    :assert [
+        :that [
+            :variable "allow" ;
+        ] ;
+        :contains [ :constant "PATCH" ] ;
     ] ;
 .
 
