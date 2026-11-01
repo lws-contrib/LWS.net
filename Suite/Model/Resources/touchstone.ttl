@@ -41,6 +41,7 @@
         _:conditionalPutStaleIfMatchReturns412 ,
         _:conditionalPutStaleIfMatchLeavesResourceUntouched ,
         _:conditionalGetNeverMatchingValidatorReturns200 ,
+        _:conditionalGetNeverMatchingValidatorReturnsPostedBody ,
         _:dataResourceHeadReturns200 ,
         _:dataResourceHeadReturnsItsMediaType ,
         _:nestedContainerGetReturnsLwsMediaType ,
@@ -607,6 +608,22 @@ _:conditionalGetNeverMatchingValidatorReturns200
         _:conditionalGetTextResourceNeverMatchingStatus
     ) ;
     :assert _:200 ;
+.
+
+_:conditionalGetNeverMatchingValidatorReturnsPostedBody
+    :testName "GET with a never-matching If-None-Match returns posted body" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:conditionalGetTextResourceNeverMatchingBody
+    ) ;
+    :assert [
+        :that [
+            :variable "body" ;
+        ] ;
+        :equals [ :constant "milk\neggs\nbread\nbutter\napples\norange juice\n" ] ;
+    ] ;
 .
 
 _:dataResourceHeadReturns200
@@ -2031,6 +2048,14 @@ _:conditionalGetTextResourceNeverMatchingStatus
     :request _:conditionalGetTextResourceNeverMatching ;
     :extract (
         _:status
+    ) ;
+.
+
+_:conditionalGetTextResourceNeverMatchingBody
+    :stepName "Conditional get text resource never-matching If-None-Match body" ;
+    :request _:conditionalGetTextResourceNeverMatching ;
+    :extract (
+        _:body
     ) ;
 .
 
