@@ -109,7 +109,8 @@
         _:subjectTokenTypesMetadataIsArray ,
         _:subjectIdentifierTypesMetadataIsArray ,
         _:tokenExchangeWithoutSubjectTokenReturns400 ,
-        _:tokenExchangeWithoutSubjectTokenReturnsJson ;
+        _:tokenExchangeWithoutSubjectTokenReturnsJson ,
+        _:tokenExchangeWithoutSubjectTokenReturnsInvalidRequest ;
 ] .
 
 # Tests
@@ -1492,6 +1493,22 @@ _:tokenExchangeWithoutSubjectTokenReturnsJson
     :assert _:jsonContentType ;
 .
 
+_:tokenExchangeWithoutSubjectTokenReturnsInvalidRequest
+    :testName "Token exchange without subject token returns invalid_request" ;
+    :steps (
+        _:discoverAuthorizationServer
+        _:exchangeTokenWithoutSubjectTokenError
+    ) ;
+    :assert [
+        :that [
+            :single [
+                :variable "error" ;
+            ] ;
+        ] ;
+        :equals [ :constant "invalid_request" ] ;
+    ] ;
+.
+
 # Steps
 _:discoverStorageRoot
     :stepName "Discover storage root" ;
@@ -2524,6 +2541,17 @@ _:exchangeTokenWithoutSubjectTokenContentType
     :request _:exchangeTokenWithoutSubjectToken ;
     :extract (
         _:contentType
+    ) ;
+.
+
+_:exchangeTokenWithoutSubjectTokenError
+    :stepName "Exchange token without subject token error" ;
+    :request _:exchangeTokenWithoutSubjectToken ;
+    :extract (
+        [
+            :path "$.error" ;
+            :to "error" ;
+        ]
     ) ;
 .
 
