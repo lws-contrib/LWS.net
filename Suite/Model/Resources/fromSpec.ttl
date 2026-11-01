@@ -26,7 +26,8 @@
         _:headStorageRootContainerLinksStorage ,
         _:getNonRootDataResourceLinksParentContainerAsUp ,
         _:getNonRootContainerLinksParentContainerAsUp ,
-        _:headNonRootDataResourceLinksParentContainerAsUp ;
+        _:headNonRootDataResourceLinksParentContainerAsUp ,
+        _:headNonRootContainerLinksParentContainerAsUp ;
 ] .
 
 # Tests
@@ -341,6 +342,22 @@ _:headNonRootDataResourceLinksParentContainerAsUp
     ] ;
 .
 
+_:headNonRootContainerLinksParentContainerAsUp
+    :testName "HEAD non-root container links parent container as up" ;
+    :specification "https://www.w3.org/TR/lws10-core/#containment"^^xsd:anyURI ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:headContainerUpLinks
+    ) ;
+    :assert [
+        :that [
+            :variable "upLinks" ;
+        ] ;
+        :contains _:storageRoot ;
+    ] ;
+.
+
 # Steps
 _:getStorageDescriptionId
     :stepName "Get storage description id" ;
@@ -540,6 +557,14 @@ _:getContainerUpLinks
 _:headTextResourceUpLinks
     :stepName "Head text resource up links" ;
     :request _:headTextResource ;
+    :extract (
+        _:upLinks
+    ) ;
+.
+
+_:headContainerUpLinks
+    :stepName "Head container up links" ;
+    :request _:headContainer ;
     :extract (
         _:upLinks
     ) ;
