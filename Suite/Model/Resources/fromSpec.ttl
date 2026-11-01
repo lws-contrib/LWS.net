@@ -8,7 +8,8 @@
         _:storageDescriptionIdIsCanonicalStorageUri ,
         _:storageDescriptionHasTypeProperty ,
         _:storageDescriptionTypeIsOrContainsStorage ,
-        _:storageDescriptionHasServiceProperty ;
+        _:storageDescriptionHasServiceProperty ,
+        _:storageDescriptionServicesContainStorageRoot ;
 ] .
 
 # Tests
@@ -96,6 +97,23 @@ _:storageDescriptionHasServiceProperty
     ] ;
 .
 
+_:storageDescriptionServicesContainStorageRoot
+    :testName "Storage description services contain StorageRoot" ;
+    :specification "https://www.w3.org/TR/lws10-core/#storage-description-data-model"^^xsd:anyURI ;
+    :specification "https://www.w3.org/TR/lws10-core/#storage-description-services"^^xsd:anyURI ;
+    :steps (
+        _:discoverStorageRoot
+    ) ;
+    :assert [
+        :that [
+            :count [
+                :variable "storageRoot" ;
+            ] ;
+        ] ;
+        :greaterThan [ :constant 0 ] ;
+    ] ;
+.
+
 # Steps
 _:getStorageDescriptionId
     :stepName "Get storage description id" ;
@@ -126,6 +144,17 @@ _:getStorageDescriptionServices
         [
             :path "$.service[*]" ;
             :to "services" ;
+        ]
+    ) ;
+.
+
+_:discoverStorageRoot
+    :stepName "Discover storage root" ;
+    :request _:getStorageDescription ;
+    :extract (
+        [
+            :path "$.service[?@.type == 'StorageRoot' || @.type[?@ == 'StorageRoot']].serviceEndpoint" ;
+            :to "storageRoot" ;
         ]
     ) ;
 .
