@@ -101,7 +101,8 @@
         _:innerContainerUpLinkNamesOuterContainer ,
         _:outerContainerListsInnerContainer ,
         _:outerContainerUpLinkNamesTestContainer ,
-        _:testContainerListsOuterContainer ;
+        _:testContainerListsOuterContainer ,
+        _:nonEmptyContainerDeleteReturns409 ;
 ] .
 
 # Tests
@@ -1381,6 +1382,20 @@ _:testContainerListsOuterContainer
     ] ;
 .
 
+_:nonEmptyContainerDeleteReturns409
+    :testName "Non-empty container DELETE returns 409" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createOuterContainer
+        _:createInnerContainer
+        _:createLeafResource
+        _:getInnerContainerETag
+        _:deleteInnerContainerStatus
+    ) ;
+    :assert _:409 ;
+.
+
 # Steps
 _:discoverStorageRoot
     :stepName "Discover storage root" ;
@@ -2324,6 +2339,25 @@ _:getContainerItemIds
     ) ;
 .
 
+_:getInnerContainerETag
+    :stepName "Get inner container ETag" ;
+    :request _:getInnerContainer ;
+    :extract (
+        [
+            :header "ETag" ;
+            :to "etag" ;
+        ]
+    ) ;
+.
+
+_:deleteInnerContainerStatus
+    :stepName "Delete inner container status" ;
+    :request _:deleteInnerContainer ;
+    :extract (
+        _:status
+    ) ;
+.
+
 # Requests
 _:getContainer
     :method "GET" ;
@@ -2528,6 +2562,19 @@ _:getOuterContainer
     :method "GET" ;
     :uri _:outer ;
     :headers _:acceptLwsJson ;
+.
+
+_:deleteInnerContainer
+    :method "DELETE" ;
+    :uri _:inner ;
+    :headers [
+        :key "If-Match" ;
+        :value [
+            :single [
+                :variable "etag" ;
+            ] ;
+        ] ;
+    ] ;
 .
 
 # URIs
@@ -2741,6 +2788,13 @@ _:405
         :variable "status" ;
     ] ;
     :equals [ :constant "405" ] ;
+.
+
+_:409
+    :that [
+        :variable "status" ;
+    ] ;
+    :equals [ :constant "409" ] ;
 .
 
 _:416
