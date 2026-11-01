@@ -85,6 +85,7 @@
         _:dataResourceHeadLinksLinkset ,
         _:createWithForgedLinksetLinkLinksLinkset ,
         _:resourceCreatedWithForgedLinksetLinkGetLinksLinkset ,
+        _:linksetGetReturns200 ,
         _:containerHeadLinksUp ;
 ] .
 
@@ -1073,6 +1074,18 @@ _:resourceCreatedWithForgedLinksetLinkGetLinksLinkset
     :assert _:linksetLink ;
 .
 
+_:linksetGetReturns200
+    :testName "Linkset GET returns 200" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:getTextResourceLinksetLinks
+        _:getLinksetStatus
+    ) ;
+    :assert _:200 ;
+.
+
 _:containerHeadLinksUp
     :testName "Container HEAD links up" ;
     :steps (
@@ -1857,6 +1870,14 @@ _:getForgedLinksetResourceLinksetLinks
     ) ;
 .
 
+_:getLinksetStatus
+    :stepName "Get linkset status" ;
+    :request _:getLinkset ;
+    :extract (
+        _:status
+    ) ;
+.
+
 _:headContainerUpLinks
     :stepName "Head container up links" ;
     :request _:headContainer ;
@@ -1887,6 +1908,12 @@ _:conditionalGetContainer
             ] ;
         ] ;
     ] ;
+.
+
+_:getLinkset
+    :method "GET" ;
+    :uri _:linkset ;
+    :headers _:acceptLinksetJson ;
 .
 
 _:getTextResource
@@ -2047,6 +2074,12 @@ _:storageRoot
     ] ;
 .
 
+_:linkset
+    :single [
+        :variable "linksetLinks" ;
+    ] ;
+.
+
 _:container
     :base _:storageRoot ;
     :relative [
@@ -2092,6 +2125,11 @@ _:linkTypeContainer
 _:acceptLwsJson
     :key "Accept" ;
     :value [ :constant "application/lws+json" ] ;
+.
+
+_:acceptLinksetJson
+    :key "Accept" ;
+    :value [ :constant "application/linkset+json" ] ;
 .
 
 _:contentTypeTextPlain
