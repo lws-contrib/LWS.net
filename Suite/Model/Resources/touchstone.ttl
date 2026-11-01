@@ -61,6 +61,7 @@
         _:containerGetReturnsItemsArray ,
         _:containerGetReturnsItsUri ,
         _:containerGetReturnsTotalItems ,
+        _:containerGetLinksUp ,
         _:nestedContainerGetReturns200 ,
         _:createInMissingContainerReturnsClientError ,
         _:storageDescriptionWithoutAcceptReturns200 ,
@@ -867,6 +868,23 @@ _:containerGetReturnsTotalItems
             ] ;
         ] ;
         :matches [ :constant "^[0-9]+$" ] ;
+    ] ;
+.
+
+_:containerGetLinksUp
+    :testName "Container GET links up" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:getContainerUpLinks
+    ) ;
+    :assert [
+        :that [
+            :single [
+                :variable "upLinks" ;
+            ] ;
+        ] ;
+        :equals _:storageRoot ;
     ] ;
 .
 
@@ -1823,6 +1841,14 @@ _:getContainerTotalItems
     :request _:getContainer ;
     :extract (
         _:totalItems
+    ) ;
+.
+
+_:getContainerUpLinks
+    :stepName "Get container up links" ;
+    :request _:getContainer ;
+    :extract (
+        _:upLinks
     ) ;
 .
 
