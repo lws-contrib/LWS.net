@@ -92,7 +92,8 @@
         _:containerHeadLinksUp ,
         _:leafUpLinkNamesInnerContainer ,
         _:innerContainerListsLeaf ,
-        _:innerContainerUpLinkNamesOuterContainer ;
+        _:innerContainerUpLinkNamesOuterContainer ,
+        _:outerContainerListsInnerContainer ;
 ] .
 
 # Tests
@@ -1225,6 +1226,29 @@ _:innerContainerUpLinkNamesOuterContainer
     ] ;
 .
 
+_:outerContainerListsInnerContainer
+    :testName "Outer container lists inner container" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createOuterContainer
+        _:createInnerContainer
+        _:createLeafResource
+        _:getOuterContainerItemIds
+    ) ;
+    :assert [
+        :that [
+            :base _:outer ;
+            :relative [
+                :single [
+                    :variable "itemIds" ;
+                ] ;
+            ] ;
+        ] ;
+        :equals _:inner ;
+    ] ;
+.
+
 # Steps
 _:discoverStorageRoot
     :stepName "Discover storage root" ;
@@ -2103,6 +2127,14 @@ _:getInnerContainerUpLinks
     ) ;
 .
 
+_:getOuterContainerItemIds
+    :stepName "Get outer container item ids" ;
+    :request _:getOuterContainer ;
+    :extract (
+        _:itemIds
+    ) ;
+.
+
 # Requests
 _:getContainer
     :method "GET" ;
@@ -2289,6 +2321,12 @@ _:headLeaf
 _:getInnerContainer
     :method "GET" ;
     :uri _:inner ;
+    :headers _:acceptLwsJson ;
+.
+
+_:getOuterContainer
+    :method "GET" ;
+    :uri _:outer ;
     :headers _:acceptLwsJson ;
 .
 
