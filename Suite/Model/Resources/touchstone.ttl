@@ -111,6 +111,7 @@
         _:linksetNamedByCreateReturnsETag ,
         _:containerLinksetReturns200 ,
         _:containerLinksetReturnsLinksetMediaType ,
+        _:containerLinksetHasLinksetArray ,
         _:containerHeadLinksUp ,
         _:leafUpLinkNamesInnerContainer ,
         _:innerContainerListsLeaf ,
@@ -1501,6 +1502,17 @@ _:containerLinksetReturnsLinksetMediaType
         _:getLinksetContentType
     ) ;
     :assert _:linksetJsonContentType ;
+.
+
+_:containerLinksetHasLinksetArray
+    :testName "Container linkset has linkset array" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:getContainerLinksetLinks
+        _:getLinksetMembers
+    ) ;
+    :assert _:linksetArray ;
 .
 
 _:containerHeadLinksUp
