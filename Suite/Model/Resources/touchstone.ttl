@@ -102,7 +102,8 @@
         _:outerContainerListsInnerContainer ,
         _:outerContainerUpLinkNamesTestContainer ,
         _:testContainerListsOuterContainer ,
-        _:nonEmptyContainerDeleteReturns409 ;
+        _:nonEmptyContainerDeleteReturns409 ,
+        _:nonEmptyContainerDeleteKeepsMember ;
 ] .
 
 # Tests
@@ -1396,6 +1397,21 @@ _:nonEmptyContainerDeleteReturns409
     :assert _:409 ;
 .
 
+_:nonEmptyContainerDeleteKeepsMember
+    :testName "Non-empty container DELETE keeps its member" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createOuterContainer
+        _:createInnerContainer
+        _:createLeafResource
+        _:getInnerContainerETag
+        _:deleteInnerContainerStatus
+        _:getLeafStatus
+    ) ;
+    :assert _:200 ;
+.
+
 # Steps
 _:discoverStorageRoot
     :stepName "Discover storage root" ;
@@ -2358,6 +2374,14 @@ _:deleteInnerContainerStatus
     ) ;
 .
 
+_:getLeafStatus
+    :stepName "Get leaf status" ;
+    :request _:getLeaf ;
+    :extract (
+        _:status
+    ) ;
+.
+
 # Requests
 _:getContainer
     :method "GET" ;
@@ -2575,6 +2599,11 @@ _:deleteInnerContainer
             ] ;
         ] ;
     ] ;
+.
+
+_:getLeaf
+    :method "GET" ;
+    :uri _:leaf ;
 .
 
 # URIs
