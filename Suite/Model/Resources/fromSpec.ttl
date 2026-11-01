@@ -16,7 +16,8 @@
         _:headDataResourceLinksStorage ,
         _:headContainerLinksStorage ,
         _:getStorageDescriptionLinksStorage ,
-        _:getStorageUriReturns200 ;
+        _:getStorageUriReturns200 ,
+        _:getStorageUriReturnsLwsCid ;
 ] .
 
 # Tests
@@ -201,6 +202,15 @@ _:getStorageUriReturns200
     :assert _:200 ;
 .
 
+_:getStorageUriReturnsLwsCid
+    :testName "GET storage URI returns application/lws+cid" ;
+    :specification "https://www.w3.org/TR/lws10-core/#storage-description-binding"^^xsd:anyURI ;
+    :steps (
+        _:getStorageDescriptionContentType
+    ) ;
+    :assert _:lwsCidContentType ;
+.
+
 # Steps
 _:getStorageDescriptionId
     :stepName "Get storage description id" ;
@@ -319,6 +329,14 @@ _:getStorageDescriptionStatus
     ) ;
 .
 
+_:getStorageDescriptionContentType
+    :stepName "Get storage description Content-Type" ;
+    :request _:getStorageDescription ;
+    :extract (
+        _:contentType
+    ) ;
+.
+
 # Requests
 _:getStorageDescription
     :method "GET" ;
@@ -416,6 +434,11 @@ _:status
     :to "status" ;
 .
 
+_:contentType
+    :header "Content-Type" ;
+    :to "contentType" ;
+.
+
 # Assertions
 _:storageLinkTargetsStorage
     :that [
@@ -429,4 +452,13 @@ _:200
         :variable "status" ;
     ] ;
     :equals [ :constant "200" ] ;
+.
+
+_:lwsCidContentType
+    :that [
+        :single [
+            :variable "contentType" ;
+        ] ;
+    ] ;
+    :matches [ :constant "(?i)^application/lws\\+cid\\s*(;|$)" ] ;
 .
