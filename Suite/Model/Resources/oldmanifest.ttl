@@ -517,7 +517,7 @@ _:getLinkset
     ] ;
     :headers [
         :key "Accept" ;
-        :value "application/linkset+json" ;
+        :value [ :constant "application/linkset+json" ] ;
     ] ;
 .
 
@@ -531,7 +531,7 @@ _:getAuthorizationServerMetadata
     ] ;
     :headers [
         :key "Accept" ;
-        :value "application/json" ;
+        :value [ :constant "application/json" ] ;
     ] ;
 .
 
@@ -587,22 +587,22 @@ _:tokenEndpoint
 
 _:acceptLwsJson
     :key "Accept" ;
-    :value "application/lws+json" ;
+    :value [ :constant "application/lws+json" ] ;
 .
 
 _:linkTypeContainer
     :key "Link" ;
-    :value "<https://www.w3.org/ns/lws#Container>; rel=\"type\"" ;
+    :value [ :constant "<https://www.w3.org/ns/lws#Container>; rel=\"type\"" ] ;
 .
 
 _:contentTypeTextPlain
     :key "Content-Type" ;
-    :value "text/plain" ;
+    :value [ :constant "text/plain" ] ;
 .
 
 _:contentTypeFormUrlEncoded
     :key "Content-Type" ;
-    :value "application/x-www-form-urlencoded" ;
+    :value [ :constant "application/x-www-form-urlencoded" ] ;
 .
 
 # Extractors

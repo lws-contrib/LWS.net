@@ -120,9 +120,9 @@
 :value
     a rdf:Property ;
     rdfs:label "value"@en ;
-    rdfs:comment "Value of the header field."@en ;
+    rdfs:comment "Expression evaluating to the value of the header field, which must be a string."@en ;
     rdfs:domain :RequestHeader ;
-    rdfs:range xsd:string ;
+    rdfs:range :Expression ;
 .
 
 :to

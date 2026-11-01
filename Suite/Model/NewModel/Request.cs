@@ -16,9 +16,11 @@ public partial class Request
 
         foreach (var header in Headers)
         {
-            if (!re.Headers.TryAddWithoutValidation(header.Key, header.Value))
+            var value = await header.Value.Evaluate(context) as string ?? throw new InvalidOperationException($"Value of header [{header.Key}] is not a string.");
+
+            if (!re.Headers.TryAddWithoutValidation(header.Key, value))
             {
-                re.Content?.Headers.TryAddWithoutValidation(header.Key, header.Value);
+                re.Content?.Headers.TryAddWithoutValidation(header.Key, value);
             }
         }
 

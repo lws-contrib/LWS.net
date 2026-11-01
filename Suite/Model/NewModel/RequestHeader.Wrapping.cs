@@ -6,7 +6,7 @@ public class RequestHeader : GraphWrapperNode
 
     public string Key => this.Singular(Vocabulary.Key, ValueMappings.As<string>);
 
-    public string Value => this.Singular(Vocabulary.Value, ValueMappings.As<string>);
+    public Expression Value => this.Singular(Vocabulary.Value, Expression.Choose);
 
     public static RequestHeader Wrap(INode node, IGraph graph) => new(node, graph);
 
