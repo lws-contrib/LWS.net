@@ -32,6 +32,7 @@
         _:dataResourceGetReturnsLastModified ,
         _:conditionalGetReturns304 ,
         _:conditionalGetReturnsNoBody ,
+        _:ifModifiedSinceLastModifiedReturns304 ,
         _:dataResourceHeadReturns200 ,
         _:dataResourceHeadReturnsItsMediaType ,
         _:nestedContainerGetReturnsLwsMediaType ,
@@ -453,6 +454,18 @@ _:conditionalGetReturnsNoBody
         _:conditionalGetTextResourceBody
     ) ;
     :assert _:emptyBody ;
+.
+
+_:ifModifiedSinceLastModifiedReturns304
+    :testName "If-Modified-Since equal to Last-Modified returns 304" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:getTextResourceLastModified
+        _:conditionalGetTextResourceIfModifiedSinceStatus
+    ) ;
+    :assert _:304 ;
 .
 
 _:dataResourceHeadReturns200
@@ -1413,6 +1426,14 @@ _:conditionalGetTextResourceBody
     ) ;
 .
 
+_:conditionalGetTextResourceIfModifiedSinceStatus
+    :stepName "Conditional get text resource If-Modified-Since status" ;
+    :request _:conditionalGetTextResourceIfModifiedSince ;
+    :extract (
+        _:status
+    ) ;
+.
+
 _:headTextResourceStatus
     :stepName "Head text resource status" ;
     :request _:headTextResource ;
@@ -1771,6 +1792,19 @@ _:conditionalGetTextResource
         :value [
             :single [
                 :variable "etag" ;
+            ] ;
+        ] ;
+    ] ;
+.
+
+_:conditionalGetTextResourceIfModifiedSince
+    :method "GET" ;
+    :uri _:textResource ;
+    :headers [
+        :key "If-Modified-Since" ;
+        :value [
+            :single [
+                :variable "lastModified" ;
             ] ;
         ] ;
     ] ;
