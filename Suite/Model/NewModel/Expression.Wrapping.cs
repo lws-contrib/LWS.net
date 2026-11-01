@@ -38,6 +38,11 @@ public abstract partial class Expression : GraphWrapperNode
             return CountExpression.Wrap(node);
         }
 
+        if (node.Graph.GetTriplesWithSubjectPredicate(node, Vocabulary.Form).Any())
+        {
+            return FormExpression.Wrap(node);
+        }
+
         throw new InvalidOperationException();
     }
 }

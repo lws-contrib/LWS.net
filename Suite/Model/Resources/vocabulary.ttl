@@ -112,7 +112,7 @@
 :body
     a rdf:Property ;
     rdfs:label "body"@en ;
-    rdfs:comment "Expression evaluating to the content of the request, which must be a string, sent as UTF-8 text. No media type is sent unless a Content-Type header field is given."@en ;
+    rdfs:comment "Expression evaluating to the content of the request, which must be a string or form fields. A string is sent as UTF-8 text, and no media type is sent unless a Content-Type header field is given. Form fields are sent as application/x-www-form-urlencoded."@en ;
     rdfs:domain :Request ;
     rdfs:range :Expression ;
 .
@@ -130,6 +130,22 @@
     rdfs:label "value"@en ;
     rdfs:comment "Expression evaluating to the value of the header field, which must be a string."@en ;
     rdfs:domain :RequestHeader ;
+    rdfs:range :Expression ;
+.
+
+:formKey
+    a rdf:Property ;
+    rdfs:label "form key"@en ;
+    rdfs:comment "Name of the form field."@en ;
+    rdfs:domain :FormField ;
+    rdfs:range xsd:string ;
+.
+
+:formValue
+    a rdf:Property ;
+    rdfs:label "form value"@en ;
+    rdfs:comment "Expression evaluating to the value of the form field, which must be a string."@en ;
+    rdfs:domain :FormField ;
     rdfs:range :Expression ;
 .
 
@@ -211,6 +227,14 @@
     rdfs:comment "Expression evaluating to a list of strings, whose number of items the count expression evaluates to."@en ;
     rdfs:domain :CountExpression ;
     rdfs:range :Expression ;
+.
+
+:form
+    a rdf:Property ;
+    rdfs:label "form"@en ;
+    rdfs:comment "List of form fields, whose names and values the form expression evaluates to, in order."@en ;
+    rdfs:domain :FormExpression ;
+    rdfs:range rdf:List ;
 .
 
 :that
@@ -365,6 +389,19 @@
     rdfs:subClassOf :Expression ;
     rdfs:label "Count expression"@en ;
     rdfs:comment "Evaluates to the number of items in a list of strings."@en ;
+.
+
+:FormExpression
+    a rdfs:Class ;
+    rdfs:subClassOf :Expression ;
+    rdfs:label "Form expression"@en ;
+    rdfs:comment "Evaluates to form fields, a list of name and value pairs."@en ;
+.
+
+:FormField
+    a rdfs:Class ;
+    rdfs:label "Form field"@en ;
+    rdfs:comment "Name and value pair of a form expression."@en ;
 .
 
 :Assertion

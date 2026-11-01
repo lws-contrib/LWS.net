@@ -72,5 +72,11 @@ internal static class Vocabulary
 
     internal static INode Count { get; } = factory.CreateUriNode(UriFactory.Create($"{NS}count"));
 
+    internal static INode Form { get; } = factory.CreateUriNode(UriFactory.Create($"{NS}form"));
+
+    internal static INode FormKey { get; } = factory.CreateUriNode(UriFactory.Create($"{NS}formKey"));
+
+    internal static INode FormValue { get; } = factory.CreateUriNode(UriFactory.Create($"{NS}formValue"));
+
     internal static INode GreaterThan { get; } = factory.CreateUriNode(UriFactory.Create($"{NS}greaterThan"));
 }

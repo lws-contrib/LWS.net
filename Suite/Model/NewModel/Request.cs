@@ -11,9 +11,12 @@ public partial class Request
 
         if (Body is { } body)
         {
-            var content = await body.Evaluate(context) as string ?? throw new InvalidOperationException("Body is not a string.");
-
-            re.Content = new StringContent(content, null as MediaTypeHeaderValue);
+            re.Content = await body.Evaluate(context) switch
+            {
+                string content => new StringContent(content, null as MediaTypeHeaderValue),
+                IEnumerable<KeyValuePair<string, string>> fields => new FormUrlEncodedContent(fields),
+                _ => throw new InvalidOperationException("Body is not a string or form fields.")
+            };
         }
 
         foreach (var header in Headers)
