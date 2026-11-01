@@ -57,7 +57,8 @@
         _:linksetGetResponseIncludesEtagHeader ,
         _:linksetHeadResponseIncludesEtagHeader ,
         _:linksetResourceSupportsPatchUsingApplicationJsonPatchJson ,
-        _:serverPreservesLinksClientIsNotPermittedToModifyWhenApplyingPatch ;
+        _:serverPreservesLinksClientIsNotPermittedToModifyWhenApplyingPatch ,
+        _:deletingResourceRemovesItsAssociatedLinksetResource ;
 ] .
 
 # Tests
@@ -933,6 +934,25 @@ _:serverPreservesLinksClientIsNotPermittedToModifyWhenApplyingPatch
             :variable "typeHrefs" ;
         ] ;
         :contains [ :constant "https://www.w3.org/ns/lws#DataResource" ] ;
+    ] ;
+.
+
+_:deletingResourceRemovesItsAssociatedLinksetResource
+    :testName "Deleting resource removes its associated linkset resource" ;
+    :specification "https://www.w3.org/TR/lws10-core/#metadata-0"^^xsd:anyURI ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:getTextResourceLinksetLinks
+        _:deleteTextResource
+        _:getLinksetStatus
+    ) ;
+    :assert [
+        :that [
+            :variable "status" ;
+        ] ;
+        :matches [ :constant "^(404|410)$" ] ;
     ] ;
 .
 
