@@ -30,7 +30,8 @@
         _:headNonRootContainerLinksParentContainerAsUp ,
         _:createdResourceIsAddedToContainerItems ,
         _:deletedResourceIsRemovedFromParentContainerItems ,
-        _:containerRepresentationIncludesAllContainedResources ;
+        _:containerRepresentationIncludesAllContainedResources ,
+        _:deletingNonEmptyContainerReturns409 ;
 ] .
 
 # Tests
@@ -428,6 +429,24 @@ _:containerRepresentationIncludesAllContainedResources
     ] ;
 .
 
+_:deletingNonEmptyContainerReturns409
+    :testName "Deleting non-empty container returns 409" ;
+    :specification "https://www.w3.org/TR/lws10-core/#containment-integrity"^^xsd:anyURI ;
+    :specification "https://www.w3.org/TR/lws10-core/#delete-resource"^^xsd:anyURI ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:deleteContainer
+    ) ;
+    :assert [
+        :that [
+            :variable "status" ;
+        ] ;
+        :equals [ :constant "409" ] ;
+    ] ;
+.
+
 # Steps
 _:getStorageDescriptionId
     :stepName "Get storage description id" ;
@@ -669,6 +688,17 @@ _:deleteTextResource
     :request [
         :method "DELETE" ;
         :uri _:textResource ;
+    ] ;
+    :extract (
+        _:status
+    ) ;
+.
+
+_:deleteContainer
+    :stepName "Delete container" ;
+    :request [
+        :method "DELETE" ;
+        :uri _:container ;
     ] ;
     :extract (
         _:status
