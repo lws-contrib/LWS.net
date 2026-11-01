@@ -52,7 +52,8 @@
         _:linksetResourceIsAvailableAsApplicationLinksetJson ,
         _:linksetResourceBodyIsRfc9264Linkset ,
         _:allowHeaderOfLinksetAdvertisesGet ,
-        _:allowHeaderOfLinksetAdvertisesPatch ;
+        _:allowHeaderOfLinksetAdvertisesPatch ,
+        _:acceptPatchHeaderOfLinksetAdvertisesJsonPatch ;
 ] .
 
 # Tests
@@ -843,6 +844,26 @@ _:allowHeaderOfLinksetAdvertisesPatch
     ] ;
 .
 
+_:acceptPatchHeaderOfLinksetAdvertisesJsonPatch
+    :testName "Accept-Patch header of linkset advertises JSON Patch" ;
+    :specification "https://www.w3.org/TR/lws10-core/#metadata-0"^^xsd:anyURI ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:getTextResourceLinksetLinks
+        _:headLinksetAcceptPatch
+    ) ;
+    :assert [
+        :that [
+            :single [
+                :variable "acceptPatch" ;
+            ] ;
+        ] ;
+        :matches [ :constant "(?i)(^|,)\\s*application/json-patch\\+json\\s*(;[^,]*)?(,|$)" ] ;
+    ] ;
+.
+
 # Steps
 _:getStorageDescriptionId
     :stepName "Get storage description id" ;
@@ -1238,6 +1259,14 @@ _:headLinksetAllow
     ) ;
 .
 
+_:headLinksetAcceptPatch
+    :stepName "Head linkset Accept-Patch" ;
+    :request _:headLinkset ;
+    :extract (
+        _:acceptPatch
+    ) ;
+.
+
 # Requests
 _:getStorageDescription
     :method "GET" ;
@@ -1436,6 +1465,11 @@ _:linksetLinks
 _:allow
     :header "Allow" ;
     :to "allow" ;
+.
+
+_:acceptPatch
+    :header "Accept-Patch" ;
+    :to "acceptPatch" ;
 .
 
 # Assertions
