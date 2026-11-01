@@ -45,7 +45,8 @@
         _:containedDataResourceDescriptionTypeEqualsOrContainsDataResource ,
         _:containedContainerDescriptionTypeEqualsOrContainsContainer ,
         _:containedDataResourceDescriptionFormatIsMediaTypeOfDataResource ,
-        _:metadataLinksAreAvailableAsStandaloneResource ;
+        _:metadataLinksAreAvailableAsStandaloneResource ,
+        _:containerMetadataLinksAreAvailableAsStandaloneResource ;
 ] .
 
 # Tests
@@ -732,6 +733,18 @@ _:metadataLinksAreAvailableAsStandaloneResource
     :assert _:200 ;
 .
 
+_:containerMetadataLinksAreAvailableAsStandaloneResource
+    :testName "Container metadata links are available as standalone resource" ;
+    :specification "https://www.w3.org/TR/lws10-core/#metadata-0"^^xsd:anyURI ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:getContainerLinksetLinks
+        _:getLinksetStatus
+    ) ;
+    :assert _:200 ;
+.
+
 # Steps
 _:getStorageDescriptionId
     :stepName "Get storage description id" ;
@@ -1089,6 +1102,14 @@ _:getLinksetStatus
     :request _:getLinkset ;
     :extract (
         _:status
+    ) ;
+.
+
+_:getContainerLinksetLinks
+    :stepName "Get container linkset links" ;
+    :request _:getContainer ;
+    :extract (
+        _:linksetLinks
     ) ;
 .
 
