@@ -108,7 +108,8 @@
         _:authorizationServerMetadataReturns200 ,
         _:subjectTokenTypesMetadataIsArray ,
         _:subjectIdentifierTypesMetadataIsArray ,
-        _:tokenExchangeWithoutSubjectTokenReturns400 ;
+        _:tokenExchangeWithoutSubjectTokenReturns400 ,
+        _:tokenExchangeWithoutSubjectTokenReturnsJson ;
 ] .
 
 # Tests
@@ -1482,6 +1483,15 @@ _:tokenExchangeWithoutSubjectTokenReturns400
     :assert _:400 ;
 .
 
+_:tokenExchangeWithoutSubjectTokenReturnsJson
+    :testName "Token exchange without subject token returns JSON" ;
+    :steps (
+        _:discoverAuthorizationServer
+        _:exchangeTokenWithoutSubjectTokenContentType
+    ) ;
+    :assert _:jsonContentType ;
+.
+
 # Steps
 _:discoverStorageRoot
     :stepName "Discover storage root" ;
@@ -2509,6 +2519,14 @@ _:exchangeTokenWithoutSubjectTokenStatus
     ) ;
 .
 
+_:exchangeTokenWithoutSubjectTokenContentType
+    :stepName "Exchange token without subject token Content-Type" ;
+    :request _:exchangeTokenWithoutSubjectToken ;
+    :extract (
+        _:contentType
+    ) ;
+.
+
 # Requests
 _:getContainer
     :method "GET" ;
@@ -3074,6 +3092,15 @@ _:linksetJsonContentType
         ] ;
     ] ;
     :matches [ :constant "(?i)^application/linkset\\+json\\s*(;|$)" ] ;
+.
+
+_:jsonContentType
+    :that [
+        :single [
+            :variable "contentType" ;
+        ] ;
+    ] ;
+    :matches [ :constant "(?i)^application/json\\s*(;|$)" ] ;
 .
 
 _:linksetArray
