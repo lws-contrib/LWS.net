@@ -33,6 +33,7 @@
         _:conditionalGetReturns304 ,
         _:conditionalGetReturnsNoBody ,
         _:ifModifiedSinceLastModifiedReturns304 ,
+        _:ifModifiedSinceLastModifiedReturnsNoBody ,
         _:dataResourceHeadReturns200 ,
         _:dataResourceHeadReturnsItsMediaType ,
         _:nestedContainerGetReturnsLwsMediaType ,
@@ -466,6 +467,18 @@ _:ifModifiedSinceLastModifiedReturns304
         _:conditionalGetTextResourceIfModifiedSinceStatus
     ) ;
     :assert _:304 ;
+.
+
+_:ifModifiedSinceLastModifiedReturnsNoBody
+    :testName "If-Modified-Since equal to Last-Modified returns no body" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:getTextResourceLastModified
+        _:conditionalGetTextResourceIfModifiedSinceBody
+    ) ;
+    :assert _:emptyBody ;
 .
 
 _:dataResourceHeadReturns200
@@ -1431,6 +1444,14 @@ _:conditionalGetTextResourceIfModifiedSinceStatus
     :request _:conditionalGetTextResourceIfModifiedSince ;
     :extract (
         _:status
+    ) ;
+.
+
+_:conditionalGetTextResourceIfModifiedSinceBody
+    :stepName "Conditional get text resource If-Modified-Since body" ;
+    :request _:conditionalGetTextResourceIfModifiedSince ;
+    :extract (
+        _:body
     ) ;
 .
 
