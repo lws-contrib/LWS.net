@@ -59,6 +59,7 @@
         _:storageDescriptionSecondContextIsLws ,
         _:containerGetReturnsLwsMediaType ,
         _:containerGetReturnsItemsArray ,
+        _:containerGetReturnsItsUri ,
         _:nestedContainerGetReturns200 ,
         _:createInMissingContainerReturnsClientError ,
         _:storageDescriptionWithoutAcceptReturns200 ,
@@ -829,6 +830,26 @@ _:containerGetReturnsItemsArray
         _:getContainerItems
     ) ;
     :assert _:itemsArray ;
+.
+
+_:containerGetReturnsItsUri
+    :testName "Container GET returns its URI" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:getContainerId
+    ) ;
+    :assert [
+        :that [
+            :base _:container ;
+            :relative [
+                :single [
+                    :variable "id" ;
+                ] ;
+            ] ;
+        ] ;
+        :equals _:container ;
+    ] ;
 .
 
 _:nestedContainerGetReturns200
@@ -1768,6 +1789,14 @@ _:getContainerItems
     :request _:getContainer ;
     :extract (
         _:items
+    ) ;
+.
+
+_:getContainerId
+    :stepName "Get container id" ;
+    :request _:getContainer ;
+    :extract (
+        _:id
     ) ;
 .
 
@@ -3216,6 +3245,11 @@ _:type
 _:items
     :path "$.items" ;
     :to "items" ;
+.
+
+_:id
+    :path "$.id" ;
+    :to "id" ;
 .
 
 _:typeLinks
