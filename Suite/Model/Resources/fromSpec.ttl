@@ -55,7 +55,8 @@
         _:allowHeaderOfLinksetAdvertisesPatch ,
         _:acceptPatchHeaderOfLinksetAdvertisesJsonPatch ,
         _:linksetGetResponseIncludesEtagHeader ,
-        _:linksetHeadResponseIncludesEtagHeader ;
+        _:linksetHeadResponseIncludesEtagHeader ,
+        _:linksetResourceSupportsPatchUsingApplicationJsonPatchJson ;
 ] .
 
 # Tests
@@ -892,6 +893,28 @@ _:linksetHeadResponseIncludesEtagHeader
     :assert _:entityTag ;
 .
 
+_:linksetResourceSupportsPatchUsingApplicationJsonPatchJson
+    :testName "Linkset resource supports PATCH using application/json-patch+json" ;
+    :specification "https://www.w3.org/TR/lws10-core/#metadata-0"^^xsd:anyURI ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:getTextResourceLinksetLinks
+        _:getLinksetEtag
+        _:patchLinksetAddingDescribedBy
+        _:getLinksetDescribedByHref
+    ) ;
+    :assert [
+        :that [
+            :single [
+                :variable "describedByHref" ;
+            ] ;
+        ] ;
+        :equals [ :constant "https://example.org/schema" ] ;
+    ] ;
+.
+
 # Steps
 _:getStorageDescriptionId
     :stepName "Get storage description id" ;
@@ -1311,6 +1334,25 @@ _:headLinksetEtag
     ) ;
 .
 
+_:patchLinksetAddingDescribedBy
+    :stepName "Patch linkset adding describedby" ;
+    :request _:patchLinksetAddDescribedBy ;
+    :extract (
+        _:status
+    ) ;
+.
+
+_:getLinksetDescribedByHref
+    :stepName "Get linkset describedby href" ;
+    :request _:getLinkset ;
+    :extract (
+        [
+            :path "$.linkset[?(@.describedby)].describedby[0].href" ;
+            :to "describedByHref" ;
+        ]
+    ) ;
+.
+
 # Requests
 _:getStorageDescription
     :method "GET" ;
@@ -1381,6 +1423,14 @@ _:headLinkset
     :method "HEAD" ;
     :uri _:linkset ;
     :headers _:acceptLinksetJson ;
+.
+
+_:patchLinksetAddDescribedBy
+    :method "PATCH" ;
+    :uri _:linkset ;
+    :headers _:contentTypeJsonPatch ;
+    :headers _:ifMatchEtag ;
+    :body [ :constant "[{\"op\":\"add\",\"path\":\"/linkset/0/describedby\",\"value\":[{\"href\":\"https://example.org/schema\"}]}]" ] ;
 .
 
 # URIs
@@ -1458,6 +1508,20 @@ _:acceptLwsJson
 _:acceptLinksetJson
     :key "Accept" ;
     :value [ :constant "application/linkset+json" ] ;
+.
+
+_:contentTypeJsonPatch
+    :key "Content-Type" ;
+    :value [ :constant "application/json-patch+json" ] ;
+.
+
+_:ifMatchEtag
+    :key "If-Match" ;
+    :value [
+        :single [
+            :variable "etag" ;
+        ] ;
+    ] ;
 .
 
 # Extractors
