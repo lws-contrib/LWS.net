@@ -10,7 +10,8 @@
         _:storageDescriptionTypeIsOrContainsStorage ,
         _:storageDescriptionHasServiceProperty ,
         _:storageDescriptionServicesContainStorageRoot ,
-        _:storageRootServiceEndpointIsUri ;
+        _:storageRootServiceEndpointIsUri ,
+        _:getDataResourceLinksStorage ;
 ] .
 
 # Tests
@@ -131,6 +132,18 @@ _:storageRootServiceEndpointIsUri
     ] ;
 .
 
+_:getDataResourceLinksStorage
+    :testName "GET data resource links canonical URI of storage" ;
+    :specification "https://www.w3.org/TR/lws10-core/#storage-description-binding"^^xsd:anyURI ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:getTextResourceStorageLinks
+    ) ;
+    :assert _:storageLinkTargetsStorage ;
+.
+
 # Steps
 _:getStorageDescriptionId
     :stepName "Get storage description id" ;
@@ -176,13 +189,113 @@ _:discoverStorageRoot
     ) ;
 .
 
+_:createContainer
+    :stepName "Create container" ;
+    :request [
+        :method "POST" ;
+        :uri _:storageRoot ;
+        :headers _:linkTypeContainer ;
+    ] ;
+    :extract (
+        _:containerLocation
+    ) ;
+.
+
+_:createTextResource
+    :stepName "Create text resource" ;
+    :request [
+        :method "POST" ;
+        :uri _:container ;
+        :headers _:contentTypeTextPlain ;
+        :body "milk\neggs\nbread\nbutter\napples\norange juice\n" ;
+    ] ;
+    :extract (
+        _:textResourceLocation
+    ) ;
+.
+
+_:getTextResourceStorageLinks
+    :stepName "Get text resource storage links" ;
+    :request _:getTextResource ;
+    :extract (
+        _:storageLinks
+    ) ;
+.
+
 # Requests
 _:getStorageDescription
     :method "GET" ;
     :uri _:storage ;
 .
 
+_:getTextResource
+    :method "GET" ;
+    :uri _:textResource ;
+.
+
 # URIs
 _:storage
     :variable "baseUri" ;
+.
+
+_:storageRoot
+    :base _:storage ;
+    :relative [
+        :single [
+            :variable "storageRoot" ;
+        ] ;
+    ] ;
+.
+
+_:container
+    :base _:storageRoot ;
+    :relative [
+        :single [
+            :variable "containerLocation" ;
+        ] ;
+    ] ;
+.
+
+_:textResource
+    :base _:container ;
+    :relative [
+        :single [
+            :variable "textResourceLocation" ;
+        ] ;
+    ] ;
+.
+
+# Headers
+_:linkTypeContainer
+    :key "Link" ;
+    :value [ :constant "<https://www.w3.org/ns/lws#Container>; rel=\"type\"" ] ;
+.
+
+_:contentTypeTextPlain
+    :key "Content-Type" ;
+    :value [ :constant "text/plain" ] ;
+.
+
+# Extractors
+_:containerLocation
+    :header "Location" ;
+    :to "containerLocation" ;
+.
+
+_:textResourceLocation
+    :header "Location" ;
+    :to "textResourceLocation" ;
+.
+
+_:storageLinks
+    :link "https://www.w3.org/ns/lws#storage" ;
+    :to "storageLinks" ;
+.
+
+# Assertions
+_:storageLinkTargetsStorage
+    :that [
+        :variable "storageLinks" ;
+    ] ;
+    :contains _:storage ;
 .
