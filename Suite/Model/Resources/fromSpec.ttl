@@ -27,7 +27,8 @@
         _:getNonRootDataResourceLinksParentContainerAsUp ,
         _:getNonRootContainerLinksParentContainerAsUp ,
         _:headNonRootDataResourceLinksParentContainerAsUp ,
-        _:headNonRootContainerLinksParentContainerAsUp ;
+        _:headNonRootContainerLinksParentContainerAsUp ,
+        _:createdResourceIsAddedToContainerItems ;
 ] .
 
 # Tests
@@ -358,6 +359,28 @@ _:headNonRootContainerLinksParentContainerAsUp
     ] ;
 .
 
+_:createdResourceIsAddedToContainerItems
+    :testName "Created resource is added to container items" ;
+    :specification "https://www.w3.org/TR/lws10-core/#containment-integrity"^^xsd:anyURI ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:getContainerItemIds
+    ) ;
+    :assert [
+        :that [
+            :base _:container ;
+            :relative [
+                :single [
+                    :variable "itemIds" ;
+                ] ;
+            ] ;
+        ] ;
+        :equals _:textResource ;
+    ] ;
+.
+
 # Steps
 _:getStorageDescriptionId
     :stepName "Get storage description id" ;
@@ -567,6 +590,17 @@ _:headContainerUpLinks
     :request _:headContainer ;
     :extract (
         _:upLinks
+    ) ;
+.
+
+_:getContainerItemIds
+    :stepName "Get container item ids" ;
+    :request _:getContainer ;
+    :extract (
+        [
+            :path "$.items[*].id" ;
+            :to "itemIds" ;
+        ]
     ) ;
 .
 
