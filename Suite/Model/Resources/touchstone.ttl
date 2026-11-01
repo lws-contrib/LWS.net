@@ -91,6 +91,7 @@
         _:linksetAdvertisesGet ,
         _:linksetAdvertisesPatch ,
         _:linksetAdvertisesJsonPatch ,
+        _:linksetPatchWithStaleValidatorReturns412 ,
         _:containerHeadLinksUp ,
         _:leafUpLinkNamesInnerContainer ,
         _:innerContainerListsLeaf ,
@@ -1186,6 +1187,18 @@ _:linksetAdvertisesJsonPatch
     ] ;
 .
 
+_:linksetPatchWithStaleValidatorReturns412
+    :testName "Linkset PATCH with a stale validator returns 412" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:getTextResourceLinksetLinks
+        _:patchLinksetStaleIfMatchStatus
+    ) ;
+    :assert _:412 ;
+.
+
 _:containerHeadLinksUp
     :testName "Container HEAD links up" ;
     :steps (
@@ -2145,6 +2158,14 @@ _:getLinksetAcceptPatch
     ) ;
 .
 
+_:patchLinksetStaleIfMatchStatus
+    :stepName "Patch linkset stale If-Match status" ;
+    :request _:patchLinksetStaleIfMatch ;
+    :extract (
+        _:status
+    ) ;
+.
+
 _:headContainerUpLinks
     :stepName "Head container up links" ;
     :request _:headContainer ;
@@ -2275,6 +2296,17 @@ _:getLinkset
     :method "GET" ;
     :uri _:linkset ;
     :headers _:acceptLinksetJson ;
+.
+
+_:patchLinksetStaleIfMatch
+    :method "PATCH" ;
+    :uri _:linkset ;
+    :headers _:contentTypeJsonPatch ;
+    :headers [
+        :key "If-Match" ;
+        :value [ :constant "\"touchstone-stale-etag\"" ] ;
+    ] ;
+    :body "[{\"op\":\"add\",\"path\":\"/linkset/0/license\",\"value\":[{\"href\":\"https://creativecommons.org/licenses/by/4.0/\"}]}]" ;
 .
 
 _:getTextResource
@@ -2540,6 +2572,11 @@ _:acceptLinksetJson
 _:contentTypeTextPlain
     :key "Content-Type" ;
     :value [ :constant "text/plain" ] ;
+.
+
+_:contentTypeJsonPatch
+    :key "Content-Type" ;
+    :value [ :constant "application/json-patch+json" ] ;
 .
 
 # Extractors
