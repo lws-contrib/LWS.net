@@ -40,7 +40,8 @@
         _:containerRepresentationTotalItemsIsInteger ,
         _:containerRepresentationItemsIsArrayOfContainedResourceDescriptions ,
         _:emptyContainerItemsIsEmptyArray ,
-        _:containedResourceDescriptionHasIdProperty ;
+        _:containedResourceDescriptionHasIdProperty ,
+        _:containedResourceDescriptionIdIsUriOfContainedResource ;
 ] .
 
 # Tests
@@ -623,6 +624,28 @@ _:containedResourceDescriptionHasIdProperty
             ] ;
         ] ;
         :matches [ :constant ".+" ] ;
+    ] ;
+.
+
+_:containedResourceDescriptionIdIsUriOfContainedResource
+    :testName "Contained resource description id is URI of contained resource" ;
+    :specification "https://www.w3.org/TR/lws10-core/#contained-resource-description"^^xsd:anyURI ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:getContainerItemIds
+    ) ;
+    :assert [
+        :that [
+            :base _:container ;
+            :relative [
+                :single [
+                    :variable "itemIds" ;
+                ] ;
+            ] ;
+        ] ;
+        :equals _:textResource ;
     ] ;
 .
 
