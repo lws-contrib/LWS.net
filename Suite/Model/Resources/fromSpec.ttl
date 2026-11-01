@@ -50,7 +50,8 @@
         _:linksetIsDiscoverableViaLinkHeaderWithRelLinkset ,
         _:containerLinksetIsDiscoverableViaLinkHeaderWithRelLinkset ,
         _:linksetResourceIsAvailableAsApplicationLinksetJson ,
-        _:linksetResourceBodyIsRfc9264Linkset ;
+        _:linksetResourceBodyIsRfc9264Linkset ,
+        _:allowHeaderOfLinksetAdvertisesGet ;
 ] .
 
 # Tests
@@ -805,6 +806,24 @@ _:linksetResourceBodyIsRfc9264Linkset
     ] ;
 .
 
+_:allowHeaderOfLinksetAdvertisesGet
+    :testName "Allow header of linkset advertises GET" ;
+    :specification "https://www.w3.org/TR/lws10-core/#metadata-0"^^xsd:anyURI ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:getTextResourceLinksetLinks
+        _:headLinksetAllow
+    ) ;
+    :assert [
+        :that [
+            :variable "allow" ;
+        ] ;
+        :contains [ :constant "GET" ] ;
+    ] ;
+.
+
 # Steps
 _:getStorageDescriptionId
     :stepName "Get storage description id" ;
@@ -1192,6 +1211,14 @@ _:getLinksetMembers
     ) ;
 .
 
+_:headLinksetAllow
+    :stepName "Head linkset Allow" ;
+    :request _:headLinkset ;
+    :extract (
+        _:allow
+    ) ;
+.
+
 # Requests
 _:getStorageDescription
     :method "GET" ;
@@ -1254,6 +1281,12 @@ _:getNestedContainer
 
 _:getLinkset
     :method "GET" ;
+    :uri _:linkset ;
+    :headers _:acceptLinksetJson ;
+.
+
+_:headLinkset
+    :method "HEAD" ;
     :uri _:linkset ;
     :headers _:acceptLinksetJson ;
 .
@@ -1379,6 +1412,11 @@ _:nestedContainerLocation
 _:linksetLinks
     :link "linkset" ;
     :to "linksetLinks" ;
+.
+
+_:allow
+    :header "Allow" ;
+    :to "allow" ;
 .
 
 # Assertions
