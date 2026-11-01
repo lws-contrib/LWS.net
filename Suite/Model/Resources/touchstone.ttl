@@ -92,6 +92,7 @@
         _:linksetAdvertisesPatch ,
         _:linksetAdvertisesJsonPatch ,
         _:linksetPatchWithStaleValidatorReturns412 ,
+        _:linksetNamedByCreateReturns200 ,
         _:containerHeadLinksUp ,
         _:leafUpLinkNamesInnerContainer ,
         _:innerContainerListsLeaf ,
@@ -1199,6 +1200,17 @@ _:linksetPatchWithStaleValidatorReturns412
     :assert _:412 ;
 .
 
+_:linksetNamedByCreateReturns200
+    :testName "Linkset named by create returns 200" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:getLinksetStatus
+    ) ;
+    :assert _:200 ;
+.
+
 _:containerHeadLinksUp
     :testName "Container HEAD links up" ;
     :steps (
@@ -1401,6 +1413,7 @@ _:createTextResource
             :to "textResourceLocation" ;
         ]
         _:status
+        _:linksetLinks
     ) ;
 .
 
