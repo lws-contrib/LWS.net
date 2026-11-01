@@ -9,7 +9,8 @@
         _:storageDescriptionHasTypeProperty ,
         _:storageDescriptionTypeIsOrContainsStorage ,
         _:storageDescriptionHasServiceProperty ,
-        _:storageDescriptionServicesContainStorageRoot ;
+        _:storageDescriptionServicesContainStorageRoot ,
+        _:storageRootServiceEndpointIsUri ;
 ] .
 
 # Tests
@@ -111,6 +112,22 @@ _:storageDescriptionServicesContainStorageRoot
             ] ;
         ] ;
         :greaterThan [ :constant 0 ] ;
+    ] ;
+.
+
+_:storageRootServiceEndpointIsUri
+    :testName "StorageRoot serviceEndpoint is URI" ;
+    :specification "https://www.w3.org/TR/lws10-core/#storage-description-data-model"^^xsd:anyURI ;
+    :steps (
+        _:discoverStorageRoot
+    ) ;
+    :assert [
+        :that [
+            :single [
+                :variable "storageRoot" ;
+            ] ;
+        ] ;
+        :matches [ :constant "^https?://.+" ] ;
     ] ;
 .
 
