@@ -49,7 +49,8 @@
         _:containerMetadataLinksAreAvailableAsStandaloneResource ,
         _:linksetIsDiscoverableViaLinkHeaderWithRelLinkset ,
         _:containerLinksetIsDiscoverableViaLinkHeaderWithRelLinkset ,
-        _:linksetResourceIsAvailableAsApplicationLinksetJson ;
+        _:linksetResourceIsAvailableAsApplicationLinksetJson ,
+        _:linksetResourceBodyIsRfc9264Linkset ;
 ] .
 
 # Tests
@@ -784,6 +785,26 @@ _:linksetResourceIsAvailableAsApplicationLinksetJson
     :assert _:linksetJsonContentType ;
 .
 
+_:linksetResourceBodyIsRfc9264Linkset
+    :testName "Linkset resource body is RFC 9264 linkset" ;
+    :specification "https://www.w3.org/TR/lws10-core/#metadata-0"^^xsd:anyURI ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:getTextResourceLinksetLinks
+        _:getLinksetMembers
+    ) ;
+    :assert [
+        :that [
+            :count [
+                :variable "linksetMembers" ;
+            ] ;
+        ] ;
+        :greaterThan [ :constant 0 ] ;
+    ] ;
+.
+
 # Steps
 _:getStorageDescriptionId
     :stepName "Get storage description id" ;
@@ -1157,6 +1178,17 @@ _:getLinksetContentType
     :request _:getLinkset ;
     :extract (
         _:contentType
+    ) ;
+.
+
+_:getLinksetMembers
+    :stepName "Get linkset members" ;
+    :request _:getLinkset ;
+    :extract (
+        [
+            :path "$.linkset[*]" ;
+            :to "linksetMembers" ;
+        ]
     ) ;
 .
 
