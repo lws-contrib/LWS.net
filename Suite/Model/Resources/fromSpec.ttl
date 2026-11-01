@@ -32,7 +32,8 @@
         _:deletedResourceIsRemovedFromParentContainerItems ,
         _:containerRepresentationIncludesAllContainedResources ,
         _:deletingNonEmptyContainerReturns409 ,
-        _:createdContainerIsAddedToParentContainerItems ;
+        _:createdContainerIsAddedToParentContainerItems ,
+        _:getNestedContainerLinksParentContainerAsUp ;
 ] .
 
 # Tests
@@ -470,6 +471,23 @@ _:createdContainerIsAddedToParentContainerItems
     ] ;
 .
 
+_:getNestedContainerLinksParentContainerAsUp
+    :testName "GET nested container links parent container as up" ;
+    :specification "https://www.w3.org/TR/lws10-core/#containment"^^xsd:anyURI ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createNestedContainer
+        _:getNestedContainerUpLinks
+    ) ;
+    :assert [
+        :that [
+            :variable "upLinks" ;
+        ] ;
+        :contains _:container ;
+    ] ;
+.
+
 # Steps
 _:getStorageDescriptionId
     :stepName "Get storage description id" ;
@@ -740,6 +758,14 @@ _:createNestedContainer
     ) ;
 .
 
+_:getNestedContainerUpLinks
+    :stepName "Get nested container up links" ;
+    :request _:getNestedContainer ;
+    :extract (
+        _:upLinks
+    ) ;
+.
+
 # Requests
 _:getStorageDescription
     :method "GET" ;
@@ -791,6 +817,12 @@ _:headStorageDescription
 _:headStorageRoot
     :method "HEAD" ;
     :uri _:storageRoot ;
+    :headers _:acceptLwsJson ;
+.
+
+_:getNestedContainer
+    :method "GET" ;
+    :uri _:nestedContainer ;
     :headers _:acceptLwsJson ;
 .
 
