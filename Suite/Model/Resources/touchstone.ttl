@@ -63,10 +63,6 @@
         _:containerGetWithWeightedAcceptReturnsContainerType ,
         _:containerGetAsJsonLdWithLwsProfileReturnsContainerType ,
         _:containerGetAsJsonLdWithLwsProfileReturnsItemsArray ,
-        _:containerGetAsJsonLdReturns200 ,
-        _:containerGetAsJsonLdReturnsJsonLdMediaType ,
-        _:containerGetAsJsonReturns200 ,
-        _:containerGetAsJsonReturnsJsonMediaType ,
         _:storageDescriptionAsCidReturnsStorageType ,
         _:storageDescriptionContextIsArray ,
         _:storageDescriptionServiceIsArray ,
@@ -779,53 +775,6 @@ _:containerGetAsJsonLdWithLwsProfileReturnsItemsArray
         _:getContainerWithLwsProfileAcceptItems
     ) ;
     :assert _:itemsArray ;
-.
-
-_:containerGetAsJsonLdReturns200
-    :testName "Container GET as JSON-LD returns 200" ;
-    :steps (
-        _:discoverStorageRoot
-        _:createContainer
-        _:getContainerAsJsonLdStatus
-    ) ;
-    :assert _:200 ;
-.
-
-_:containerGetAsJsonLdReturnsJsonLdMediaType
-    :testName "Container GET as JSON-LD returns JSON-LD media type" ;
-    :steps (
-        _:discoverStorageRoot
-        _:createContainer
-        _:getContainerAsJsonLdContentType
-    ) ;
-    :assert _:jsonLdContentType ;
-.
-
-_:containerGetAsJsonReturns200
-    :testName "Container GET as JSON returns 200" ;
-    :steps (
-        _:discoverStorageRoot
-        _:createContainer
-        _:getContainerAsJsonStatus
-    ) ;
-    :assert _:200 ;
-.
-
-_:containerGetAsJsonReturnsJsonMediaType
-    :testName "Container GET as JSON returns JSON media type" ;
-    :steps (
-        _:discoverStorageRoot
-        _:createContainer
-        _:getContainerAsJsonContentType
-    ) ;
-    :assert [
-        :that [
-            :single [
-                :variable "contentType" ;
-            ] ;
-        ] ;
-        :matches "(?i)^application/json\\s*(;|$)" ;
-    ] ;
 .
 
 _:storageDescriptionAsCidReturnsStorageType
@@ -1634,38 +1583,6 @@ _:getContainerWithLwsProfileAcceptItems
     ) ;
 .
 
-_:getContainerAsJsonLdStatus
-    :stepName "Get container as JSON-LD status" ;
-    :request _:getContainerAsJsonLd ;
-    :extract (
-        _:status
-    ) ;
-.
-
-_:getContainerAsJsonLdContentType
-    :stepName "Get container as JSON-LD Content-Type" ;
-    :request _:getContainerAsJsonLd ;
-    :extract (
-        _:contentType
-    ) ;
-.
-
-_:getContainerAsJsonStatus
-    :stepName "Get container as JSON status" ;
-    :request _:getContainerAsJson ;
-    :extract (
-        _:status
-    ) ;
-.
-
-_:getContainerAsJsonContentType
-    :stepName "Get container as JSON Content-Type" ;
-    :request _:getContainerAsJson ;
-    :extract (
-        _:contentType
-    ) ;
-.
-
 _:getStorageDescriptionAsCidType
     :stepName "Get storage description as CID type" ;
     :request _:getStorageDescriptionAsCid ;
@@ -1872,24 +1789,6 @@ _:getContainerWithLwsProfileAccept
     :headers [
         :key "Accept" ;
         :value "application/ld+json; profile=\"https://www.w3.org/ns/lws/v1\"" ;
-    ] ;
-.
-
-_:getContainerAsJsonLd
-    :method "GET" ;
-    :uri _:container ;
-    :headers [
-        :key "Accept" ;
-        :value "application/ld+json" ;
-    ] ;
-.
-
-_:getContainerAsJson
-    :method "GET" ;
-    :uri _:container ;
-    :headers [
-        :key "Accept" ;
-        :value "application/json" ;
     ] ;
 .
 
