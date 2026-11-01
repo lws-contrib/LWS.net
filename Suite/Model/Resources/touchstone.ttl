@@ -14,7 +14,6 @@
         _:containerHeadReturnsNoBody ,
         _:createWithForgedLinksetLinkReturns201 ,
         _:containerGetWithWeightedAcceptReturns200 ,
-        _:containerGetAsJsonLdWithLwsProfileReturns200 ,
         _:containerResponseVariesByAccept ,
         _:dataResourceAdvertisesByteRanges ,
         _:suffixByteRangeReturnsLastBytes ,
@@ -61,8 +60,6 @@
         _:createBeneathDataResourceReturnsAllow ,
         _:containerGetWithWeightedAcceptReturnsLwsMediaType ,
         _:containerGetWithWeightedAcceptReturnsContainerType ,
-        _:containerGetAsJsonLdWithLwsProfileReturnsContainerType ,
-        _:containerGetAsJsonLdWithLwsProfileReturnsItemsArray ,
         _:storageDescriptionAsCidReturnsStorageType ,
         _:storageDescriptionContextIsArray ,
         _:storageDescriptionServiceIsArray ,
@@ -199,16 +196,6 @@ _:containerGetWithWeightedAcceptReturns200
         _:discoverStorageRoot
         _:createContainer
         _:getContainerWithWeightedAcceptStatus
-    ) ;
-    :assert _:200 ;
-.
-
-_:containerGetAsJsonLdWithLwsProfileReturns200
-    :testName "Container GET as JSON-LD with LWS profile returns 200" ;
-    :steps (
-        _:discoverStorageRoot
-        _:createContainer
-        _:getContainerWithLwsProfileAcceptStatus
     ) ;
     :assert _:200 ;
 .
@@ -757,26 +744,6 @@ _:containerGetWithWeightedAcceptReturnsContainerType
     :assert _:containerType ;
 .
 
-_:containerGetAsJsonLdWithLwsProfileReturnsContainerType
-    :testName "Container GET as JSON-LD with LWS profile returns Container type" ;
-    :steps (
-        _:discoverStorageRoot
-        _:createContainer
-        _:getContainerWithLwsProfileAcceptType
-    ) ;
-    :assert _:containerType ;
-.
-
-_:containerGetAsJsonLdWithLwsProfileReturnsItemsArray
-    :testName "Container GET as JSON-LD with LWS profile returns items array" ;
-    :steps (
-        _:discoverStorageRoot
-        _:createContainer
-        _:getContainerWithLwsProfileAcceptItems
-    ) ;
-    :assert _:itemsArray ;
-.
-
 _:storageDescriptionAsCidReturnsStorageType
     :testName "Storage description as CID returns Storage type" ;
     :steps (
@@ -1149,14 +1116,6 @@ _:createResourceWithForgedLinkset
 _:getContainerWithWeightedAcceptStatus
     :stepName "Get container with weighted Accept status" ;
     :request _:getContainerWithWeightedAccept ;
-    :extract (
-        _:status
-    ) ;
-.
-
-_:getContainerWithLwsProfileAcceptStatus
-    :stepName "Get container with LWS profile Accept status" ;
-    :request _:getContainerWithLwsProfileAccept ;
     :extract (
         _:status
     ) ;
@@ -1567,22 +1526,6 @@ _:getContainerWithWeightedAcceptType
     ) ;
 .
 
-_:getContainerWithLwsProfileAcceptType
-    :stepName "Get container with LWS profile Accept type" ;
-    :request _:getContainerWithLwsProfileAccept ;
-    :extract (
-        _:type
-    ) ;
-.
-
-_:getContainerWithLwsProfileAcceptItems
-    :stepName "Get container with LWS profile Accept items" ;
-    :request _:getContainerWithLwsProfileAccept ;
-    :extract (
-        _:items
-    ) ;
-.
-
 _:getStorageDescriptionAsCidType
     :stepName "Get storage description as CID type" ;
     :request _:getStorageDescriptionAsCid ;
@@ -1780,15 +1723,6 @@ _:getContainerWithWeightedAccept
     :headers [
         :key "Accept" ;
         :value "application/x-touchstone-unservable;q=0.9, application/lws+json;q=0.5" ;
-    ] ;
-.
-
-_:getContainerWithLwsProfileAccept
-    :method "GET" ;
-    :uri _:container ;
-    :headers [
-        :key "Accept" ;
-        :value "application/ld+json; profile=\"https://www.w3.org/ns/lws/v1\"" ;
     ] ;
 .
 
