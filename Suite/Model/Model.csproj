@@ -4,6 +4,7 @@
     <PackageReference Include="FluentAssertions" />
     <PackageReference Include="FluentAssertions.Web.v8" />
     <PackageReference Include="JsonPath.Net" />
+    <PackageReference Include="langsamu.dotNetRdf.Wrapping" />
     <PackageReference Include="Meziantou.Framework.Http" />
     <PackageReference Include="Microsoft.Extensions.Http" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" />
@@ -12,10 +13,6 @@
     <PackageReference Include="OpenTelemetry.Extensions.Hosting" />
     <PackageReference Include="OpenTelemetry.Instrumentation.Http" />
     <PackageReference Include="dotNetRdf.Core" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\dotNetRDF.Wrapping\dotNetRDF.Wrapping.csproj" />
   </ItemGroup>
 
   <ItemGroup>
