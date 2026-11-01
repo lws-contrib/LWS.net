@@ -6,4 +6,5 @@
     :include "example.ttl"^^xsd:anyURI ;
     :include "touchstone.ttl"^^xsd:anyURI ;
     :include "oldmanifest.ttl"^^xsd:anyURI ;
+    :include "fromSpec.ttl"^^xsd:anyURI ;
 ] .

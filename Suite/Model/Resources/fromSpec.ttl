@@ -1,0 +1,49 @@
+﻿@prefix : <http://example.com/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+[
+    :manifestName "From specification: Linked Web Storage Protocol 1.0" ;
+    :test
+        _:storageDescriptionHasIdProperty ;
+] .
+
+# Tests
+
+_:storageDescriptionHasIdProperty
+    :testName "Storage description has id property" ;
+    :specification "https://www.w3.org/TR/lws10-core/#storage-description-data-model"^^xsd:anyURI ;
+    :steps (
+        _:getStorageDescriptionId
+    ) ;
+    :assert [
+        :that [
+            :single [
+                :variable "id" ;
+            ] ;
+        ] ;
+        :matches [ :constant "^[A-Za-z][A-Za-z0-9+.-]*:" ] ;
+    ] ;
+.
+
+# Steps
+_:getStorageDescriptionId
+    :stepName "Get storage description id" ;
+    :request _:getStorageDescription ;
+    :extract (
+        [
+            :path "$.id" ;
+            :to "id" ;
+        ]
+    ) ;
+.
+
+# Requests
+_:getStorageDescription
+    :method "GET" ;
+    :uri _:storage ;
+.
+
+# URIs
+_:storage
+    :variable "baseUri" ;
+.
