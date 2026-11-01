@@ -89,7 +89,8 @@
         _:linksetAdvertisesGet ,
         _:linksetAdvertisesPatch ,
         _:linksetAdvertisesJsonPatch ,
-        _:containerHeadLinksUp ;
+        _:containerHeadLinksUp ,
+        _:leafUpLinkNamesInnerContainer ;
 ] .
 
 # Tests
@@ -1159,6 +1160,26 @@ _:containerHeadLinksUp
     ] ;
 .
 
+_:leafUpLinkNamesInnerContainer
+    :testName "Leaf up link names inner container" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createOuterContainer
+        _:createInnerContainer
+        _:createLeafResource
+        _:headLeafUpLinks
+    ) ;
+    :assert [
+        :that [
+            :single [
+                :variable "upLinks" ;
+            ] ;
+        ] ;
+        :equals _:inner ;
+    ] ;
+.
+
 # Steps
 _:discoverStorageRoot
     :stepName "Discover storage root" ;
@@ -1967,6 +1988,60 @@ _:headContainerUpLinks
     ) ;
 .
 
+_:createOuterContainer
+    :stepName "Create outer container" ;
+    :request [
+        :method "POST" ;
+        :uri _:container ;
+        :headers _:linkTypeContainer ;
+    ] ;
+    :extract (
+        [
+            :header "Location" ;
+            :to "outerLocation" ;
+        ]
+    ) ;
+.
+
+_:createInnerContainer
+    :stepName "Create inner container" ;
+    :request [
+        :method "POST" ;
+        :uri _:outer ;
+        :headers _:linkTypeContainer ;
+    ] ;
+    :extract (
+        [
+            :header "Location" ;
+            :to "innerLocation" ;
+        ]
+    ) ;
+.
+
+_:createLeafResource
+    :stepName "Create leaf resource" ;
+    :request [
+        :method "POST" ;
+        :uri _:inner ;
+        :headers _:contentTypeTextPlain ;
+        :body "two containers deep" ;
+    ] ;
+    :extract (
+        [
+            :header "Location" ;
+            :to "leafLocation" ;
+        ]
+    ) ;
+.
+
+_:headLeafUpLinks
+    :stepName "Head leaf up links" ;
+    :request _:headLeaf ;
+    :extract (
+        _:upLinks
+    ) ;
+.
+
 # Requests
 _:getContainer
     :method "GET" ;
@@ -2145,6 +2220,11 @@ _:getContainerWithWeightedAccept
     ] ;
 .
 
+_:headLeaf
+    :method "HEAD" ;
+    :uri _:leaf ;
+.
+
 # URIs
 _:storageRoot
     :single [
@@ -2191,6 +2271,33 @@ _:storage
     ] ;
     :relative [
         :constant "/" ;
+    ] ;
+.
+
+_:outer
+    :base _:storageRoot ;
+    :relative [
+        :single [
+            :variable "outerLocation" ;
+        ] ;
+    ] ;
+.
+
+_:inner
+    :base _:storageRoot ;
+    :relative [
+        :single [
+            :variable "innerLocation" ;
+        ] ;
+    ] ;
+.
+
+_:leaf
+    :base _:storageRoot ;
+    :relative [
+        :single [
+            :variable "leafLocation" ;
+        ] ;
     ] ;
 .
 
@@ -2254,6 +2361,11 @@ _:typeLinks
 _:linksetLinks
     :link "linkset" ;
     :to "linksetLinks" ;
+.
+
+_:upLinks
+    :link "up" ;
+    :to "upLinks" ;
 .
 
 # Assertions
