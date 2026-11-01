@@ -46,7 +46,8 @@
         _:containedContainerDescriptionTypeEqualsOrContainsContainer ,
         _:containedDataResourceDescriptionFormatIsMediaTypeOfDataResource ,
         _:metadataLinksAreAvailableAsStandaloneResource ,
-        _:containerMetadataLinksAreAvailableAsStandaloneResource ;
+        _:containerMetadataLinksAreAvailableAsStandaloneResource ,
+        _:linksetIsDiscoverableViaLinkHeaderWithRelLinkset ;
 ] .
 
 # Tests
@@ -745,6 +746,18 @@ _:containerMetadataLinksAreAvailableAsStandaloneResource
     :assert _:200 ;
 .
 
+_:linksetIsDiscoverableViaLinkHeaderWithRelLinkset
+    :testName "Linkset is discoverable via Link header with rel linkset" ;
+    :specification "https://www.w3.org/TR/lws10-core/#metadata-0"^^xsd:anyURI ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:getTextResourceLinksetLinks
+    ) ;
+    :assert _:linksetLink ;
+.
+
 # Steps
 _:getStorageDescriptionId
     :stepName "Get storage description id" ;
@@ -1324,4 +1337,13 @@ _:lwsCidContentType
         ] ;
     ] ;
     :matches [ :constant "(?i)^application/lws\\+cid\\s*(;|$)" ] ;
+.
+
+_:linksetLink
+    :that [
+        :count [
+            :variable "linksetLinks" ;
+        ] ;
+    ] ;
+    :greaterThan [ :constant 0 ] ;
 .
