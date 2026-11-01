@@ -44,7 +44,8 @@
         _:containedResourceDescriptionIdIsUriOfContainedResource ,
         _:containedDataResourceDescriptionTypeEqualsOrContainsDataResource ,
         _:containedContainerDescriptionTypeEqualsOrContainsContainer ,
-        _:containedDataResourceDescriptionFormatIsMediaTypeOfDataResource ;
+        _:containedDataResourceDescriptionFormatIsMediaTypeOfDataResource ,
+        _:metadataLinksAreAvailableAsStandaloneResource ;
 ] .
 
 # Tests
@@ -718,6 +719,19 @@ _:containedDataResourceDescriptionFormatIsMediaTypeOfDataResource
     ] ;
 .
 
+_:metadataLinksAreAvailableAsStandaloneResource
+    :testName "Metadata links are available as a standalone resource" ;
+    :specification "https://www.w3.org/TR/lws10-core/#metadata-0"^^xsd:anyURI ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:getTextResourceLinksetLinks
+        _:getLinksetStatus
+    ) ;
+    :assert _:200 ;
+.
+
 # Steps
 _:getStorageDescriptionId
     :stepName "Get storage description id" ;
@@ -1062,6 +1076,22 @@ _:getContainerItemFormats
     ) ;
 .
 
+_:getTextResourceLinksetLinks
+    :stepName "Get text resource linkset links" ;
+    :request _:getTextResource ;
+    :extract (
+        _:linksetLinks
+    ) ;
+.
+
+_:getLinksetStatus
+    :stepName "Get linkset status" ;
+    :request _:getLinkset ;
+    :extract (
+        _:status
+    ) ;
+.
+
 # Requests
 _:getStorageDescription
     :method "GET" ;
@@ -1122,6 +1152,12 @@ _:getNestedContainer
     :headers _:acceptLwsJson ;
 .
 
+_:getLinkset
+    :method "GET" ;
+    :uri _:linkset ;
+    :headers _:acceptLinksetJson ;
+.
+
 # URIs
 _:storage
     :variable "baseUri" ;
@@ -1172,6 +1208,12 @@ _:nestedContainer
     ] ;
 .
 
+_:linkset
+    :single [
+        :variable "linksetLinks" ;
+    ] ;
+.
+
 # Headers
 _:linkTypeContainer
     :key "Link" ;
@@ -1186,6 +1228,11 @@ _:contentTypeTextPlain
 _:acceptLwsJson
     :key "Accept" ;
     :value [ :constant "application/lws+json" ] ;
+.
+
+_:acceptLinksetJson
+    :key "Accept" ;
+    :value [ :constant "application/linkset+json" ] ;
 .
 
 # Extractors
@@ -1227,6 +1274,11 @@ _:secondTextResourceLocation
 _:nestedContainerLocation
     :header "Location" ;
     :to "nestedContainerLocation" ;
+.
+
+_:linksetLinks
+    :link "linkset" ;
+    :to "linksetLinks" ;
 .
 
 # Assertions
