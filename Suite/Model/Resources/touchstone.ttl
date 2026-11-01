@@ -74,6 +74,7 @@
         _:storageDescriptionAsCidReturnsStorageType ,
         _:storageDescriptionContextIsArray ,
         _:storageDescriptionServiceIsArray ,
+        _:dataResourceGetLinksStorage ,
         _:missingResourceProblemDetailsIsObject ,
         _:createContainerReturnsLocation ,
         _:createDataResourceReturns201 ,
@@ -948,6 +949,24 @@ _:storageDescriptionServiceIsArray
             ] ;
         ] ;
         :matches [ :constant "^\\[" ] ;
+    ] ;
+.
+
+_:dataResourceGetLinksStorage
+    :testName "Data resource GET links storage" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:getTextResourceStorageLinks
+    ) ;
+    :assert [
+        :that [
+            :single [
+                :variable "storageLinks" ;
+            ] ;
+        ] ;
+        :equals _:storage ;
     ] ;
 .
 
@@ -1938,6 +1957,14 @@ _:headTextResourceTypeLinks
     ) ;
 .
 
+_:getTextResourceStorageLinks
+    :stepName "Get text resource storage links" ;
+    :request _:getTextResource ;
+    :extract (
+        _:storageLinks
+    ) ;
+.
+
 _:headContainerTypeLinks
     :stepName "Head container type links" ;
     :request _:headContainer ;
@@ -2522,6 +2549,11 @@ _:items
 _:typeLinks
     :link "type" ;
     :to "typeLinks" ;
+.
+
+_:storageLinks
+    :link "https://www.w3.org/ns/lws#storage" ;
+    :to "storageLinks" ;
 .
 
 _:linksetLinks
