@@ -48,7 +48,8 @@
         _:metadataLinksAreAvailableAsStandaloneResource ,
         _:containerMetadataLinksAreAvailableAsStandaloneResource ,
         _:linksetIsDiscoverableViaLinkHeaderWithRelLinkset ,
-        _:containerLinksetIsDiscoverableViaLinkHeaderWithRelLinkset ;
+        _:containerLinksetIsDiscoverableViaLinkHeaderWithRelLinkset ,
+        _:linksetResourceIsAvailableAsApplicationLinksetJson ;
 ] .
 
 # Tests
@@ -770,6 +771,19 @@ _:containerLinksetIsDiscoverableViaLinkHeaderWithRelLinkset
     :assert _:linksetLink ;
 .
 
+_:linksetResourceIsAvailableAsApplicationLinksetJson
+    :testName "Linkset resource is available as application/linkset+json" ;
+    :specification "https://www.w3.org/TR/lws10-core/#metadata-0"^^xsd:anyURI ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:getTextResourceLinksetLinks
+        _:getLinksetContentType
+    ) ;
+    :assert _:linksetJsonContentType ;
+.
+
 # Steps
 _:getStorageDescriptionId
     :stepName "Get storage description id" ;
@@ -1138,6 +1152,14 @@ _:getContainerLinksetLinks
     ) ;
 .
 
+_:getLinksetContentType
+    :stepName "Get linkset Content-Type" ;
+    :request _:getLinkset ;
+    :extract (
+        _:contentType
+    ) ;
+.
+
 # Requests
 _:getStorageDescription
     :method "GET" ;
@@ -1358,4 +1380,13 @@ _:linksetLink
         ] ;
     ] ;
     :greaterThan [ :constant 0 ] ;
+.
+
+_:linksetJsonContentType
+    :that [
+        :single [
+            :variable "contentType" ;
+        ] ;
+    ] ;
+    :matches [ :constant "(?i)^application/linkset\\+json\\s*(;|$)" ] ;
 .
