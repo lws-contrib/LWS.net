@@ -39,6 +39,7 @@
         _:ifUnmodifiedSinceLastModifiedReturns200 ,
         _:ifUnmodifiedSinceEpochReturns412 ,
         _:conditionalPutStaleIfMatchReturns412 ,
+        _:conditionalPutStaleIfMatchKeepsResourceReturns200 ,
         _:conditionalPutStaleIfMatchLeavesResourceUntouched ,
         _:conditionalGetNeverMatchingValidatorReturns200 ,
         _:conditionalGetNeverMatchingValidatorReturnsPostedBody ,
@@ -582,6 +583,20 @@ _:conditionalPutStaleIfMatchReturns412
         _:conditionalPutTextResourceStaleIfMatchStatus
     ) ;
     :assert _:412 ;
+.
+
+_:conditionalPutStaleIfMatchKeepsResourceReturns200
+    :testName "PUT with a stale If-Match keeps the resource readable" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:getTextResourceETag
+        _:conditionalPutTextResourceIfMatchStatus
+        _:conditionalPutTextResourceStaleIfMatchStatus
+        _:getTextResourceStatus
+    ) ;
+    :assert _:200 ;
 .
 
 _:conditionalPutStaleIfMatchLeavesResourceUntouched
