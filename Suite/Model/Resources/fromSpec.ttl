@@ -53,7 +53,8 @@
         _:linksetResourceBodyIsRfc9264Linkset ,
         _:allowHeaderOfLinksetAdvertisesGet ,
         _:allowHeaderOfLinksetAdvertisesPatch ,
-        _:acceptPatchHeaderOfLinksetAdvertisesJsonPatch ;
+        _:acceptPatchHeaderOfLinksetAdvertisesJsonPatch ,
+        _:linksetGetResponseIncludesEtagHeader ;
 ] .
 
 # Tests
@@ -864,6 +865,19 @@ _:acceptPatchHeaderOfLinksetAdvertisesJsonPatch
     ] ;
 .
 
+_:linksetGetResponseIncludesEtagHeader
+    :testName "Linkset GET response includes ETag header" ;
+    :specification "https://www.w3.org/TR/lws10-core/#metadata-0"^^xsd:anyURI ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:getTextResourceLinksetLinks
+        _:getLinksetEtag
+    ) ;
+    :assert _:entityTag ;
+.
+
 # Steps
 _:getStorageDescriptionId
     :stepName "Get storage description id" ;
@@ -1267,6 +1281,14 @@ _:headLinksetAcceptPatch
     ) ;
 .
 
+_:getLinksetEtag
+    :stepName "Get linkset ETag" ;
+    :request _:getLinkset ;
+    :extract (
+        _:etag
+    ) ;
+.
+
 # Requests
 _:getStorageDescription
     :method "GET" ;
@@ -1472,6 +1494,11 @@ _:acceptPatch
     :to "acceptPatch" ;
 .
 
+_:etag
+    :header "ETag" ;
+    :to "etag" ;
+.
+
 # Assertions
 _:storageLinkTargetsStorage
     :that [
@@ -1512,4 +1539,13 @@ _:linksetJsonContentType
         ] ;
     ] ;
     :matches [ :constant "(?i)^application/linkset\\+json\\s*(;|$)" ] ;
+.
+
+_:entityTag
+    :that [
+        :single [
+            :variable "etag" ;
+        ] ;
+    ] ;
+    :matches [ :constant "^(W/)?\"[^\"]*\"$" ] ;
 .
