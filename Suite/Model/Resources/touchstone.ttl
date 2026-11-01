@@ -88,6 +88,7 @@
         _:linksetGetReturns200 ,
         _:linksetAdvertisesGet ,
         _:linksetAdvertisesPatch ,
+        _:linksetAdvertisesJsonPatch ,
         _:containerHeadLinksUp ;
 ] .
 
@@ -1122,6 +1123,25 @@ _:linksetAdvertisesPatch
     ] ;
 .
 
+_:linksetAdvertisesJsonPatch
+    :testName "Linkset advertises JSON Patch" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:getTextResourceLinksetLinks
+        _:getLinksetAcceptPatch
+    ) ;
+    :assert [
+        :that [
+            :single [
+                :variable "acceptPatch" ;
+            ] ;
+        ] ;
+        :matches "(?i)application/json-patch\\+json" ;
+    ] ;
+.
+
 _:containerHeadLinksUp
     :testName "Container HEAD links up" ;
     :steps (
@@ -1921,6 +1941,17 @@ _:getLinksetAllow
         [
             :header "Allow" ;
             :to "allow" ;
+        ]
+    ) ;
+.
+
+_:getLinksetAcceptPatch
+    :stepName "Get linkset Accept-Patch" ;
+    :request _:getLinkset ;
+    :extract (
+        [
+            :header "Accept-Patch" ;
+            :to "acceptPatch" ;
         ]
     ) ;
 .
