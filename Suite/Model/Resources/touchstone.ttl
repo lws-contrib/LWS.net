@@ -93,6 +93,7 @@
         _:linksetAdvertisesJsonPatch ,
         _:linksetPatchWithStaleValidatorReturns412 ,
         _:linksetNamedByCreateReturns200 ,
+        _:linksetNamedByCreateReturnsLinksetMediaType ,
         _:containerHeadLinksUp ,
         _:leafUpLinkNamesInnerContainer ,
         _:innerContainerListsLeaf ,
@@ -1211,6 +1212,17 @@ _:linksetNamedByCreateReturns200
     :assert _:200 ;
 .
 
+_:linksetNamedByCreateReturnsLinksetMediaType
+    :testName "Linkset named by create returns linkset media type" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:getLinksetContentType
+    ) ;
+    :assert _:linksetJsonContentType ;
+.
+
 _:containerHeadLinksUp
     :testName "Container HEAD links up" ;
     :steps (
@@ -2179,6 +2191,14 @@ _:patchLinksetStaleIfMatchStatus
     ) ;
 .
 
+_:getLinksetContentType
+    :stepName "Get linkset Content-Type" ;
+    :request _:getLinkset ;
+    :extract (
+        _:contentType
+    ) ;
+.
+
 _:headContainerUpLinks
     :stepName "Head container up links" ;
     :request _:headContainer ;
@@ -2753,6 +2773,15 @@ _:lwsCidContentType
         ] ;
     ] ;
     :matches [ :constant "(?i)^application/lws\\+cid\\s*(;|$)" ] ;
+.
+
+_:linksetJsonContentType
+    :that [
+        :single [
+            :variable "contentType" ;
+        ] ;
+    ] ;
+    :matches [ :constant "(?i)^application/linkset\\+json\\s*(;|$)" ] ;
 .
 
 _:containerType
