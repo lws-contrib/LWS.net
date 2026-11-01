@@ -29,6 +29,7 @@
         _:dataResourceGetReturns200 ,
         _:dataResourceGetReturnsItsMediaType ,
         _:dataResourceGetReturnsETag ,
+        _:dataResourceGetReturnsLastModified ,
         _:conditionalGetReturns304 ,
         _:conditionalGetReturnsNoBody ,
         _:dataResourceHeadReturns200 ,
@@ -406,6 +407,24 @@ _:dataResourceGetReturnsETag
         :that [
             :single [
                 :variable "etag" ;
+            ] ;
+        ] ;
+        :matches "." ;
+    ] ;
+.
+
+_:dataResourceGetReturnsLastModified
+    :testName "Data resource GET returns Last-Modified" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:getTextResourceLastModified
+    ) ;
+    :assert [
+        :that [
+            :single [
+                :variable "lastModified" ;
             ] ;
         ] ;
         :matches "." ;
@@ -1372,6 +1391,17 @@ _:conditionalGetTextResourceStatus
     :request _:conditionalGetTextResource ;
     :extract (
         _:status
+    ) ;
+.
+
+_:getTextResourceLastModified
+    :stepName "Get text resource Last-Modified" ;
+    :request _:getTextResource ;
+    :extract (
+        [
+            :header "Last-Modified" ;
+            :to "lastModified" ;
+        ]
     ) ;
 .
 
