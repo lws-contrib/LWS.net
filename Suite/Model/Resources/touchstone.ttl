@@ -96,6 +96,7 @@
         _:createContainerLinksUp ,
         _:createDataResourceReturns201 ,
         _:createDataResourceReturnsLocation ,
+        _:createDataResourceLinksUp ,
         _:secondOfTwoIdenticalCreatesReturns201 ,
         _:containerGetLinksLinkset ,
         _:dataResourceGetLinksLinkset ,
@@ -1344,6 +1345,23 @@ _:createDataResourceReturnsLocation
     ] ;
 .
 
+_:createDataResourceLinksUp
+    :testName "Create data resource links up" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+    ) ;
+    :assert [
+        :that [
+            :single [
+                :variable "upLinks" ;
+            ] ;
+        ] ;
+        :equals _:container ;
+    ] ;
+.
+
 _:secondOfTwoIdenticalCreatesReturns201
     :testName "Second of two identical creates returns 201" ;
     :steps (
@@ -1902,6 +1920,7 @@ _:createTextResource
         ]
         _:status
         _:linksetLinks
+        _:upLinks
     ) ;
 .
 
