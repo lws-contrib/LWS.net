@@ -104,7 +104,8 @@
         _:testContainerListsOuterContainer ,
         _:nonEmptyContainerDeleteReturns409 ,
         _:nonEmptyContainerDeleteKeepsMember ,
-        _:nonEmptyContainerDeleteKeepsContainer ;
+        _:nonEmptyContainerDeleteKeepsContainer ,
+        _:authorizationServerMetadataReturns200  ;
 ] .
 
 # Tests
@@ -1428,6 +1429,15 @@ _:nonEmptyContainerDeleteKeepsContainer
     :assert _:200 ;
 .
 
+_:authorizationServerMetadataReturns200
+    :testName "Authorization server metadata returns 200" ;
+    :steps (
+        _:discoverAuthorizationServer
+        _:getAuthorizationServerMetadataStatus
+    ) ;
+    :assert _:200 ;
+.
+
 # Steps
 _:discoverStorageRoot
     :stepName "Discover storage root" ;
@@ -2406,6 +2416,25 @@ _:getInnerContainerStatus
     ) ;
 .
 
+_:discoverAuthorizationServer
+    :stepName "Discover authorization server" ;
+    :request _:getStorageDescription ;
+    :extract (
+        [
+            :path "$.service[?@.type == 'AuthorizationServer'].serviceEndpoint" ;
+            :to "authorizationServer" ;
+        ]
+    ) ;
+.
+
+_:getAuthorizationServerMetadataStatus
+    :stepName "Get authorization server metadata status" ;
+    :request _:getAuthorizationServerMetadata ;
+    :extract (
+        _:status
+    ) ;
+.
+
 # Requests
 _:getContainer
     :method "GET" ;
@@ -2630,6 +2659,15 @@ _:getLeaf
     :uri _:leaf ;
 .
 
+_:getAuthorizationServerMetadata
+    :method "GET" ;
+    :uri _:authorizationServerMetadata ;
+    :headers [
+        :key "Accept" ;
+        :value [ :constant "application/json" ] ;
+    ] ;
+.
+
 # URIs
 _:storageRoot
     :single [
@@ -2703,6 +2741,19 @@ _:leaf
         :single [
             :variable "leafLocation" ;
         ] ;
+    ] ;
+.
+
+_:authorizationServer
+    :single [
+        :variable "authorizationServer" ;
+    ] ;
+.
+
+_:authorizationServerMetadata
+    :base _:authorizationServer ;
+    :relative [
+        :constant "/.well-known/lws-configuration" ;
     ] ;
 .
 
