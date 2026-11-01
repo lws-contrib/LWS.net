@@ -75,6 +75,7 @@
         _:storageDescriptionContextIsArray ,
         _:storageDescriptionServiceIsArray ,
         _:dataResourceGetLinksStorage ,
+        _:dataResourceHeadLinksStorage ,
         _:missingResourceProblemDetailsIsObject ,
         _:createContainerReturnsLocation ,
         _:createDataResourceReturns201 ,
@@ -959,6 +960,24 @@ _:dataResourceGetLinksStorage
         _:createContainer
         _:createTextResource
         _:getTextResourceStorageLinks
+    ) ;
+    :assert [
+        :that [
+            :single [
+                :variable "storageLinks" ;
+            ] ;
+        ] ;
+        :equals _:storage ;
+    ] ;
+.
+
+_:dataResourceHeadLinksStorage
+    :testName "Data resource HEAD links storage" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:headTextResourceStorageLinks
     ) ;
     :assert [
         :that [
@@ -1960,6 +1979,14 @@ _:headTextResourceTypeLinks
 _:getTextResourceStorageLinks
     :stepName "Get text resource storage links" ;
     :request _:getTextResource ;
+    :extract (
+        _:storageLinks
+    ) ;
+.
+
+_:headTextResourceStorageLinks
+    :stepName "Head text resource storage links" ;
+    :request _:headTextResource ;
     :extract (
         _:storageLinks
     ) ;
