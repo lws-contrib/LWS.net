@@ -91,7 +91,8 @@
         _:linksetAdvertisesJsonPatch ,
         _:containerHeadLinksUp ,
         _:leafUpLinkNamesInnerContainer ,
-        _:innerContainerListsLeaf ;
+        _:innerContainerListsLeaf ,
+        _:innerContainerUpLinkNamesOuterContainer ;
 ] .
 
 # Tests
@@ -1204,6 +1205,26 @@ _:innerContainerListsLeaf
     ] ;
 .
 
+_:innerContainerUpLinkNamesOuterContainer
+    :testName "Inner container up link names outer container" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createOuterContainer
+        _:createInnerContainer
+        _:createLeafResource
+        _:getInnerContainerUpLinks
+    ) ;
+    :assert [
+        :that [
+            :single [
+                :variable "upLinks" ;
+            ] ;
+        ] ;
+        :equals _:outer ;
+    ] ;
+.
+
 # Steps
 _:discoverStorageRoot
     :stepName "Discover storage root" ;
@@ -2071,6 +2092,14 @@ _:getInnerContainerItemIds
     :request _:getInnerContainer ;
     :extract (
         _:itemIds
+    ) ;
+.
+
+_:getInnerContainerUpLinks
+    :stepName "Get inner container up links" ;
+    :request _:getInnerContainer ;
+    :extract (
+        _:upLinks
     ) ;
 .
 
