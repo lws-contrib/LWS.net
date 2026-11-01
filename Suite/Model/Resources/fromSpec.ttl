@@ -35,7 +35,8 @@
         _:createdContainerIsAddedToParentContainerItems ,
         _:getNestedContainerLinksParentContainerAsUp ,
         _:containerRepresentationHasIdProperty ,
-        _:containerRepresentationIdIsUriOfContainer ;
+        _:containerRepresentationIdIsUriOfContainer ,
+        _:containerRepresentationTypeIsContainer ;
 ] .
 
 # Tests
@@ -529,6 +530,24 @@ _:containerRepresentationIdIsUriOfContainer
     ] ;
 .
 
+_:containerRepresentationTypeIsContainer
+    :testName "Container representation type is Container" ;
+    :specification "https://www.w3.org/TR/lws10-core/#container-properties"^^xsd:anyURI ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:getContainerType
+    ) ;
+    :assert [
+        :that [
+            :single [
+                :variable "containerType" ;
+            ] ;
+        ] ;
+        :equals [ :constant "Container" ] ;
+    ] ;
+.
+
 # Steps
 _:getStorageDescriptionId
     :stepName "Get storage description id" ;
@@ -814,6 +833,17 @@ _:getContainerId
         [
             :path "$.id" ;
             :to "containerId" ;
+        ]
+    ) ;
+.
+
+_:getContainerType
+    :stepName "Get container type" ;
+    :request _:getContainer ;
+    :extract (
+        [
+            :path "$.type" ;
+            :to "containerType" ;
         ]
     ) ;
 .
