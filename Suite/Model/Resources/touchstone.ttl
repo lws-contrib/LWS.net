@@ -86,6 +86,7 @@
         _:createWithForgedLinksetLinkLinksLinkset ,
         _:resourceCreatedWithForgedLinksetLinkGetLinksLinkset ,
         _:linksetGetReturns200 ,
+        _:linksetAdvertisesGet ,
         _:containerHeadLinksUp ;
 ] .
 
@@ -1086,6 +1087,23 @@ _:linksetGetReturns200
     :assert _:200 ;
 .
 
+_:linksetAdvertisesGet
+    :testName "Linkset advertises GET" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:getTextResourceLinksetLinks
+        _:getLinksetAllow
+    ) ;
+    :assert [
+        :that [
+            :variable "allow" ;
+        ] ;
+        :contains "GET" ;
+    ] ;
+.
+
 _:containerHeadLinksUp
     :testName "Container HEAD links up" ;
     :steps (
@@ -1875,6 +1893,17 @@ _:getLinksetStatus
     :request _:getLinkset ;
     :extract (
         _:status
+    ) ;
+.
+
+_:getLinksetAllow
+    :stepName "Get linkset Allow" ;
+    :request _:getLinkset ;
+    :extract (
+        [
+            :header "Allow" ;
+            :to "allow" ;
+        ]
     ) ;
 .
 
