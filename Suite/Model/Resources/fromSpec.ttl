@@ -19,7 +19,8 @@
         _:getStorageUriReturns200 ,
         _:getStorageUriReturnsLwsCid ,
         _:storageDescriptionSerializableAsLwsCid ,
-        _:storageRootServiceEndpointIsStorageRootContainer ;
+        _:storageRootServiceEndpointIsStorageRootContainer ,
+        _:storageDescriptionContextStartsWithCidAndLws ;
 ] .
 
 # Tests
@@ -239,6 +240,22 @@ _:storageRootServiceEndpointIsStorageRootContainer
     ] ;
 .
 
+_:storageDescriptionContextStartsWithCidAndLws
+    :testName "Storage description @context starts with CID and LWS URIs" ;
+    :specification "https://www.w3.org/TR/lws10-core/#storage-description-representation"^^xsd:anyURI ;
+    :steps (
+        _:getStorageDescriptionAsCidContext
+    ) ;
+    :assert [
+        :that [
+            :single [
+                :variable "context" ;
+            ] ;
+        ] ;
+        :matches [ :constant "^\\[\\s*\"https://www\\.w3\\.org/ns/cid/v1\"\\s*,\\s*\"https://www\\.w3\\.org/ns/lws/v1\"" ] ;
+    ] ;
+.
+
 # Steps
 _:getStorageDescriptionId
     :stepName "Get storage description id" ;
@@ -380,6 +397,17 @@ _:getStorageRootType
         [
             :path "$.type" ;
             :to "type" ;
+        ]
+    ) ;
+.
+
+_:getStorageDescriptionAsCidContext
+    :stepName "Get storage description as CID context" ;
+    :request _:getStorageDescriptionAsCid ;
+    :extract (
+        [
+            :path "$['@context']" ;
+            :to "context" ;
         ]
     ) ;
 .
