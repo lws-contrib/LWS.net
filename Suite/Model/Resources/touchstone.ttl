@@ -49,6 +49,7 @@
         _:conditionalDeleteStaleIfMatchLeavesResourceUntouched ,
         _:dataResourceHeadReturns200 ,
         _:dataResourceHeadReturnsItsMediaType ,
+        _:dataResourceHeadReturnsGetETag ,
         _:nestedContainerGetReturnsLwsMediaType ,
         _:containerHeadReturns200 ,
         _:containerHeadReturnsLwsMediaType ,
@@ -733,6 +734,29 @@ _:dataResourceHeadReturnsItsMediaType
         _:headTextResourceContentType
     ) ;
     :assert _:textPlainContentType ;
+.
+
+_:dataResourceHeadReturnsGetETag
+    :testName "Data resource HEAD returns the GET ETag" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:getTextResourceETag
+        _:headTextResourceETag
+    ) ;
+    :assert [
+        :that [
+            :single [
+                :variable "headEtag" ;
+            ] ;
+        ] ;
+        :equals [
+            :single [
+                :variable "etag" ;
+            ] ;
+        ] ;
+    ] ;
 .
 
 _:nestedContainerGetReturnsLwsMediaType
@@ -2351,6 +2375,17 @@ _:headTextResourceContentType
     :request _:headTextResource ;
     :extract (
         _:contentType
+    ) ;
+.
+
+_:headTextResourceETag
+    :stepName "Head text resource ETag" ;
+    :request _:headTextResource ;
+    :extract (
+        [
+            :header "ETag" ;
+            :to "headEtag" ;
+        ]
     ) ;
 .
 
