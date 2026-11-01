@@ -109,6 +109,7 @@
         _:linksetNamedByCreateReturnsLinksetMediaType ,
         _:linksetNamedByCreateHasLinksetArray ,
         _:linksetNamedByCreateReturnsETag ,
+        _:containerLinksetReturns200 ,
         _:containerHeadLinksUp ,
         _:leafUpLinkNamesInnerContainer ,
         _:innerContainerListsLeaf ,
@@ -1477,6 +1478,17 @@ _:linksetNamedByCreateReturnsETag
         ] ;
         :matches [ :constant "." ] ;
     ] ;
+.
+
+_:containerLinksetReturns200
+    :testName "Container linkset returns 200" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:getContainerLinksetLinks
+        _:getLinksetStatus
+    ) ;
+    :assert _:200 ;
 .
 
 _:containerHeadLinksUp
