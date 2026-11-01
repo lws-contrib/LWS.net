@@ -38,7 +38,8 @@
         _:containerRepresentationIdIsUriOfContainer ,
         _:containerRepresentationTypeIsContainer ,
         _:containerRepresentationTotalItemsIsInteger ,
-        _:containerRepresentationItemsIsArrayOfContainedResourceDescriptions ;
+        _:containerRepresentationItemsIsArrayOfContainedResourceDescriptions ,
+        _:emptyContainerItemsIsEmptyArray ;
 ] .
 
 # Tests
@@ -584,6 +585,24 @@ _:containerRepresentationItemsIsArrayOfContainedResourceDescriptions
             ] ;
         ] ;
         :matches [ :constant "^\\[\\s*\\{" ] ;
+    ] ;
+.
+
+_:emptyContainerItemsIsEmptyArray
+    :testName "Empty container items is an empty array" ;
+    :specification "https://www.w3.org/TR/lws10-core/#container-properties"^^xsd:anyURI ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:getContainerItemsArray
+    ) ;
+    :assert [
+        :that [
+            :single [
+                :variable "itemsArray" ;
+            ] ;
+        ] ;
+        :matches [ :constant "^\\[\\s*\\]$" ] ;
     ] ;
 .
 
