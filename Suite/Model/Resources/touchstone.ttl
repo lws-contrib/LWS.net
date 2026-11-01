@@ -44,6 +44,7 @@
         _:conditionalGetNeverMatchingValidatorReturnsPostedBody ,
         _:conditionalGetStaleValidatorReturns200 ,
         _:conditionalDeleteStaleIfMatchReturns412 ,
+        _:conditionalDeleteStaleIfMatchKeepsResourceReturns200 ,
         _:dataResourceHeadReturns200 ,
         _:dataResourceHeadReturnsItsMediaType ,
         _:nestedContainerGetReturnsLwsMediaType ,
@@ -652,6 +653,20 @@ _:conditionalDeleteStaleIfMatchReturns412
         _:conditionalDeleteTextResourceStaleIfMatchStatus
     ) ;
     :assert _:412 ;
+.
+
+_:conditionalDeleteStaleIfMatchKeepsResourceReturns200
+    :testName "DELETE with a stale If-Match keeps the resource readable" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:getTextResourceETag
+        _:conditionalPutTextResourceIfMatchChangedContentStatus
+        _:conditionalDeleteTextResourceStaleIfMatchStatus
+        _:getTextResourceStatus
+    ) ;
+    :assert _:200 ;
 .
 
 _:dataResourceHeadReturns200
