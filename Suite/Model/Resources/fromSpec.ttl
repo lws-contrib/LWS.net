@@ -31,7 +31,8 @@
         _:createdResourceIsAddedToContainerItems ,
         _:deletedResourceIsRemovedFromParentContainerItems ,
         _:containerRepresentationIncludesAllContainedResources ,
-        _:deletingNonEmptyContainerReturns409 ;
+        _:deletingNonEmptyContainerReturns409 ,
+        _:createdContainerIsAddedToParentContainerItems ;
 ] .
 
 # Tests
@@ -447,6 +448,28 @@ _:deletingNonEmptyContainerReturns409
     ] ;
 .
 
+_:createdContainerIsAddedToParentContainerItems
+    :testName "Created container is added to parent container items" ;
+    :specification "https://www.w3.org/TR/lws10-core/#containment-integrity"^^xsd:anyURI ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createNestedContainer
+        _:getContainerItemIds
+    ) ;
+    :assert [
+        :that [
+            :base _:container ;
+            :relative [
+                :single [
+                    :variable "itemIds" ;
+                ] ;
+            ] ;
+        ] ;
+        :equals _:nestedContainer ;
+    ] ;
+.
+
 # Steps
 _:getStorageDescriptionId
     :stepName "Get storage description id" ;
@@ -705,6 +728,18 @@ _:deleteContainer
     ) ;
 .
 
+_:createNestedContainer
+    :stepName "Create nested container" ;
+    :request [
+        :method "POST" ;
+        :uri _:container ;
+        :headers _:linkTypeContainer ;
+    ] ;
+    :extract (
+        _:nestedContainerLocation
+    ) ;
+.
+
 # Requests
 _:getStorageDescription
     :method "GET" ;
@@ -800,6 +835,15 @@ _:secondTextResource
     ] ;
 .
 
+_:nestedContainer
+    :base _:container ;
+    :relative [
+        :single [
+            :variable "nestedContainerLocation" ;
+        ] ;
+    ] ;
+.
+
 # Headers
 _:linkTypeContainer
     :key "Link" ;
@@ -850,6 +894,11 @@ _:upLinks
 _:secondTextResourceLocation
     :header "Location" ;
     :to "secondTextResourceLocation" ;
+.
+
+_:nestedContainerLocation
+    :header "Location" ;
+    :to "nestedContainerLocation" ;
 .
 
 # Assertions
