@@ -25,6 +25,7 @@ public partial class Request
 
             if (!re.Headers.TryAddWithoutValidation(header.Key, value))
             {
+                re.Content?.Headers.Remove(header.Key);
                 re.Content?.Headers.TryAddWithoutValidation(header.Key, value);
             }
         }
