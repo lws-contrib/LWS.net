@@ -47,7 +47,8 @@
         _:containedDataResourceDescriptionFormatIsMediaTypeOfDataResource ,
         _:metadataLinksAreAvailableAsStandaloneResource ,
         _:containerMetadataLinksAreAvailableAsStandaloneResource ,
-        _:linksetIsDiscoverableViaLinkHeaderWithRelLinkset ;
+        _:linksetIsDiscoverableViaLinkHeaderWithRelLinkset ,
+        _:containerLinksetIsDiscoverableViaLinkHeaderWithRelLinkset ;
 ] .
 
 # Tests
@@ -754,6 +755,17 @@ _:linksetIsDiscoverableViaLinkHeaderWithRelLinkset
         _:createContainer
         _:createTextResource
         _:getTextResourceLinksetLinks
+    ) ;
+    :assert _:linksetLink ;
+.
+
+_:containerLinksetIsDiscoverableViaLinkHeaderWithRelLinkset
+    :testName "Container linkset is discoverable via Link header with rel linkset" ;
+    :specification "https://www.w3.org/TR/lws10-core/#metadata-0"^^xsd:anyURI ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:getContainerLinksetLinks
     ) ;
     :assert _:linksetLink ;
 .
