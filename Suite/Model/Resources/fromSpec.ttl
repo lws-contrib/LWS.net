@@ -36,7 +36,8 @@
         _:getNestedContainerLinksParentContainerAsUp ,
         _:containerRepresentationHasIdProperty ,
         _:containerRepresentationIdIsUriOfContainer ,
-        _:containerRepresentationTypeIsContainer ;
+        _:containerRepresentationTypeIsContainer ,
+        _:containerRepresentationTotalItemsIsInteger ;
 ] .
 
 # Tests
@@ -548,6 +549,24 @@ _:containerRepresentationTypeIsContainer
     ] ;
 .
 
+_:containerRepresentationTotalItemsIsInteger
+    :testName "Container representation totalItems is integer" ;
+    :specification "https://www.w3.org/TR/lws10-core/#container-properties"^^xsd:anyURI ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:getContainerTotalItems
+    ) ;
+    :assert [
+        :that [
+            :single [
+                :variable "totalItems" ;
+            ] ;
+        ] ;
+        :matches [ :constant "^\\d+$" ] ;
+    ] ;
+.
+
 # Steps
 _:getStorageDescriptionId
     :stepName "Get storage description id" ;
@@ -844,6 +863,17 @@ _:getContainerType
         [
             :path "$.type" ;
             :to "containerType" ;
+        ]
+    ) ;
+.
+
+_:getContainerTotalItems
+    :stepName "Get container totalItems" ;
+    :request _:getContainer ;
+    :extract (
+        [
+            :path "$.totalItems" ;
+            :to "totalItems" ;
         ]
     ) ;
 .
