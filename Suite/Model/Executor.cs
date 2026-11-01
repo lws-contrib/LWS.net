@@ -66,7 +66,17 @@ public class Executor(ILoggerFactory loggerFactory, IOptions<SuiteOptions> optio
     {
         using var activity = ActivitySource.StartActivity(test.TestName, ActivityKind.Internal, parentContext)?.SetTag("test.case.name", test.TestName);
 
-        var result = await test.Execute(new Context(loggerFactory, options, client));
+        Result result;
+        try
+        {
+            result = await test.Execute(new Context(loggerFactory, options, client));
+        }
+        catch (Exception exception)
+        {
+            loggerFactory.CreateLogger<Executor>().LogError(exception, "Test [{TestName}] threw an exception", test.TestName);
+
+            result = new Result { Outcome = "Fail", Info = exception.Message };
+        }
 
         activity?.SetTag("test.case.result.status", result.Outcome.ToLowerInvariant());
 
