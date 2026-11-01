@@ -64,6 +64,7 @@
         _:containerGetReturnsItsUri ,
         _:containerGetReturnsTotalItems ,
         _:containerTotalItemsCountsBothMembers ,
+        _:containerMemberDeleteWithCurrentIfMatchReturns204 ,
         _:containerGetLinksUp ,
         _:containerGetLinksStorage ,
         _:nestedContainerGetReturns200 ,
@@ -943,6 +944,19 @@ _:containerTotalItemsCountsBothMembers
         ] ;
         :equals [ :constant "2" ] ;
     ] ;
+.
+
+_:containerMemberDeleteWithCurrentIfMatchReturns204
+    :testName "DELETE with a current If-Match returns 204" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:createSecondTextResource
+        _:getTextResourceETag
+        _:deleteTextResourceIfMatchStatus
+    ) ;
+    :assert _:204 ;
 .
 
 _:containerGetLinksUp
@@ -2435,6 +2449,14 @@ _:conditionalDeleteTextResourceStaleIfMatchStatus
     ) ;
 .
 
+_:deleteTextResourceIfMatchStatus
+    :stepName "Delete text resource If-Match status" ;
+    :request _:deleteTextResourceIfMatch ;
+    :extract (
+        _:status
+    ) ;
+.
+
 _:headTextResourceStatus
     :stepName "Head text resource status" ;
     :request _:headTextResource ;
@@ -3226,6 +3248,19 @@ _:conditionalDeleteTextResourceStaleIfMatch
     ] ;
 .
 
+_:deleteTextResourceIfMatch
+    :method "DELETE" ;
+    :uri _:textResource ;
+    :headers [
+        :key "If-Match" ;
+        :value [
+            :single [
+                :variable "etag" ;
+            ] ;
+        ] ;
+    ] ;
+.
+
 _:getDigitsResourceFirstFourBytes
     :method "GET" ;
     :uri _:digitsResource ;
@@ -3586,6 +3621,13 @@ _:201
         :variable "status" ;
     ] ;
     :equals [ :constant "201" ] ;
+.
+
+_:204
+    :that [
+        :variable "status" ;
+    ] ;
+    :equals [ :constant "204" ] ;
 .
 
 _:206
