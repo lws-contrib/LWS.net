@@ -105,7 +105,8 @@
         _:nonEmptyContainerDeleteReturns409 ,
         _:nonEmptyContainerDeleteKeepsMember ,
         _:nonEmptyContainerDeleteKeepsContainer ,
-        _:authorizationServerMetadataReturns200  ;
+        _:authorizationServerMetadataReturns200 ,
+        _:subjectTokenTypesMetadataIsArray  ;
 ] .
 
 # Tests
@@ -1438,6 +1439,22 @@ _:authorizationServerMetadataReturns200
     :assert _:200 ;
 .
 
+_:subjectTokenTypesMetadataIsArray
+    :testName "Subject token types metadata is array" ;
+    :steps (
+        _:discoverAuthorizationServer
+        _:getSubjectTokenTypes
+    ) ;
+    :assert [
+        :that [
+            :single [
+                :variable "subjectTokenTypes" ;
+            ] ;
+        ] ;
+        :matches [ :constant "^\\[" ] ;
+    ] ;
+.
+
 # Steps
 _:discoverStorageRoot
     :stepName "Discover storage root" ;
@@ -2432,6 +2449,17 @@ _:getAuthorizationServerMetadataStatus
     :request _:getAuthorizationServerMetadata ;
     :extract (
         _:status
+    ) ;
+.
+
+_:getSubjectTokenTypes
+    :stepName "Get subject token types" ;
+    :request _:getAuthorizationServerMetadata ;
+    :extract (
+        [
+            :path "$.subject_token_types_supported" ;
+            :to "subjectTokenTypes" ;
+        ]
     ) ;
 .
 
