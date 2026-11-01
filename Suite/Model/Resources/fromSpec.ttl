@@ -15,7 +15,8 @@
         _:getContainerLinksStorage ,
         _:headDataResourceLinksStorage ,
         _:headContainerLinksStorage ,
-        _:getStorageDescriptionLinksStorage ;
+        _:getStorageDescriptionLinksStorage ,
+        _:getStorageUriReturns200 ;
 ] .
 
 # Tests
@@ -191,6 +192,15 @@ _:getStorageDescriptionLinksStorage
     :assert _:storageLinkTargetsStorage ;
 .
 
+_:getStorageUriReturns200
+    :testName "GET storage URI returns 200" ;
+    :specification "https://www.w3.org/TR/lws10-core/#storage-description-binding"^^xsd:anyURI ;
+    :steps (
+        _:getStorageDescriptionStatus
+    ) ;
+    :assert _:200 ;
+.
+
 # Steps
 _:getStorageDescriptionId
     :stepName "Get storage description id" ;
@@ -301,6 +311,14 @@ _:getStorageDescriptionStorageLinks
     ) ;
 .
 
+_:getStorageDescriptionStatus
+    :stepName "Get storage description status" ;
+    :request _:getStorageDescription ;
+    :extract (
+        _:status
+    ) ;
+.
+
 # Requests
 _:getStorageDescription
     :method "GET" ;
@@ -393,10 +411,22 @@ _:storageLinks
     :to "storageLinks" ;
 .
 
+_:status
+    a :StatusCodeExtractor ;
+    :to "status" ;
+.
+
 # Assertions
 _:storageLinkTargetsStorage
     :that [
         :variable "storageLinks" ;
     ] ;
     :contains _:storage ;
+.
+
+_:200
+    :that [
+        :variable "status" ;
+    ] ;
+    :equals [ :constant "200" ] ;
 .
