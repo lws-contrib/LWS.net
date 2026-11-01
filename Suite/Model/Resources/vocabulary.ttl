@@ -37,6 +37,14 @@
     rdfs:range xsd:string ;
 .
 
+:specification
+    a rdf:Property ;
+    rdfs:label "specification"@en ;
+    rdfs:comment "Part of a specification that the test case checks, such as a section of a W3C recommendation identified by its fragment. A test case may check several. Not used when running the test case."@en ;
+    rdfs:domain :TestCase ;
+    rdfs:range xsd:anyURI ;
+.
+
 :steps
     a rdf:Property ;
     rdfs:label "steps"@en ;
