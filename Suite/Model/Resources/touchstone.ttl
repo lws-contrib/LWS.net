@@ -60,6 +60,7 @@
         _:containerGetReturnsLwsMediaType ,
         _:containerGetReturnsItemsArray ,
         _:containerGetReturnsItsUri ,
+        _:containerGetReturnsTotalItems ,
         _:nestedContainerGetReturns200 ,
         _:createInMissingContainerReturnsClientError ,
         _:storageDescriptionWithoutAcceptReturns200 ,
@@ -849,6 +850,23 @@ _:containerGetReturnsItsUri
             ] ;
         ] ;
         :equals _:container ;
+    ] ;
+.
+
+_:containerGetReturnsTotalItems
+    :testName "Container GET returns totalItems" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:getContainerTotalItems
+    ) ;
+    :assert [
+        :that [
+            :single [
+                :variable "totalItems" ;
+            ] ;
+        ] ;
+        :matches [ :constant "^[0-9]+$" ] ;
     ] ;
 .
 
@@ -1797,6 +1815,14 @@ _:getContainerId
     :request _:getContainer ;
     :extract (
         _:id
+    ) ;
+.
+
+_:getContainerTotalItems
+    :stepName "Get container total items" ;
+    :request _:getContainer ;
+    :extract (
+        _:totalItems
     ) ;
 .
 
@@ -3250,6 +3276,11 @@ _:items
 _:id
     :path "$.id" ;
     :to "id" ;
+.
+
+_:totalItems
+    :path "$.totalItems" ;
+    :to "totalItems" ;
 .
 
 _:typeLinks
