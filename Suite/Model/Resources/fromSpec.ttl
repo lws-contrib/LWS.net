@@ -56,7 +56,8 @@
         _:acceptPatchHeaderOfLinksetAdvertisesJsonPatch ,
         _:linksetGetResponseIncludesEtagHeader ,
         _:linksetHeadResponseIncludesEtagHeader ,
-        _:linksetResourceSupportsPatchUsingApplicationJsonPatchJson ;
+        _:linksetResourceSupportsPatchUsingApplicationJsonPatchJson ,
+        _:serverPreservesLinksClientIsNotPermittedToModifyWhenApplyingPatch ;
 ] .
 
 # Tests
@@ -915,6 +916,26 @@ _:linksetResourceSupportsPatchUsingApplicationJsonPatchJson
     ] ;
 .
 
+_:serverPreservesLinksClientIsNotPermittedToModifyWhenApplyingPatch
+    :testName "Server preserves links client is not permitted to modify when applying patch" ;
+    :specification "https://www.w3.org/TR/lws10-core/#metadata-0"^^xsd:anyURI ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:getTextResourceLinksetLinks
+        _:getLinksetEtag
+        _:patchLinksetRemovingType
+        _:getLinksetTypeHrefs
+    ) ;
+    :assert [
+        :that [
+            :variable "typeHrefs" ;
+        ] ;
+        :contains [ :constant "https://www.w3.org/ns/lws#DataResource" ] ;
+    ] ;
+.
+
 # Steps
 _:getStorageDescriptionId
     :stepName "Get storage description id" ;
@@ -1353,6 +1374,25 @@ _:getLinksetDescribedByHref
     ) ;
 .
 
+_:patchLinksetRemovingType
+    :stepName "Patch linkset removing type" ;
+    :request _:patchLinksetRemoveType ;
+    :extract (
+        _:status
+    ) ;
+.
+
+_:getLinksetTypeHrefs
+    :stepName "Get linkset type hrefs" ;
+    :request _:getLinkset ;
+    :extract (
+        [
+            :path "$.linkset[*].type[*].href" ;
+            :to "typeHrefs" ;
+        ]
+    ) ;
+.
+
 # Requests
 _:getStorageDescription
     :method "GET" ;
@@ -1431,6 +1471,14 @@ _:patchLinksetAddDescribedBy
     :headers _:contentTypeJsonPatch ;
     :headers _:ifMatchEtag ;
     :body [ :constant "[{\"op\":\"add\",\"path\":\"/linkset/0/describedby\",\"value\":[{\"href\":\"https://example.org/schema\"}]}]" ] ;
+.
+
+_:patchLinksetRemoveType
+    :method "PATCH" ;
+    :uri _:linkset ;
+    :headers _:contentTypeJsonPatch ;
+    :headers _:ifMatchEtag ;
+    :body [ :constant "[{\"op\":\"remove\",\"path\":\"/linkset/0/type\"}]" ] ;
 .
 
 # URIs
