@@ -93,7 +93,8 @@
         _:leafUpLinkNamesInnerContainer ,
         _:innerContainerListsLeaf ,
         _:innerContainerUpLinkNamesOuterContainer ,
-        _:outerContainerListsInnerContainer ;
+        _:outerContainerListsInnerContainer ,
+        _:outerContainerUpLinkNamesTestContainer ;
 ] .
 
 # Tests
@@ -1249,6 +1250,26 @@ _:outerContainerListsInnerContainer
     ] ;
 .
 
+_:outerContainerUpLinkNamesTestContainer
+    :testName "Outer container up link names test container" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createOuterContainer
+        _:createInnerContainer
+        _:createLeafResource
+        _:getOuterContainerUpLinks
+    ) ;
+    :assert [
+        :that [
+            :single [
+                :variable "upLinks" ;
+            ] ;
+        ] ;
+        :equals _:container ;
+    ] ;
+.
+
 # Steps
 _:discoverStorageRoot
     :stepName "Discover storage root" ;
@@ -2132,6 +2153,14 @@ _:getOuterContainerItemIds
     :request _:getOuterContainer ;
     :extract (
         _:itemIds
+    ) ;
+.
+
+_:getOuterContainerUpLinks
+    :stepName "Get outer container up links" ;
+    :request _:getOuterContainer ;
+    :extract (
+        _:upLinks
     ) ;
 .
 
