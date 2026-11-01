@@ -47,6 +47,7 @@
         _:createInMissingContainerReturnsClientError ,
         _:storageDescriptionWithoutAcceptReturns200 ,
         _:containerGetReturnsETag ,
+        _:conditionalContainerGetReturns304 ,
         _:containerGetReturnsContainerType ,
         _:nestedContainerGetReturnsContainerType ,
         _:createNestedContainerReturns201 ,
@@ -610,6 +611,17 @@ _:containerGetReturnsETag
         ] ;
         :matches "." ;
     ] ;
+.
+
+_:conditionalContainerGetReturns304
+    :testName "Conditional container GET returns 304" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:getContainerETag
+        _:conditionalGetContainerStatus
+    ) ;
+    :assert _:304 ;
 .
 
 _:containerGetReturnsContainerType
@@ -1464,6 +1476,14 @@ _:getContainerETag
     ) ;
 .
 
+_:conditionalGetContainerStatus
+    :stepName "Conditional get container status" ;
+    :request _:conditionalGetContainer ;
+    :extract (
+        _:status
+    ) ;
+.
+
 _:getContainerType
     :stepName "Get container type" ;
     :request _:getContainer ;
@@ -1672,6 +1692,20 @@ _:getContainer
     :method "GET" ;
     :uri _:container ;
     :headers _:acceptLwsJson ;
+.
+
+_:conditionalGetContainer
+    :method "GET" ;
+    :uri _:container ;
+    :headers _:acceptLwsJson ;
+    :headers [
+        :key "If-None-Match" ;
+        :value [
+            :single [
+                :variable "etag" ;
+            ] ;
+        ] ;
+    ] ;
 .
 
 _:getTextResource
