@@ -6,7 +6,8 @@
     :test
         _:storageDescriptionHasIdProperty ,
         _:storageDescriptionIdIsCanonicalStorageUri ,
-        _:storageDescriptionHasTypeProperty ;
+        _:storageDescriptionHasTypeProperty ,
+        _:storageDescriptionTypeIsOrContainsStorage ;
 ] .
 
 # Tests
@@ -59,6 +60,22 @@ _:storageDescriptionHasTypeProperty
             ] ;
         ] ;
         :matches [ :constant "^(?!\\[\\s*\\]$).+" ] ;
+    ] ;
+.
+
+_:storageDescriptionTypeIsOrContainsStorage
+    :testName "Storage description type equals or contains Storage" ;
+    :specification "https://www.w3.org/TR/lws10-core/#storage-description-data-model"^^xsd:anyURI ;
+    :steps (
+        _:getStorageDescriptionType
+    ) ;
+    :assert [
+        :that [
+            :single [
+                :variable "type" ;
+            ] ;
+        ] ;
+        :matches [ :constant "^Storage$|\"Storage\"" ] ;
     ] ;
 .
 
