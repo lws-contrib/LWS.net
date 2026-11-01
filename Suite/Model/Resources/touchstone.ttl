@@ -40,6 +40,7 @@
         _:ifUnmodifiedSinceEpochReturns412 ,
         _:conditionalPutStaleIfMatchReturns412 ,
         _:conditionalPutStaleIfMatchLeavesResourceUntouched ,
+        _:conditionalGetNeverMatchingValidatorReturns200 ,
         _:dataResourceHeadReturns200 ,
         _:dataResourceHeadReturnsItsMediaType ,
         _:nestedContainerGetReturnsLwsMediaType ,
@@ -595,6 +596,17 @@ _:conditionalPutStaleIfMatchLeavesResourceUntouched
         ] ;
         :matches [ :constant "^second content$" ] ;
     ] ;
+.
+
+_:conditionalGetNeverMatchingValidatorReturns200
+    :testName "GET with a never-matching If-None-Match returns 200" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:conditionalGetTextResourceNeverMatchingStatus
+    ) ;
+    :assert _:200 ;
 .
 
 _:dataResourceHeadReturns200
@@ -2014,6 +2026,14 @@ _:conditionalPutTextResourceStaleIfMatchStatus
     ) ;
 .
 
+_:conditionalGetTextResourceNeverMatchingStatus
+    :stepName "Conditional get text resource never-matching If-None-Match status" ;
+    :request _:conditionalGetTextResourceNeverMatching ;
+    :extract (
+        _:status
+    ) ;
+.
+
 _:headTextResourceStatus
     :stepName "Head text resource status" ;
     :request _:headTextResource ;
@@ -2733,6 +2753,15 @@ _:conditionalPutTextResourceStaleIfMatch
         ] ;
     ] ;
     :body [ :constant "third content, must not land" ] ;
+.
+
+_:conditionalGetTextResourceNeverMatching
+    :method "GET" ;
+    :uri _:textResource ;
+    :headers [
+        :key "If-None-Match" ;
+        :value [ :constant "\"touchstone-never-a-real-etag\"" ] ;
+    ] ;
 .
 
 _:getDigitsResourceFirstFourBytes
