@@ -17,7 +17,8 @@
         _:headContainerLinksStorage ,
         _:getStorageDescriptionLinksStorage ,
         _:getStorageUriReturns200 ,
-        _:getStorageUriReturnsLwsCid ;
+        _:getStorageUriReturnsLwsCid ,
+        _:storageDescriptionSerializableAsLwsCid ;
 ] .
 
 # Tests
@@ -211,6 +212,15 @@ _:getStorageUriReturnsLwsCid
     :assert _:lwsCidContentType ;
 .
 
+_:storageDescriptionSerializableAsLwsCid
+    :testName "Storage description serializable as application/lws+cid" ;
+    :specification "https://www.w3.org/TR/lws10-core/#storage-description-representation"^^xsd:anyURI ;
+    :steps (
+        _:getStorageDescriptionAsCidContentType
+    ) ;
+    :assert _:lwsCidContentType ;
+.
+
 # Steps
 _:getStorageDescriptionId
     :stepName "Get storage description id" ;
@@ -337,6 +347,14 @@ _:getStorageDescriptionContentType
     ) ;
 .
 
+_:getStorageDescriptionAsCidContentType
+    :stepName "Get storage description as CID Content-Type" ;
+    :request _:getStorageDescriptionAsCid ;
+    :extract (
+        _:contentType
+    ) ;
+.
+
 # Requests
 _:getStorageDescription
     :method "GET" ;
@@ -363,6 +381,15 @@ _:headContainer
     :method "HEAD" ;
     :uri _:container ;
     :headers _:acceptLwsJson ;
+.
+
+_:getStorageDescriptionAsCid
+    :method "GET" ;
+    :uri _:storage ;
+    :headers [
+        :key "Accept" ;
+        :value [ :constant "application/lws+cid" ] ;
+    ] ;
 .
 
 # URIs
