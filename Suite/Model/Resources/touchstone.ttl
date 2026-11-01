@@ -65,6 +65,7 @@
         _:containerGetReturnsTotalItems ,
         _:containerTotalItemsCountsBothMembers ,
         _:containerMemberDeleteWithCurrentIfMatchReturns204 ,
+        _:containerTotalItemsCountsOneMemberAfterDelete ,
         _:containerGetLinksUp ,
         _:containerGetLinksStorage ,
         _:nestedContainerGetReturns200 ,
@@ -957,6 +958,27 @@ _:containerMemberDeleteWithCurrentIfMatchReturns204
         _:deleteTextResourceIfMatchStatus
     ) ;
     :assert _:204 ;
+.
+
+_:containerTotalItemsCountsOneMemberAfterDelete
+    :testName "Container totalItems counts one member after a delete" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:createSecondTextResource
+        _:getTextResourceETag
+        _:deleteTextResourceIfMatchStatus
+        _:getContainerTotalItems
+    ) ;
+    :assert [
+        :that [
+            :single [
+                :variable "totalItems" ;
+            ] ;
+        ] ;
+        :equals [ :constant "1" ] ;
+    ] ;
 .
 
 _:containerGetLinksUp
