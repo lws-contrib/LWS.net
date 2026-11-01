@@ -28,7 +28,8 @@
         _:getNonRootContainerLinksParentContainerAsUp ,
         _:headNonRootDataResourceLinksParentContainerAsUp ,
         _:headNonRootContainerLinksParentContainerAsUp ,
-        _:createdResourceIsAddedToContainerItems ;
+        _:createdResourceIsAddedToContainerItems ,
+        _:deletedResourceIsRemovedFromParentContainerItems ;
 ] .
 
 # Tests
@@ -381,6 +382,31 @@ _:createdResourceIsAddedToContainerItems
     ] ;
 .
 
+_:deletedResourceIsRemovedFromParentContainerItems
+    :testName "Deleted resource is removed from parent container items" ;
+    :specification "https://www.w3.org/TR/lws10-core/#containment-integrity"^^xsd:anyURI ;
+    :specification "https://www.w3.org/TR/lws10-core/#delete-resource"^^xsd:anyURI ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:createSecondTextResource
+        _:deleteTextResource
+        _:getContainerItemIds
+    ) ;
+    :assert [
+        :that [
+            :base _:container ;
+            :relative [
+                :single [
+                    :variable "itemIds" ;
+                ] ;
+            ] ;
+        ] ;
+        :equals _:secondTextResource ;
+    ] ;
+.
+
 # Steps
 _:getStorageDescriptionId
     :stepName "Get storage description id" ;
@@ -604,6 +630,30 @@ _:getContainerItemIds
     ) ;
 .
 
+_:createSecondTextResource
+    :stepName "Create second text resource" ;
+    :request [
+        :method "POST" ;
+        :uri _:container ;
+        :headers _:contentTypeTextPlain ;
+        :body "milk\neggs\nbread\nbutter\napples\norange juice\n" ;
+    ] ;
+    :extract (
+        _:secondTextResourceLocation
+    ) ;
+.
+
+_:deleteTextResource
+    :stepName "Delete text resource" ;
+    :request [
+        :method "DELETE" ;
+        :uri _:textResource ;
+    ] ;
+    :extract (
+        _:status
+    ) ;
+.
+
 # Requests
 _:getStorageDescription
     :method "GET" ;
@@ -690,6 +740,15 @@ _:textResource
     ] ;
 .
 
+_:secondTextResource
+    :base _:container ;
+    :relative [
+        :single [
+            :variable "secondTextResourceLocation" ;
+        ] ;
+    ] ;
+.
+
 # Headers
 _:linkTypeContainer
     :key "Link" ;
@@ -735,6 +794,11 @@ _:contentType
 _:upLinks
     :link "up" ;
     :to "upLinks" ;
+.
+
+_:secondTextResourceLocation
+    :header "Location" ;
+    :to "secondTextResourceLocation" ;
 .
 
 # Assertions
