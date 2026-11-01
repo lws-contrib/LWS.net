@@ -11,7 +11,8 @@
         _:storageDescriptionHasServiceProperty ,
         _:storageDescriptionServicesContainStorageRoot ,
         _:storageRootServiceEndpointIsUri ,
-        _:getDataResourceLinksStorage ;
+        _:getDataResourceLinksStorage ,
+        _:getContainerLinksStorage ;
 ] .
 
 # Tests
@@ -144,6 +145,17 @@ _:getDataResourceLinksStorage
     :assert _:storageLinkTargetsStorage ;
 .
 
+_:getContainerLinksStorage
+    :testName "GET container links canonical URI of storage" ;
+    :specification "https://www.w3.org/TR/lws10-core/#storage-description-binding"^^xsd:anyURI ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:getContainerStorageLinks
+    ) ;
+    :assert _:storageLinkTargetsStorage ;
+.
+
 # Steps
 _:getStorageDescriptionId
     :stepName "Get storage description id" ;
@@ -222,6 +234,14 @@ _:getTextResourceStorageLinks
     ) ;
 .
 
+_:getContainerStorageLinks
+    :stepName "Get container storage links" ;
+    :request _:getContainer ;
+    :extract (
+        _:storageLinks
+    ) ;
+.
+
 # Requests
 _:getStorageDescription
     :method "GET" ;
@@ -231,6 +251,12 @@ _:getStorageDescription
 _:getTextResource
     :method "GET" ;
     :uri _:textResource ;
+.
+
+_:getContainer
+    :method "GET" ;
+    :uri _:container ;
+    :headers _:acceptLwsJson ;
 .
 
 # URIs
@@ -274,6 +300,11 @@ _:linkTypeContainer
 _:contentTypeTextPlain
     :key "Content-Type" ;
     :value [ :constant "text/plain" ] ;
+.
+
+_:acceptLwsJson
+    :key "Accept" ;
+    :value [ :constant "application/lws+json" ] ;
 .
 
 # Extractors
