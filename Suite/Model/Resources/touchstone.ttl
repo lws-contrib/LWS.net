@@ -43,6 +43,7 @@
         _:conditionalGetNeverMatchingValidatorReturns200 ,
         _:conditionalGetNeverMatchingValidatorReturnsPostedBody ,
         _:conditionalGetStaleValidatorReturns200 ,
+        _:conditionalDeleteStaleIfMatchReturns412 ,
         _:dataResourceHeadReturns200 ,
         _:dataResourceHeadReturnsItsMediaType ,
         _:nestedContainerGetReturnsLwsMediaType ,
@@ -638,6 +639,19 @@ _:conditionalGetStaleValidatorReturns200
         _:conditionalGetTextResourceStatus
     ) ;
     :assert _:200 ;
+.
+
+_:conditionalDeleteStaleIfMatchReturns412
+    :testName "DELETE with a stale If-Match returns 412" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:getTextResourceETag
+        _:conditionalPutTextResourceIfMatchChangedContentStatus
+        _:conditionalDeleteTextResourceStaleIfMatchStatus
+    ) ;
+    :assert _:412 ;
 .
 
 _:dataResourceHeadReturns200
@@ -2073,6 +2087,22 @@ _:conditionalGetTextResourceNeverMatchingBody
     ) ;
 .
 
+_:conditionalPutTextResourceIfMatchChangedContentStatus
+    :stepName "Conditional put text resource If-Match changed content status" ;
+    :request _:conditionalPutTextResourceIfMatchChangedContent ;
+    :extract (
+        _:status
+    ) ;
+.
+
+_:conditionalDeleteTextResourceStaleIfMatchStatus
+    :stepName "Conditional delete text resource stale If-Match status" ;
+    :request _:conditionalDeleteTextResourceStaleIfMatch ;
+    :extract (
+        _:status
+    ) ;
+.
+
 _:headTextResourceStatus
     :stepName "Head text resource status" ;
     :request _:headTextResource ;
@@ -2800,6 +2830,34 @@ _:conditionalGetTextResourceNeverMatching
     :headers [
         :key "If-None-Match" ;
         :value [ :constant "\"touchstone-never-a-real-etag\"" ] ;
+    ] ;
+.
+
+_:conditionalPutTextResourceIfMatchChangedContent
+    :method "PUT" ;
+    :uri _:textResource ;
+    :headers _:contentTypeTextPlain ;
+    :headers [
+        :key "If-Match" ;
+        :value [
+            :single [
+                :variable "etag" ;
+            ] ;
+        ] ;
+    ] ;
+    :body [ :constant "changed content" ] ;
+.
+
+_:conditionalDeleteTextResourceStaleIfMatch
+    :method "DELETE" ;
+    :uri _:textResource ;
+    :headers [
+        :key "If-Match" ;
+        :value [
+            :single [
+                :variable "etag" ;
+            ] ;
+        ] ;
     ] ;
 .
 
