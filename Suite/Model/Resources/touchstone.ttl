@@ -38,6 +38,7 @@
         _:ifModifiedSinceEpochReturnsPostedBody ,
         _:ifUnmodifiedSinceLastModifiedReturns200 ,
         _:ifUnmodifiedSinceEpochReturns412 ,
+        _:conditionalPutStaleIfMatchReturns412 ,
         _:dataResourceHeadReturns200 ,
         _:dataResourceHeadReturnsItsMediaType ,
         _:nestedContainerGetReturnsLwsMediaType ,
@@ -559,6 +560,19 @@ _:ifUnmodifiedSinceEpochReturns412
         _:createTextResource
         _:getTextResourceLastModified
         _:conditionalGetTextResourceIfUnmodifiedSinceEpochStatus
+    ) ;
+    :assert _:412 ;
+.
+
+_:conditionalPutStaleIfMatchReturns412
+    :testName "PUT with a stale If-Match returns 412" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:getTextResourceETag
+        _:conditionalPutTextResourceIfMatchStatus
+        _:conditionalPutTextResourceStaleIfMatchStatus
     ) ;
     :assert _:412 ;
 .
@@ -1964,6 +1978,22 @@ _:conditionalGetTextResourceIfUnmodifiedSinceEpochStatus
     ) ;
 .
 
+_:conditionalPutTextResourceIfMatchStatus
+    :stepName "Conditional put text resource If-Match status" ;
+    :request _:conditionalPutTextResourceIfMatch ;
+    :extract (
+        _:status
+    ) ;
+.
+
+_:conditionalPutTextResourceStaleIfMatchStatus
+    :stepName "Conditional put text resource stale If-Match status" ;
+    :request _:conditionalPutTextResourceStaleIfMatch ;
+    :extract (
+        _:status
+    ) ;
+.
+
 _:headTextResourceStatus
     :stepName "Head text resource status" ;
     :request _:headTextResource ;
@@ -2653,6 +2683,36 @@ _:conditionalGetTextResourceIfUnmodifiedSinceEpoch
         :key "If-Unmodified-Since" ;
         :value [ :constant "Thu, 01 Jan 1970 00:00:00 GMT" ] ;
     ] ;
+.
+
+_:conditionalPutTextResourceIfMatch
+    :method "PUT" ;
+    :uri _:textResource ;
+    :headers _:contentTypeTextPlain ;
+    :headers [
+        :key "If-Match" ;
+        :value [
+            :single [
+                :variable "etag" ;
+            ] ;
+        ] ;
+    ] ;
+    :body [ :constant "second content" ] ;
+.
+
+_:conditionalPutTextResourceStaleIfMatch
+    :method "PUT" ;
+    :uri _:textResource ;
+    :headers _:contentTypeTextPlain ;
+    :headers [
+        :key "If-Match" ;
+        :value [
+            :single [
+                :variable "etag" ;
+            ] ;
+        ] ;
+    ] ;
+    :body [ :constant "third content, must not land" ] ;
 .
 
 _:getDigitsResourceFirstFourBytes
