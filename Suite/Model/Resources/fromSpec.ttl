@@ -78,7 +78,8 @@
         _:serverGeneratesUniqueIdentifierWhenNoHintIsProvided ,
         _:getDataResourceReturnsContentTypeMatchingStoredMediaType ,
         _:getDataResourceResponseIncludesLinkHeaderWithRelType ,
-        _:serverSupportsRangeRequestsStatus206 ;
+        _:serverSupportsRangeRequestsStatus206 ,
+        _:serverSupportsRangeRequestsRequestedBytes ;
 ] .
 
 # Tests
@@ -1288,6 +1289,23 @@ _:serverSupportsRangeRequestsStatus206
     :assert _:206 ;
 .
 
+_:serverSupportsRangeRequestsRequestedBytes
+    :testName "Server supports range requests: requested bytes" ;
+    :specification "https://www.w3.org/TR/lws10-core/#read-resource"^^xsd:anyURI ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createDigitsResource
+        _:getDigitsResourceFirstFourBytesBody
+    ) ;
+    :assert [
+        :that [
+            :variable "body" ;
+        ] ;
+        :equals [ :constant "0123" ] ;
+    ] ;
+.
+
 # Steps
 _:getStorageDescriptionId
     :stepName "Get storage description id" ;
@@ -1892,6 +1910,14 @@ _:getDigitsResourceFirstFourBytesStatus
     :request _:getDigitsResourceFirstFourBytes ;
     :extract (
         _:status
+    ) ;
+.
+
+_:getDigitsResourceFirstFourBytesBody
+    :stepName "Get digits resource first four bytes body" ;
+    :request _:getDigitsResourceFirstFourBytes ;
+    :extract (
+        _:body
     ) ;
 .
 
