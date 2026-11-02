@@ -74,7 +74,8 @@
         _:postWithLinkHeaderWithRelTypeContainerCreatesContainer ,
         _:containerCreationResponseLinkRelUpTargetsParentContainer ,
         _:containerCreationResponseIncludesLinkHeaderWithRelLinkset ,
-        _:linksetResourceIsCreatedAndPopulatedBeforeReturningSuccess ;
+        _:linksetResourceIsCreatedAndPopulatedBeforeReturningSuccess ,
+        _:serverGeneratesUniqueIdentifierWhenNoHintIsProvided ;
 ] .
 
 # Tests
@@ -1216,6 +1217,23 @@ _:linksetResourceIsCreatedAndPopulatedBeforeReturningSuccess
         _:getLinksetStatus
     ) ;
     :assert _:200 ;
+.
+
+_:serverGeneratesUniqueIdentifierWhenNoHintIsProvided
+    :testName "Server generates unique identifier when no hint is provided" ;
+    :specification "https://www.w3.org/TR/lws10-core/#create-resource"^^xsd:anyURI ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:createSecondTextResource
+    ) ;
+    :assert [
+        :that _:textResource ;
+        :not [
+            :equals _:secondTextResource ;
+        ] ;
+    ] ;
 .
 
 # Steps
