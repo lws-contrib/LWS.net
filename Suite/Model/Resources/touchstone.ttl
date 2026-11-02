@@ -125,6 +125,7 @@
         _:jsonPatchAddsMember ,
         _:jsonPatchRemovesMember ,
         _:jsonPatchKeepsMember ,
+        _:jsonPatchKeepsFirstArrayElement ,
         _:linksetNamedByCreateReturns200 ,
         _:linksetNamedByCreateReturnsLinksetMediaType ,
         _:linksetNamedByCreateHasLinksetArray ,
@@ -1805,6 +1806,26 @@ _:jsonPatchKeepsMember
     ] ;
 .
 
+_:jsonPatchKeepsFirstArrayElement
+    :testName "JSON Patch keeps the first array element" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createJsonResource
+        _:getJsonResourceETag
+        _:patchJsonResourceIfMatchStatus
+        _:getJsonResourceFirstTag
+    ) ;
+    :assert [
+        :that [
+            :single [
+                :variable "jsonFirstTag" ;
+            ] ;
+        ] ;
+        :equals [ :constant "a" ] ;
+    ] ;
+.
+
 _:linksetNamedByCreateReturns200
     :testName "Linkset named by create returns 200" ;
     :steps (
@@ -3171,6 +3192,14 @@ _:getJsonResourceDrop
     ) ;
 .
 
+_:getJsonResourceFirstTag
+    :stepName "Get JSON resource first tag" ;
+    :request _:getJsonResource ;
+    :extract (
+        _:jsonFirstTag
+    ) ;
+.
+
 _:getLinksetContentType
     :stepName "Get linkset Content-Type" ;
     :request _:getLinkset ;
@@ -3981,6 +4010,11 @@ _:jsonKeep
 _:jsonDrop
     :path "$.drop" ;
     :to "jsonDrop" ;
+.
+
+_:jsonFirstTag
+    :path "$.tags[0]" ;
+    :to "jsonFirstTag" ;
 .
 
 _:itemIds
