@@ -1031,6 +1031,7 @@ _:serverPreservesLinksClientIsNotPermittedToModifyWhenApplyingPatch
 _:deletingResourceRemovesItsAssociatedLinksetResource
     :testName "Deleting resource removes its associated linkset resource" ;
     :specification "https://www.w3.org/TR/lws10-core/#metadata-0"^^xsd:anyURI ;
+    :specification "https://www.w3.org/TR/lws10-core/#delete-resource"^^xsd:anyURI ;
     :steps (
         _:discoverStorageRoot
         _:createContainer
