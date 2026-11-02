@@ -146,6 +146,7 @@
         _:linksetAfterArrayReplacePatchReturnsLinksetMediaType ,
         _:linksetAfterArrayReplacePatchHasLinksetArray ,
         _:linksetJsonPatchReturns200Or204 ,
+        _:linksetJsonPatchAddsLicense ,
         _:containerHeadLinksUp ,
         _:leafUpLinkNamesInnerContainer ,
         _:innerContainerListsLeaf ,
@@ -2124,6 +2125,22 @@ _:linksetJsonPatchReturns200Or204
     ] ;
 .
 
+_:linksetJsonPatchAddsLicense
+    :testName "Linkset JSON Patch adds a license link" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:getLinksetETag
+        _:patchLinksetLicenseIfMatchStatus
+        _:getLinksetLicenseHrefs
+    ) ;
+    :assert [
+        :that [ :variable "linksetLicenseHrefs" ] ;
+        :contains [ :constant "https://creativecommons.org/licenses/by/4.0/" ] ;
+    ] ;
+.
+
 _:containerHeadLinksUp
     :testName "Container HEAD links up" ;
     :steps (
@@ -3489,6 +3506,14 @@ _:patchLinksetLicenseIfMatchStatus
     ) ;
 .
 
+_:getLinksetLicenseHrefs
+    :stepName "Get linkset license hrefs" ;
+    :request _:getLinkset ;
+    :extract (
+        _:linksetLicenseHrefs
+    ) ;
+.
+
 _:headContainerUpLinks
     :stepName "Head container up links" ;
     :request _:headContainer ;
@@ -4288,6 +4313,11 @@ _:linksetLinks
 _:linksetMembers
     :path "$.linkset" ;
     :to "linksetMembers" ;
+.
+
+_:linksetLicenseHrefs
+    :path "$.linkset[*].license[*].href" ;
+    :to "linksetLicenseHrefs" ;
 .
 
 _:jsonTitle
