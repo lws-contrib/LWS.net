@@ -76,7 +76,8 @@
         _:containerCreationResponseIncludesLinkHeaderWithRelLinkset ,
         _:linksetResourceIsCreatedAndPopulatedBeforeReturningSuccess ,
         _:serverGeneratesUniqueIdentifierWhenNoHintIsProvided ,
-        _:getDataResourceReturnsContentTypeMatchingStoredMediaType ;
+        _:getDataResourceReturnsContentTypeMatchingStoredMediaType ,
+        _:getDataResourceResponseIncludesLinkHeaderWithRelType ;
 ] .
 
 # Tests
@@ -1262,6 +1263,18 @@ _:getDataResourceReturnsContentTypeMatchingStoredMediaType
     :assert _:textPlainContentType ;
 .
 
+_:getDataResourceResponseIncludesLinkHeaderWithRelType
+    :testName "GET data resource response includes Link header with rel type" ;
+    :specification "https://www.w3.org/TR/lws10-core/#read-resource"^^xsd:anyURI ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:getTextResourceTypeLinks
+    ) ;
+    :assert _:typeLink ;
+.
+
 # Steps
 _:getStorageDescriptionId
     :stepName "Get storage description id" ;
@@ -1840,6 +1853,14 @@ _:getTextResourceContentType
     ) ;
 .
 
+_:getTextResourceTypeLinks
+    :stepName "Get text resource type links" ;
+    :request _:getTextResource ;
+    :extract (
+        _:typeLinks
+    ) ;
+.
+
 # Requests
 _:getStorageDescription
     :method "GET" ;
@@ -2124,6 +2145,11 @@ _:body
     :to "body" ;
 .
 
+_:typeLinks
+    :link "type" ;
+    :to "typeLinks" ;
+.
+
 # Assertions
 _:storageLinkTargetsStorage
     :that [
@@ -2189,4 +2215,13 @@ _:textPlainContentType
         ] ;
     ] ;
     :matches [ :constant "(?i)^text/plain\\s*(;|$)" ] ;
+.
+
+_:typeLink
+    :that [
+        :count [
+            :variable "typeLinks" ;
+        ] ;
+    ] ;
+    :greaterThan [ :constant 0 ] ;
 .
