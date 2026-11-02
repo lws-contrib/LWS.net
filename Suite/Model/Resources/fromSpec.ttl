@@ -77,7 +77,8 @@
         _:linksetResourceIsCreatedAndPopulatedBeforeReturningSuccess ,
         _:serverGeneratesUniqueIdentifierWhenNoHintIsProvided ,
         _:getDataResourceReturnsContentTypeMatchingStoredMediaType ,
-        _:getDataResourceResponseIncludesLinkHeaderWithRelType ;
+        _:getDataResourceResponseIncludesLinkHeaderWithRelType ,
+        _:serverSupportsRangeRequestsStatus206 ;
 ] .
 
 # Tests
@@ -1275,6 +1276,18 @@ _:getDataResourceResponseIncludesLinkHeaderWithRelType
     :assert _:typeLink ;
 .
 
+_:serverSupportsRangeRequestsStatus206
+    :testName "Server supports range requests: status 206" ;
+    :specification "https://www.w3.org/TR/lws10-core/#read-resource"^^xsd:anyURI ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createDigitsResource
+        _:getDigitsResourceFirstFourBytesStatus
+    ) ;
+    :assert _:206 ;
+.
+
 # Steps
 _:getStorageDescriptionId
     :stepName "Get storage description id" ;
@@ -1861,6 +1874,27 @@ _:getTextResourceTypeLinks
     ) ;
 .
 
+_:createDigitsResource
+    :stepName "Create digits resource" ;
+    :request [
+        :method "POST" ;
+        :uri _:container ;
+        :headers _:contentTypeTextPlain ;
+        :body [ :constant "0123456789" ] ;
+    ] ;
+    :extract (
+        _:digitsResourceLocation
+    ) ;
+.
+
+_:getDigitsResourceFirstFourBytesStatus
+    :stepName "Get digits resource first four bytes status" ;
+    :request _:getDigitsResourceFirstFourBytes ;
+    :extract (
+        _:status
+    ) ;
+.
+
 # Requests
 _:getStorageDescription
     :method "GET" ;
@@ -1978,6 +2012,12 @@ _:postContainer
     :headers _:linkTypeContainer ;
 .
 
+_:getDigitsResourceFirstFourBytes
+    :method "GET" ;
+    :uri _:digitsResource ;
+    :headers _:rangeFirstFourBytes ;
+.
+
 # URIs
 _:storage
     :variable "baseUri" ;
@@ -2034,6 +2074,15 @@ _:linkset
     ] ;
 .
 
+_:digitsResource
+    :base _:container ;
+    :relative [
+        :single [
+            :variable "digitsResourceLocation" ;
+        ] ;
+    ] ;
+.
+
 # Headers
 _:linkTypeContainer
     :key "Link" ;
@@ -2077,6 +2126,11 @@ _:linkForgedUp
 _:linkForgedLinkset
     :key "Link" ;
     :value [ :constant "<https://example.org/evil>; rel=\"linkset\"" ] ;
+.
+
+_:rangeFirstFourBytes
+    :key "Range" ;
+    :value [ :constant "bytes=0-3" ] ;
 .
 
 # Extractors
@@ -2148,6 +2202,11 @@ _:body
 _:typeLinks
     :link "type" ;
     :to "typeLinks" ;
+.
+
+_:digitsResourceLocation
+    :header "Location" ;
+    :to "digitsResourceLocation" ;
 .
 
 # Assertions
@@ -2224,4 +2283,11 @@ _:typeLink
         ] ;
     ] ;
     :greaterThan [ :constant 0 ] ;
+.
+
+_:206
+    :that [
+        :variable "status" ;
+    ] ;
+    :equals [ :constant "206" ] ;
 .
