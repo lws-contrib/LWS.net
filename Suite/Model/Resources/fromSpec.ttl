@@ -87,7 +87,8 @@
         _:headContainerLinkHeaderWithRelTypeIndicatesContainer ,
         _:serverSupportsHeadForDataResources ,
         _:serverSupportsHeadForContainers ,
-        _:headDataResourceReturnsSameContentTypeHeaderAsGet ;
+        _:headDataResourceReturnsSameContentTypeHeaderAsGet ,
+        _:headContainerReturnsSameContentTypeHeaderAsGet ;
 ] .
 
 # Tests
@@ -1424,6 +1425,18 @@ _:headDataResourceReturnsSameContentTypeHeaderAsGet
     :assert _:headContentTypeEqualsGetContentType ;
 .
 
+_:headContainerReturnsSameContentTypeHeaderAsGet
+    :testName "HEAD container returns same Content-Type header as GET" ;
+    :specification "https://www.w3.org/TR/lws10-core/#read-resource"^^xsd:anyURI ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:getContainerContentType
+        _:headContainerContentType
+    ) ;
+    :assert _:headContentTypeEqualsGetContentType ;
+.
+
 # Steps
 _:getStorageDescriptionId
     :stepName "Get storage description id" ;
@@ -2098,6 +2111,22 @@ _:headContainerStatus
 _:headTextResourceContentType
     :stepName "Head text resource Content-Type" ;
     :request _:headTextResource ;
+    :extract (
+        _:headContentType
+    ) ;
+.
+
+_:getContainerContentType
+    :stepName "Get container Content-Type" ;
+    :request _:getContainer ;
+    :extract (
+        _:contentType
+    ) ;
+.
+
+_:headContainerContentType
+    :stepName "Head container Content-Type" ;
+    :request _:headContainer ;
     :extract (
         _:headContentType
     ) ;
