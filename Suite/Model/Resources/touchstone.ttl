@@ -97,6 +97,7 @@
         _:containerGetWithWeightedAcceptReturnsLwsMediaType ,
         _:containerGetWithWeightedAcceptReturnsContainerType ,
         _:containerLwsProfileLdJsonIsomorphic ,
+        _:containerLwsProfileTurtleIsomorphic ,
         _:storageDescriptionAsCidReturnsStorageType ,
         _:storageDescriptionContextIsArray ,
         _:storageDescriptionServiceIsArray ,
@@ -1397,6 +1398,22 @@ _:containerLwsProfileLdJsonIsomorphic
         _:createTextResource
         _:createOuterContainer
         _:getContainerAsLdJsonProfile
+        _:getContainerAsLwsJson
+    ) ;
+    :assert [
+        :that [ :variable "profiled" ] ;
+        :isomorphicWith [ :variable "reference" ] ;
+    ] ;
+.
+
+_:containerLwsProfileTurtleIsomorphic
+    :testName "Container as Turtle in the LWS profile is isomorphic with application/lws+json" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:createOuterContainer
+        _:getContainerAsTurtleProfile
         _:getContainerAsLwsJson
     ) ;
     :assert [
@@ -3255,6 +3272,21 @@ _:getContainerAsLdJsonProfile
         :headers [
             :key "Accept" ;
             :value [ :constant "application/ld+json; profile=\"https://www.w3.org/ns/lws/v1\", application/lws+json;q=0.1" ] ;
+        ] ;
+    ] ;
+    :extract (
+        _:profiledGraph
+    ) ;
+.
+
+_:getContainerAsTurtleProfile
+    :stepName "Get container as Turtle in the LWS profile" ;
+    :request [
+        :method "GET" ;
+        :uri _:container ;
+        :headers [
+            :key "Accept" ;
+            :value [ :constant "text/turtle; profile=\"https://www.w3.org/ns/lws/v1\", application/lws+json;q=0.1" ] ;
         ] ;
     ] ;
     :extract (
