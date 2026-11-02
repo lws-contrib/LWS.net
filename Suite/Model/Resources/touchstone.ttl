@@ -137,6 +137,7 @@
         _:containerLinksetReturns200 ,
         _:containerLinksetReturnsLinksetMediaType ,
         _:containerLinksetHasLinksetArray ,
+        _:linksetGoneAfterResourceDeleteReturnsNotFoundOrGone ,
         _:containerHeadLinksUp ,
         _:leafUpLinkNamesInnerContainer ,
         _:innerContainerListsLeaf ,
@@ -1984,6 +1985,22 @@ _:containerLinksetHasLinksetArray
         _:getLinksetMembers
     ) ;
     :assert _:linksetArray ;
+.
+
+_:linksetGoneAfterResourceDeleteReturnsNotFoundOrGone
+    :testName "Linkset GET after its resource is deleted returns 404 or 410" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:getTextResourceETag
+        _:deleteTextResourceIfMatchStatus
+        _:getLinksetStatus
+    ) ;
+    :assert [
+        :that [ :variable "status" ] ;
+        :matches [ :constant "^(404|410)$" ] ;
+    ] ;
 .
 
 _:containerHeadLinksUp
