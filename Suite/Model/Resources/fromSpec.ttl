@@ -100,7 +100,8 @@
         _:serverIgnoresPreferSetLinksetOrRespondsWith501NotImplemented ,
         _:putToResourceUriReplacesFullResourceWithNewContent ,
         _:successfulPutRespondsWith200OkOr204NoContent ,
-        _:putWithMatchingIfMatchReplacesContentWithProvidedJson ;
+        _:putWithMatchingIfMatchReplacesContentWithProvidedJson ,
+        _:putWithNonMatchingIfMatchRespondsWith412PreconditionFailed ;
 ] .
 
 # Tests
@@ -1647,6 +1648,18 @@ _:putWithMatchingIfMatchReplacesContentWithProvidedJson
     ] ;
 .
 
+_:putWithNonMatchingIfMatchRespondsWith412PreconditionFailed
+    :testName "PUT with non-matching If-Match responds with 412 Precondition Failed" ;
+    :specification "https://www.w3.org/TR/lws10-core/#update-resource"^^xsd:anyURI ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:putTextResourceReplacingContentWithBogusIfMatch
+    ) ;
+    :assert _:412 ;
+.
+
 # Steps
 _:getStorageDescriptionId
     :stepName "Get storage description id" ;
@@ -2449,6 +2462,14 @@ _:putJsonResourceReplacingContent
     ) ;
 .
 
+_:putTextResourceReplacingContentWithBogusIfMatch
+    :stepName "Put text resource replacing content with bogus If-Match" ;
+    :request _:putTextResourceReplaceContentWithBogusIfMatch ;
+    :extract (
+        _:status
+    ) ;
+.
+
 # Requests
 _:getStorageDescription
     :method "GET" ;
@@ -2624,6 +2645,14 @@ _:putJsonResourceReplaceContent
     :body [ :constant "{\"name\":\"Alice\",\"age\":30,\"city\":\"New London\",\"state\":\"Connecticut\"}" ] ;
 .
 
+_:putTextResourceReplaceContentWithBogusIfMatch
+    :method "PUT" ;
+    :uri _:textResource ;
+    :headers _:contentTypeTextPlain ;
+    :headers _:ifMatchBogus ;
+    :body [ :constant "new content" ] ;
+.
+
 # URIs
 _:storage
     :variable "baseUri" ;
@@ -2761,6 +2790,11 @@ _:contentTypeApplicationJson
 _:preferSetLinkset
     :key "Prefer" ;
     :value [ :constant "set-linkset" ] ;
+.
+
+_:ifMatchBogus
+    :key "If-Match" ;
+    :value [ :constant "\"bogus\"" ] ;
 .
 
 # Extractors
@@ -2984,4 +3018,11 @@ _:headLinksetLinkEqualsGetLinksetLink
             :variable "headLinksetLinks" ;
         ] ;
     ] ;
+.
+
+_:412
+    :that [
+        :variable "status" ;
+    ] ;
+    :equals [ :constant "412" ] ;
 .
