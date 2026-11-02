@@ -129,6 +129,7 @@
         _:jsonPatchAppendsArrayElement ,
         _:jsonPatchWithFailingTestReturns4xx ,
         _:jsonPatchWithFailingTestKeepsTitle ,
+        _:jsonPatchWithFailingTestKeepsMember ,
         _:linksetNamedByCreateReturns200 ,
         _:linksetNamedByCreateReturnsLinksetMediaType ,
         _:linksetNamedByCreateHasLinksetArray ,
@@ -1879,6 +1880,25 @@ _:jsonPatchWithFailingTestKeepsTitle
             ] ;
         ] ;
         :equals [ :constant "first" ] ;
+    ] ;
+.
+
+_:jsonPatchWithFailingTestKeepsMember
+    :testName "JSON Patch whose test operation fails keeps an untouched member" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createJsonResource
+        _:patchJsonResourceFailingTestStatus
+        _:getJsonResourceKeep
+    ) ;
+    :assert [
+        :that [
+            :single [
+                :variable "jsonKeep" ;
+            ] ;
+        ] ;
+        :equals [ :constant "true" ] ;
     ] ;
 .
 
