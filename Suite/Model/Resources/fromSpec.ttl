@@ -58,7 +58,8 @@
         _:linksetHeadResponseIncludesEtagHeader ,
         _:linksetResourceSupportsPatchUsingApplicationJsonPatchJson ,
         _:serverPreservesLinksClientIsNotPermittedToModifyWhenApplyingPatch ,
-        _:deletingResourceRemovesItsAssociatedLinksetResource ;
+        _:deletingResourceRemovesItsAssociatedLinksetResource ,
+        _:serverManagedMetadataIsGeneratedAutomaticallyUponCreation ;
 ] .
 
 # Tests
@@ -956,6 +957,25 @@ _:deletingResourceRemovesItsAssociatedLinksetResource
     ] ;
 .
 
+_:serverManagedMetadataIsGeneratedAutomaticallyUponCreation
+    :testName "Server-managed metadata is generated automatically upon creation" ;
+    :specification "https://www.w3.org/TR/lws10-core/#create-resource"^^xsd:anyURI ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResourceLinksetLinks
+        _:getLinksetUpHrefs
+    ) ;
+    :assert [
+        :that [
+            :count [
+                :variable "upHrefs" ;
+            ] ;
+        ] ;
+        :greaterThan [ :constant 0 ] ;
+    ] ;
+.
+
 # Steps
 _:getStorageDescriptionId
     :stepName "Get storage description id" ;
@@ -1413,6 +1433,25 @@ _:getLinksetTypeHrefs
     ) ;
 .
 
+_:createTextResourceLinksetLinks
+    :stepName "Create text resource linkset links" ;
+    :request _:postTextResource ;
+    :extract (
+        _:linksetLinks
+    ) ;
+.
+
+_:getLinksetUpHrefs
+    :stepName "Get linkset up hrefs" ;
+    :request _:getLinkset ;
+    :extract (
+        [
+            :path "$.linkset[*].up[*].href" ;
+            :to "upHrefs" ;
+        ]
+    ) ;
+.
+
 # Requests
 _:getStorageDescription
     :method "GET" ;
@@ -1499,6 +1538,13 @@ _:patchLinksetRemoveType
     :headers _:contentTypeJsonPatch ;
     :headers _:ifMatchEtag ;
     :body [ :constant "[{\"op\":\"remove\",\"path\":\"/linkset/0/type\"}]" ] ;
+.
+
+_:postTextResource
+    :method "POST" ;
+    :uri _:container ;
+    :headers _:contentTypeTextPlain ;
+    :body [ :constant "milk\neggs\nbread\nbutter\napples\norange juice\n" ] ;
 .
 
 # URIs
