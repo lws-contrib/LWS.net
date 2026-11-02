@@ -107,7 +107,8 @@
         _:linksetPatchWithFailingPreconditionIsRejectedWith412PreconditionFailed ,
         _:putIsIdempotentForExistingResources ,
         _:onSuccessDeleteRespondsWith204NoContent ,
-        _:serverRemovesResourceContentOnDelete ;
+        _:serverRemovesResourceContentOnDelete ,
+        _:onSuccessDeleteOfContainerRespondsWith204NoContent ;
 ] .
 
 # Tests
@@ -1758,6 +1759,17 @@ _:serverRemovesResourceContentOnDelete
         ] ;
         :matches [ :constant "^(404|410)$" ] ;
     ] ;
+.
+
+_:onSuccessDeleteOfContainerRespondsWith204NoContent
+    :testName "On success DELETE of container responds with 204 No Content" ;
+    :specification "https://www.w3.org/TR/lws10-core/#delete-resource"^^xsd:anyURI ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:deleteContainer
+    ) ;
+    :assert _:204 ;
 .
 
 # Steps
