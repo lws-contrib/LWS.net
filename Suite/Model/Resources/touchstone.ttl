@@ -139,6 +139,7 @@
         _:containerLinksetHasLinksetArray ,
         _:linksetGoneAfterResourceDeleteReturnsNotFoundOrGone ,
         _:linksetPatchRedirectingUpReturns4xx ,
+        _:resourceUpLinkNamesContainerAfterForgedUpPatch ,
         _:containerHeadLinksUp ,
         _:leafUpLinkNamesInnerContainer ,
         _:innerContainerListsLeaf ,
@@ -2018,6 +2019,25 @@ _:linksetPatchRedirectingUpReturns4xx
     ] ;
 .
 
+_:resourceUpLinkNamesContainerAfterForgedUpPatch
+    :testName "Resource up link still names its container after a forged up PATCH" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:patchLinksetForgedUpStatus
+        _:getTextResourceUpLinks
+    ) ;
+    :assert [
+        :that [
+            :single [
+                :variable "upLinks" ;
+            ] ;
+        ] ;
+        :equals _:container ;
+    ] ;
+.
+
 _:containerHeadLinksUp
     :testName "Container HEAD links up" ;
     :steps (
@@ -3356,6 +3376,14 @@ _:patchLinksetForgedUpStatus
     :request _:patchLinksetForgedUp ;
     :extract (
         _:status
+    ) ;
+.
+
+_:getTextResourceUpLinks
+    :stepName "Get text resource up links" ;
+    :request _:getTextResource ;
+    :extract (
+        _:upLinks
     ) ;
 .
 
