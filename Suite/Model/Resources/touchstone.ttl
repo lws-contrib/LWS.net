@@ -144,6 +144,7 @@
         _:linksetPatchReplacingArrayReturns2xxOr4xx ,
         _:linksetAfterArrayReplacePatchReturns200 ,
         _:linksetAfterArrayReplacePatchReturnsLinksetMediaType ,
+        _:linksetAfterArrayReplacePatchHasLinksetArray ,
         _:containerHeadLinksUp ,
         _:leafUpLinkNamesInnerContainer ,
         _:innerContainerListsLeaf ,
@@ -2093,6 +2094,18 @@ _:linksetAfterArrayReplacePatchReturnsLinksetMediaType
         _:getLinksetContentType
     ) ;
     :assert _:linksetJsonContentType ;
+.
+
+_:linksetAfterArrayReplacePatchHasLinksetArray
+    :testName "Linkset after a PATCH replacing the linkset array has linkset array" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:patchLinksetReplaceArrayStatus
+        _:getLinksetMembers
+    ) ;
+    :assert _:linksetArray ;
 .
 
 _:containerHeadLinksUp
