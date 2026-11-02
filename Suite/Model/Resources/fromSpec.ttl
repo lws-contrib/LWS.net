@@ -975,6 +975,7 @@ _:linksetHeadResponseIncludesEtagHeader
 _:linksetResourceSupportsPatchUsingApplicationJsonPatchJson
     :testName "Linkset resource supports PATCH using application/json-patch+json" ;
     :specification "https://www.w3.org/TR/lws10-core/#metadata-0"^^xsd:anyURI ;
+    :specification "https://www.w3.org/TR/lws10-core/#update-resource"^^xsd:anyURI ;
     :steps (
         _:discoverStorageRoot
         _:createContainer
