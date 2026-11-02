@@ -126,6 +126,7 @@
         _:jsonPatchRemovesMember ,
         _:jsonPatchKeepsMember ,
         _:jsonPatchKeepsFirstArrayElement ,
+        _:jsonPatchAppendsArrayElement ,
         _:linksetNamedByCreateReturns200 ,
         _:linksetNamedByCreateReturnsLinksetMediaType ,
         _:linksetNamedByCreateHasLinksetArray ,
@@ -1826,6 +1827,26 @@ _:jsonPatchKeepsFirstArrayElement
     ] ;
 .
 
+_:jsonPatchAppendsArrayElement
+    :testName "JSON Patch add with the - index appends an array element" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createJsonResource
+        _:getJsonResourceETag
+        _:patchJsonResourceIfMatchStatus
+        _:getJsonResourceThirdTag
+    ) ;
+    :assert [
+        :that [
+            :single [
+                :variable "jsonThirdTag" ;
+            ] ;
+        ] ;
+        :equals [ :constant "c" ] ;
+    ] ;
+.
+
 _:linksetNamedByCreateReturns200
     :testName "Linkset named by create returns 200" ;
     :steps (
@@ -3200,6 +3221,14 @@ _:getJsonResourceFirstTag
     ) ;
 .
 
+_:getJsonResourceThirdTag
+    :stepName "Get JSON resource third tag" ;
+    :request _:getJsonResource ;
+    :extract (
+        _:jsonThirdTag
+    ) ;
+.
+
 _:getLinksetContentType
     :stepName "Get linkset Content-Type" ;
     :request _:getLinkset ;
@@ -4015,6 +4044,11 @@ _:jsonDrop
 _:jsonFirstTag
     :path "$.tags[0]" ;
     :to "jsonFirstTag" ;
+.
+
+_:jsonThirdTag
+    :path "$.tags[2]" ;
+    :to "jsonThirdTag" ;
 .
 
 _:itemIds
