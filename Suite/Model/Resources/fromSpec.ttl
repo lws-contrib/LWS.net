@@ -102,7 +102,8 @@
         _:successfulPutRespondsWith200OkOr204NoContent ,
         _:putWithMatchingIfMatchReplacesContentWithProvidedJson ,
         _:putWithNonMatchingIfMatchRespondsWith412PreconditionFailed ,
-        _:patchWithInvalidPayloadRespondsWith400BadRequest ;
+        _:patchWithInvalidPayloadRespondsWith400BadRequest ,
+        _:serverMinimallySupportsJsonPatchApplicationJsonPatchJson ;
 ] .
 
 # Tests
@@ -1673,6 +1674,26 @@ _:patchWithInvalidPayloadRespondsWith400BadRequest
     :assert _:400 ;
 .
 
+_:serverMinimallySupportsJsonPatchApplicationJsonPatchJson
+    :testName "Server minimally supports JSON Patch application/json-patch+json" ;
+    :specification "https://www.w3.org/TR/lws10-core/#update-resource"^^xsd:anyURI ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createJsonResource
+        _:patchJsonResourceReplacingValue
+        _:getJsonResourceAValue
+    ) ;
+    :assert [
+        :that [
+            :single [
+                :variable "a" ;
+            ] ;
+        ] ;
+        :equals [ :constant "2" ] ;
+    ] ;
+.
+
 # Steps
 _:getStorageDescriptionId
     :stepName "Get storage description id" ;
@@ -2491,6 +2512,25 @@ _:patchJsonResourceWithInvalidPayload
     ) ;
 .
 
+_:patchJsonResourceReplacingValue
+    :stepName "Patch JSON resource replacing value" ;
+    :request _:patchJsonResourceReplaceValue ;
+    :extract (
+        _:status
+    ) ;
+.
+
+_:getJsonResourceAValue
+    :stepName "Get JSON resource a value" ;
+    :request _:getJsonResource ;
+    :extract (
+        [
+            :path "$.a" ;
+            :to "a" ;
+        ]
+    ) ;
+.
+
 # Requests
 _:getStorageDescription
     :method "GET" ;
@@ -2679,6 +2719,13 @@ _:patchJsonResourceInvalidPayload
     :uri _:jsonResource ;
     :headers _:contentTypeJsonPatch ;
     :body [ :constant "not json" ] ;
+.
+
+_:patchJsonResourceReplaceValue
+    :method "PATCH" ;
+    :uri _:jsonResource ;
+    :headers _:contentTypeJsonPatch ;
+    :body [ :constant "[{\"op\":\"replace\",\"path\":\"/a\",\"value\":2}]" ] ;
 .
 
 # URIs
