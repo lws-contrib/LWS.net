@@ -71,7 +71,8 @@
         _:dataResourceIsCreatedWithContentFromRequestBody ,
         _:postWithLinkHeaderWithRelTypeContainerCreatesContainer ,
         _:containerCreationResponseLinkRelUpTargetsParentContainer ,
-        _:containerCreationResponseIncludesLinkHeaderWithRelLinkset ;
+        _:containerCreationResponseIncludesLinkHeaderWithRelLinkset ,
+        _:linksetResourceIsCreatedAndPopulatedBeforeReturningSuccess ;
 ] .
 
 # Tests
@@ -1169,6 +1170,18 @@ _:containerCreationResponseIncludesLinkHeaderWithRelLinkset
         _:createContainerLinksetLinks
     ) ;
     :assert _:linksetLink ;
+.
+
+_:linksetResourceIsCreatedAndPopulatedBeforeReturningSuccess
+    :testName "Linkset resource is created and populated before returning success" ;
+    :specification "https://www.w3.org/TR/lws10-core/#create-resource"^^xsd:anyURI ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResourceLinksetLinks
+        _:getLinksetStatus
+    ) ;
+    :assert _:200 ;
 .
 
 # Steps
