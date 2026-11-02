@@ -96,7 +96,8 @@
         _:putOnResourceUriHasNoDefaultImpactOnAssociatedLinksetResource ,
         _:putOnResourceUriWithLinkHeaderSucceeds ,
         _:patchOnResourceUriHasNoDefaultImpactOnAssociatedLinksetResource ,
-        _:patchOnResourceUriWithLinkHeaderSucceeds ;
+        _:patchOnResourceUriWithLinkHeaderSucceeds ,
+        _:serverIgnoresPreferSetLinksetOrRespondsWith501NotImplemented ;
 ] .
 
 # Tests
@@ -1570,6 +1571,23 @@ _:patchOnResourceUriWithLinkHeaderSucceeds
     ] ;
 .
 
+_:serverIgnoresPreferSetLinksetOrRespondsWith501NotImplemented
+    :testName "Server ignores Prefer set-linkset or responds with 501 Not Implemented" ;
+    :specification "https://www.w3.org/TR/lws10-core/#update-resource"^^xsd:anyURI ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:putTextResourceReplacingContentWithPreferSetLinkset
+    ) ;
+    :assert [
+        :that [
+            :variable "status" ;
+        ] ;
+        :matches [ :constant "^(200|204|501)$" ] ;
+    ] ;
+.
+
 # Steps
 _:getStorageDescriptionId
     :stepName "Get storage description id" ;
@@ -2329,6 +2347,14 @@ _:patchJsonResourceReplacingValueWithLinkHeader
     ) ;
 .
 
+_:putTextResourceReplacingContentWithPreferSetLinkset
+    :stepName "Put text resource replacing content with Prefer set-linkset" ;
+    :request _:putTextResourceReplaceContentWithPreferSetLinkset ;
+    :extract (
+        _:status
+    ) ;
+.
+
 # Requests
 _:getStorageDescription
     :method "GET" ;
@@ -2480,6 +2506,15 @@ _:patchJsonResourceReplaceValueWithLinkHeader
     :body [ :constant "[{\"op\":\"replace\",\"path\":\"/a\",\"value\":2}]" ] ;
 .
 
+_:putTextResourceReplaceContentWithPreferSetLinkset
+    :method "PUT" ;
+    :uri _:textResource ;
+    :headers _:contentTypeTextPlain ;
+    :headers _:preferSetLinkset ;
+    :headers _:linkDescribedBy ;
+    :body [ :constant "new content" ] ;
+.
+
 # URIs
 _:storage
     :variable "baseUri" ;
@@ -2612,6 +2647,11 @@ _:linkDescribedBy
 _:contentTypeApplicationJson
     :key "Content-Type" ;
     :value [ :constant "application/json" ] ;
+.
+
+_:preferSetLinkset
+    :key "Prefer" ;
+    :value [ :constant "set-linkset" ] ;
 .
 
 # Extractors
