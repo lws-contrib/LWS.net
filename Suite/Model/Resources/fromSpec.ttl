@@ -68,7 +68,8 @@
         _:createResponseIncludesLinkHeaderWithRelUp ,
         _:createResponseLinkHeaderWithRelUpTargetsParentContainer ,
         _:createResponseIncludesLinkHeaderWithRelLinkset ,
-        _:dataResourceIsCreatedWithContentFromRequestBody ;
+        _:dataResourceIsCreatedWithContentFromRequestBody ,
+        _:postWithLinkHeaderWithRelTypeContainerCreatesContainer ;
 ] .
 
 # Tests
@@ -1122,6 +1123,24 @@ _:dataResourceIsCreatedWithContentFromRequestBody
             :variable "body" ;
         ] ;
         :equals [ :constant "milk\neggs\nbread\nbutter\napples\norange juice\n" ] ;
+    ] ;
+.
+
+_:postWithLinkHeaderWithRelTypeContainerCreatesContainer
+    :testName "POST with Link header with rel type Container creates container" ;
+    :specification "https://www.w3.org/TR/lws10-core/#create-resource"^^xsd:anyURI ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:getContainerType
+    ) ;
+    :assert [
+        :that [
+            :single [
+                :variable "containerType" ;
+            ] ;
+        ] ;
+        :equals [ :constant "Container" ] ;
     ] ;
 .
 
