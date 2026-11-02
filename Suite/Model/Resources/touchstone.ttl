@@ -67,6 +67,7 @@
         _:containerMemberDeleteWithCurrentIfMatchReturns204 ,
         _:containerTotalItemsCountsOneMemberAfterDelete ,
         _:containerListingOmitsDeletedMember ,
+        _:emptyContainerDeleteReturns204 ,
         _:containerGetLinksUp ,
         _:containerGetLinksStorage ,
         _:nestedContainerGetReturns200 ,
@@ -999,6 +1000,19 @@ _:containerListingOmitsDeletedMember
         ] ;
         :not [ :contains _:textResource ] ;
     ] ;
+.
+
+_:emptyContainerDeleteReturns204
+    :testName "Empty container DELETE returns 204" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createOuterContainer
+        _:createInnerContainer
+        _:getInnerContainerETag
+        _:deleteInnerContainerStatus
+    ) ;
+    :assert _:204 ;
 .
 
 _:containerGetLinksUp
