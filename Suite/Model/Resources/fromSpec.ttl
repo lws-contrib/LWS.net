@@ -104,7 +104,8 @@
         _:putWithNonMatchingIfMatchRespondsWith412PreconditionFailed ,
         _:patchWithInvalidPayloadRespondsWith400BadRequest ,
         _:serverMinimallySupportsJsonPatchApplicationJsonPatchJson ,
-        _:linksetPatchWithFailingPreconditionIsRejectedWith412PreconditionFailed ;
+        _:linksetPatchWithFailingPreconditionIsRejectedWith412PreconditionFailed ,
+        _:putIsIdempotentForExistingResources ;
 ] .
 
 # Tests
@@ -1706,6 +1707,24 @@ _:linksetPatchWithFailingPreconditionIsRejectedWith412PreconditionFailed
         _:patchLinksetAddingDescribedByWithBogusIfMatch
     ) ;
     :assert _:412 ;
+.
+
+_:putIsIdempotentForExistingResources
+    :testName "PUT is idempotent for existing resources" ;
+    :specification "https://www.w3.org/TR/lws10-core/#update-resource"^^xsd:anyURI ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:putTextResourceReplacingContent
+        _:putTextResourceReplacingContent
+    ) ;
+    :assert [
+        :that [
+            :variable "status" ;
+        ] ;
+        :matches [ :constant "^(200|204)$" ] ;
+    ] ;
 .
 
 # Steps
