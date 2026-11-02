@@ -64,7 +64,8 @@
         _:serverManagedLinksetLinkIsNotOverriddenByClientProvidedLink ,
         _:successfulCreationReturns201StatusCode ,
         _:successfulCreationReturnsNewUriInLocationHeader ,
-        _:createdResourceCanBeRetrievedUsingGetOnItsNewUri ;
+        _:createdResourceCanBeRetrievedUsingGetOnItsNewUri ,
+        _:createResponseIncludesLinkHeaderWithRelUp ;
 ] .
 
 # Tests
@@ -1059,6 +1060,24 @@ _:createdResourceCanBeRetrievedUsingGetOnItsNewUri
     :assert _:200 ;
 .
 
+_:createResponseIncludesLinkHeaderWithRelUp
+    :testName "Create response includes Link header with rel up" ;
+    :specification "https://www.w3.org/TR/lws10-core/#create-resource"^^xsd:anyURI ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResourceUpLinks
+    ) ;
+    :assert [
+        :that [
+            :count [
+                :variable "upLinks" ;
+            ] ;
+        ] ;
+        :greaterThan [ :constant 0 ] ;
+    ] ;
+.
+
 # Steps
 _:getStorageDescriptionId
     :stepName "Get storage description id" ;
@@ -1572,6 +1591,14 @@ _:getTextResourceStatus
     :request _:getTextResource ;
     :extract (
         _:status
+    ) ;
+.
+
+_:createTextResourceUpLinks
+    :stepName "Create text resource up links" ;
+    :request _:postTextResource ;
+    :extract (
+        _:upLinks
     ) ;
 .
 
