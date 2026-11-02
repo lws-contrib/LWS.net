@@ -75,7 +75,8 @@
         _:containerCreationResponseLinkRelUpTargetsParentContainer ,
         _:containerCreationResponseIncludesLinkHeaderWithRelLinkset ,
         _:linksetResourceIsCreatedAndPopulatedBeforeReturningSuccess ,
-        _:serverGeneratesUniqueIdentifierWhenNoHintIsProvided ;
+        _:serverGeneratesUniqueIdentifierWhenNoHintIsProvided ,
+        _:getDataResourceReturnsContentTypeMatchingStoredMediaType ;
 ] .
 
 # Tests
@@ -1249,6 +1250,18 @@ _:serverGeneratesUniqueIdentifierWhenNoHintIsProvided
     ] ;
 .
 
+_:getDataResourceReturnsContentTypeMatchingStoredMediaType
+    :testName "GET data resource returns Content-Type matching stored media type" ;
+    :specification "https://www.w3.org/TR/lws10-core/#read-resource"^^xsd:anyURI ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:getTextResourceContentType
+    ) ;
+    :assert _:textPlainContentType ;
+.
+
 # Steps
 _:getStorageDescriptionId
     :stepName "Get storage description id" ;
@@ -1819,6 +1832,14 @@ _:createContainerLinksetLinks
     ) ;
 .
 
+_:getTextResourceContentType
+    :stepName "Get text resource Content-Type" ;
+    :request _:getTextResource ;
+    :extract (
+        _:contentType
+    ) ;
+.
+
 # Requests
 _:getStorageDescription
     :method "GET" ;
@@ -2159,4 +2180,13 @@ _:201
         :variable "status" ;
     ] ;
     :equals [ :constant "201" ] ;
+.
+
+_:textPlainContentType
+    :that [
+        :single [
+            :variable "contentType" ;
+        ] ;
+    ] ;
+    :matches [ :constant "(?i)^text/plain\\s*(;|$)" ] ;
 .
