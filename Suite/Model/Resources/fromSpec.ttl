@@ -99,7 +99,8 @@
         _:patchOnResourceUriWithLinkHeaderSucceeds ,
         _:serverIgnoresPreferSetLinksetOrRespondsWith501NotImplemented ,
         _:putToResourceUriReplacesFullResourceWithNewContent ,
-        _:successfulPutRespondsWith200OkOr204NoContent ;
+        _:successfulPutRespondsWith200OkOr204NoContent ,
+        _:putWithMatchingIfMatchReplacesContentWithProvidedJson ;
 ] .
 
 # Tests
@@ -1625,6 +1626,27 @@ _:successfulPutRespondsWith200OkOr204NoContent
     ] ;
 .
 
+_:putWithMatchingIfMatchReplacesContentWithProvidedJson
+    :testName "PUT with matching If-Match replaces content with provided JSON" ;
+    :specification "https://www.w3.org/TR/lws10-core/#update-resource"^^xsd:anyURI ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createJsonResource
+        _:getJsonResourceEtag
+        _:putJsonResourceReplacingContent
+        _:getJsonResourceCity
+    ) ;
+    :assert [
+        :that [
+            :single [
+                :variable "city" ;
+            ] ;
+        ] ;
+        :equals [ :constant "New London" ] ;
+    ] ;
+.
+
 # Steps
 _:getStorageDescriptionId
     :stepName "Get storage description id" ;
@@ -2400,6 +2422,33 @@ _:putTextResourceReplacingContent
     ) ;
 .
 
+_:getJsonResourceEtag
+    :stepName "Get JSON resource ETag" ;
+    :request _:getJsonResource ;
+    :extract (
+        _:etag
+    ) ;
+.
+
+_:getJsonResourceCity
+    :stepName "Get JSON resource city" ;
+    :request _:getJsonResource ;
+    :extract (
+        [
+            :path "$.city" ;
+            :to "city" ;
+        ]
+    ) ;
+.
+
+_:putJsonResourceReplacingContent
+    :stepName "Put JSON resource replacing content" ;
+    :request _:putJsonResourceReplaceContent ;
+    :extract (
+        _:status
+    ) ;
+.
+
 # Requests
 _:getStorageDescription
     :method "GET" ;
@@ -2565,6 +2614,14 @@ _:putTextResourceReplaceContent
     :uri _:textResource ;
     :headers _:contentTypeTextPlain ;
     :body [ :constant "new content" ] ;
+.
+
+_:putJsonResourceReplaceContent
+    :method "PUT" ;
+    :uri _:jsonResource ;
+    :headers _:contentTypeApplicationJson ;
+    :headers _:ifMatchEtag ;
+    :body [ :constant "{\"name\":\"Alice\",\"age\":30,\"city\":\"New London\",\"state\":\"Connecticut\"}" ] ;
 .
 
 # URIs
