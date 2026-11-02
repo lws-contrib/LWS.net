@@ -95,7 +95,8 @@
         _:headContainerReturnsSameLinkHeaderWithRelLinksetAsGet ,
         _:putOnResourceUriHasNoDefaultImpactOnAssociatedLinksetResource ,
         _:putOnResourceUriWithLinkHeaderSucceeds ,
-        _:patchOnResourceUriHasNoDefaultImpactOnAssociatedLinksetResource ;
+        _:patchOnResourceUriHasNoDefaultImpactOnAssociatedLinksetResource ,
+        _:patchOnResourceUriWithLinkHeaderSucceeds ;
 ] .
 
 # Tests
@@ -1548,6 +1549,24 @@ _:patchOnResourceUriHasNoDefaultImpactOnAssociatedLinksetResource
             :variable "body" ;
         ] ;
         :not [ :matches [ :constant "example\\.org\\?/s" ] ] ;
+    ] ;
+.
+
+_:patchOnResourceUriWithLinkHeaderSucceeds
+    :testName "PATCH on resource URI with Link header succeeds" ;
+    :specification "https://www.w3.org/TR/lws10-core/#update-resource"^^xsd:anyURI ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createJsonResource
+        _:getJsonResourceLinksetLinks
+        _:patchJsonResourceReplacingValueWithLinkHeader
+    ) ;
+    :assert [
+        :that [
+            :variable "status" ;
+        ] ;
+        :matches [ :constant "^(200|204)$" ] ;
     ] ;
 .
 
