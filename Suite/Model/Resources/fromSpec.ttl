@@ -33,7 +33,7 @@
         _:createdResourceIsAddedToContainerItems ,
         _:deletedResourceIsRemovedFromParentContainerItems ,
         _:containerRepresentationIncludesAllContainedResources ,
-        _:deletingNonEmptyContainerReturns409 ,
+        _:serverRejectsDeletionOfNonEmptyContainerWithoutRecursionRequestedWith409Conflict ,
         _:createdContainerIsAddedToParentContainerItems ,
         _:getNestedContainerLinksParentContainerAsUp ,
         _:containerRepresentationHasIdProperty ,
@@ -547,8 +547,8 @@ _:containerRepresentationIncludesAllContainedResources
     ] ;
 .
 
-_:deletingNonEmptyContainerReturns409
-    :testName "Deleting non-empty container returns 409" ;
+_:serverRejectsDeletionOfNonEmptyContainerWithoutRecursionRequestedWith409Conflict
+    :testName "Server rejects deletion of non-empty container without recursion requested with 409 Conflict" ;
     :specification "https://www.w3.org/TR/lws10-core/#containment-integrity"^^xsd:anyURI ;
     :specification "https://www.w3.org/TR/lws10-core/#delete-resource"^^xsd:anyURI ;
     :steps (
