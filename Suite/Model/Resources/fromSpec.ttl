@@ -69,7 +69,8 @@
         _:createResponseLinkHeaderWithRelUpTargetsParentContainer ,
         _:createResponseIncludesLinkHeaderWithRelLinkset ,
         _:dataResourceIsCreatedWithContentFromRequestBody ,
-        _:postWithLinkHeaderWithRelTypeContainerCreatesContainer ;
+        _:postWithLinkHeaderWithRelTypeContainerCreatesContainer ,
+        _:containerCreationResponseLinkRelUpTargetsParentContainer ;
 ] .
 
 # Tests
@@ -1144,6 +1145,21 @@ _:postWithLinkHeaderWithRelTypeContainerCreatesContainer
     ] ;
 .
 
+_:containerCreationResponseLinkRelUpTargetsParentContainer
+    :testName "Container creation response Link rel up targets parent container" ;
+    :specification "https://www.w3.org/TR/lws10-core/#create-resource"^^xsd:anyURI ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainerUpLinks
+    ) ;
+    :assert [
+        :that [
+            :variable "upLinks" ;
+        ] ;
+        :contains _:storageRoot ;
+    ] ;
+.
+
 # Steps
 _:getStorageDescriptionId
     :stepName "Get storage description id" ;
@@ -1676,6 +1692,14 @@ _:getTextResourceBody
     ) ;
 .
 
+_:createContainerUpLinks
+    :stepName "Create container up links" ;
+    :request _:postContainer ;
+    :extract (
+        _:upLinks
+    ) ;
+.
+
 # Requests
 _:getStorageDescription
     :method "GET" ;
@@ -1785,6 +1809,12 @@ _:postTextResourceWithForgedLinksetLink
     :headers _:contentTypeTextPlain ;
     :headers _:linkForgedLinkset ;
     :body [ :constant "milk\neggs\nbread\nbutter\napples\norange juice\n" ] ;
+.
+
+_:postContainer
+    :method "POST" ;
+    :uri _:storageRoot ;
+    :headers _:linkTypeContainer ;
 .
 
 # URIs
