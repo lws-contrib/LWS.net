@@ -101,7 +101,8 @@
         _:putToResourceUriReplacesFullResourceWithNewContent ,
         _:successfulPutRespondsWith200OkOr204NoContent ,
         _:putWithMatchingIfMatchReplacesContentWithProvidedJson ,
-        _:putWithNonMatchingIfMatchRespondsWith412PreconditionFailed ;
+        _:putWithNonMatchingIfMatchRespondsWith412PreconditionFailed ,
+        _:patchWithInvalidPayloadRespondsWith400BadRequest ;
 ] .
 
 # Tests
@@ -1660,6 +1661,18 @@ _:putWithNonMatchingIfMatchRespondsWith412PreconditionFailed
     :assert _:412 ;
 .
 
+_:patchWithInvalidPayloadRespondsWith400BadRequest
+    :testName "PATCH with invalid payload responds with 400 Bad Request" ;
+    :specification "https://www.w3.org/TR/lws10-core/#update-resource"^^xsd:anyURI ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createJsonResource
+        _:patchJsonResourceWithInvalidPayload
+    ) ;
+    :assert _:400 ;
+.
+
 # Steps
 _:getStorageDescriptionId
     :stepName "Get storage description id" ;
@@ -2470,6 +2483,14 @@ _:putTextResourceReplacingContentWithBogusIfMatch
     ) ;
 .
 
+_:patchJsonResourceWithInvalidPayload
+    :stepName "Patch JSON resource with invalid payload" ;
+    :request _:patchJsonResourceInvalidPayload ;
+    :extract (
+        _:status
+    ) ;
+.
+
 # Requests
 _:getStorageDescription
     :method "GET" ;
@@ -2651,6 +2672,13 @@ _:putTextResourceReplaceContentWithBogusIfMatch
     :headers _:contentTypeTextPlain ;
     :headers _:ifMatchBogus ;
     :body [ :constant "new content" ] ;
+.
+
+_:patchJsonResourceInvalidPayload
+    :method "PATCH" ;
+    :uri _:jsonResource ;
+    :headers _:contentTypeJsonPatch ;
+    :body [ :constant "not json" ] ;
 .
 
 # URIs
@@ -3025,4 +3053,11 @@ _:412
         :variable "status" ;
     ] ;
     :equals [ :constant "412" ] ;
+.
+
+_:400
+    :that [
+        :variable "status" ;
+    ] ;
+    :equals [ :constant "400" ] ;
 .
