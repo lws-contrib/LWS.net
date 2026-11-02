@@ -85,7 +85,8 @@
         _:getContainerResponseIncludesEtagHeader ,
         _:getContainerResponseLinkHeaderWithRelTypeIndicatesContainer ,
         _:headContainerLinkHeaderWithRelTypeIndicatesContainer ,
-        _:serverSupportsHeadForDataResources ;
+        _:serverSupportsHeadForDataResources ,
+        _:serverSupportsHeadForContainers ;
 ] .
 
 # Tests
@@ -1398,6 +1399,17 @@ _:serverSupportsHeadForDataResources
     :assert _:200 ;
 .
 
+_:serverSupportsHeadForContainers
+    :testName "Server supports HEAD for containers" ;
+    :specification "https://www.w3.org/TR/lws10-core/#read-resource"^^xsd:anyURI ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:headContainerStatus
+    ) ;
+    :assert _:200 ;
+.
+
 # Steps
 _:getStorageDescriptionId
     :stepName "Get storage description id" ;
@@ -2056,6 +2068,14 @@ _:headContainerTypeLinks
 _:headTextResourceStatus
     :stepName "Head text resource status" ;
     :request _:headTextResource ;
+    :extract (
+        _:status
+    ) ;
+.
+
+_:headContainerStatus
+    :stepName "Head container status" ;
+    :request _:headContainer ;
     :extract (
         _:status
     ) ;
