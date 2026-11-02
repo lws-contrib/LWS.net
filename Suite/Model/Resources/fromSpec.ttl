@@ -59,7 +59,8 @@
         _:linksetResourceSupportsPatchUsingApplicationJsonPatchJson ,
         _:serverPreservesLinksClientIsNotPermittedToModifyWhenApplyingPatch ,
         _:deletingResourceRemovesItsAssociatedLinksetResource ,
-        _:serverManagedMetadataIsGeneratedAutomaticallyUponCreation ;
+        _:serverManagedMetadataIsGeneratedAutomaticallyUponCreation ,
+        _:serverManagedUpLinkIsNotOverriddenByClientProvidedLink ;
 ] .
 
 # Tests
@@ -976,6 +977,25 @@ _:serverManagedMetadataIsGeneratedAutomaticallyUponCreation
     ] ;
 .
 
+_:serverManagedUpLinkIsNotOverriddenByClientProvidedLink
+    :testName "Server-managed up link is not overridden by client-provided link" ;
+    :specification "https://www.w3.org/TR/lws10-core/#create-resource"^^xsd:anyURI ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResourceWithForgedUpLink
+        _:getTextResourceUpLinks
+    ) ;
+    :assert [
+        :that [
+            :single [
+                :variable "upLinks" ;
+            ] ;
+        ] ;
+        :equals _:container ;
+    ] ;
+.
+
 # Steps
 _:getStorageDescriptionId
     :stepName "Get storage description id" ;
@@ -1452,6 +1472,14 @@ _:getLinksetUpHrefs
     ) ;
 .
 
+_:createTextResourceWithForgedUpLink
+    :stepName "Create text resource with forged up link" ;
+    :request _:postTextResourceWithForgedUpLink ;
+    :extract (
+        _:textResourceLocation
+    ) ;
+.
+
 # Requests
 _:getStorageDescription
     :method "GET" ;
@@ -1547,6 +1575,14 @@ _:postTextResource
     :body [ :constant "milk\neggs\nbread\nbutter\napples\norange juice\n" ] ;
 .
 
+_:postTextResourceWithForgedUpLink
+    :method "POST" ;
+    :uri _:container ;
+    :headers _:contentTypeTextPlain ;
+    :headers _:linkForgedUp ;
+    :body [ :constant "milk\neggs\nbread\nbutter\napples\norange juice\n" ] ;
+.
+
 # URIs
 _:storage
     :variable "baseUri" ;
@@ -1636,6 +1672,11 @@ _:ifMatchEtag
             :variable "etag" ;
         ] ;
     ] ;
+.
+
+_:linkForgedUp
+    :key "Link" ;
+    :value [ :constant "<https://example.org/evil>; rel=\"up\"" ] ;
 .
 
 # Extractors
