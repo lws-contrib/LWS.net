@@ -90,7 +90,8 @@
         _:headDataResourceReturnsSameContentTypeHeaderAsGet ,
         _:headContainerReturnsSameContentTypeHeaderAsGet ,
         _:headDataResourceReturnsSameEtagHeaderAsGet ,
-        _:headContainerReturnsSameEtagHeaderAsGet ;
+        _:headContainerReturnsSameEtagHeaderAsGet ,
+        _:headDataResourceReturnsSameLinkHeaderWithRelLinksetAsGet ;
 ] .
 
 # Tests
@@ -1464,6 +1465,19 @@ _:headContainerReturnsSameEtagHeaderAsGet
     :assert _:headEtagEqualsGetEtag ;
 .
 
+_:headDataResourceReturnsSameLinkHeaderWithRelLinksetAsGet
+    :testName "HEAD data resource returns same Link header with rel linkset as GET" ;
+    :specification "https://www.w3.org/TR/lws10-core/#read-resource"^^xsd:anyURI ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:getTextResourceLinksetLinks
+        _:headTextResourceLinksetLinks
+    ) ;
+    :assert _:headLinksetLinkEqualsGetLinksetLink ;
+.
+
 # Steps
 _:getStorageDescriptionId
     :stepName "Get storage description id" ;
@@ -2175,6 +2189,14 @@ _:headContainerEtag
     ) ;
 .
 
+_:headTextResourceLinksetLinks
+    :stepName "Head text resource linkset links" ;
+    :request _:headTextResource ;
+    :extract (
+        _:headLinksetLinks
+    ) ;
+.
+
 # Requests
 _:getStorageDescription
     :method "GET" ;
@@ -2504,6 +2526,11 @@ _:headEtag
     :to "headEtag" ;
 .
 
+_:headLinksetLinks
+    :link "linkset" ;
+    :to "headLinksetLinks" ;
+.
+
 # Assertions
 _:storageLinkTargetsStorage
     :that [
@@ -2609,6 +2636,19 @@ _:headEtagEqualsGetEtag
     :equals [
         :single [
             :variable "headEtag" ;
+        ] ;
+    ] ;
+.
+
+_:headLinksetLinkEqualsGetLinksetLink
+    :that [
+        :single [
+            :variable "linksetLinks" ;
+        ] ;
+    ] ;
+    :equals [
+        :single [
+            :variable "headLinksetLinks" ;
         ] ;
     ] ;
 .
