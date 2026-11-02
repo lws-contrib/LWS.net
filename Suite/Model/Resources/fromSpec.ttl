@@ -66,7 +66,8 @@
         _:successfulCreationReturnsNewUriInLocationHeader ,
         _:createdResourceCanBeRetrievedUsingGetOnItsNewUri ,
         _:createResponseIncludesLinkHeaderWithRelUp ,
-        _:createResponseLinkHeaderWithRelUpTargetsParentContainer ;
+        _:createResponseLinkHeaderWithRelUpTargetsParentContainer ,
+        _:createResponseIncludesLinkHeaderWithRelLinkset ;
 ] .
 
 # Tests
@@ -1093,6 +1094,17 @@ _:createResponseLinkHeaderWithRelUpTargetsParentContainer
         ] ;
         :contains _:container ;
     ] ;
+.
+
+_:createResponseIncludesLinkHeaderWithRelLinkset
+    :testName "Create response includes Link header with rel linkset" ;
+    :specification "https://www.w3.org/TR/lws10-core/#create-resource"^^xsd:anyURI ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResourceLinksetLinks
+    ) ;
+    :assert _:linksetLink ;
 .
 
 # Steps
