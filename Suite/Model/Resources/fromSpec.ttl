@@ -94,7 +94,8 @@
         _:headDataResourceReturnsSameLinkHeaderWithRelLinksetAsGet ,
         _:headContainerReturnsSameLinkHeaderWithRelLinksetAsGet ,
         _:putOnResourceUriHasNoDefaultImpactOnAssociatedLinksetResource ,
-        _:putOnResourceUriWithLinkHeaderSucceeds ;
+        _:putOnResourceUriWithLinkHeaderSucceeds ,
+        _:patchOnResourceUriHasNoDefaultImpactOnAssociatedLinksetResource ;
 ] .
 
 # Tests
@@ -1531,6 +1532,25 @@ _:putOnResourceUriWithLinkHeaderSucceeds
     ] ;
 .
 
+_:patchOnResourceUriHasNoDefaultImpactOnAssociatedLinksetResource
+    :testName "PATCH on resource URI has no default impact on associated linkset resource" ;
+    :specification "https://www.w3.org/TR/lws10-core/#update-resource"^^xsd:anyURI ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createJsonResource
+        _:getJsonResourceLinksetLinks
+        _:patchJsonResourceReplacingValueWithLinkHeader
+        _:getLinksetBody
+    ) ;
+    :assert [
+        :that [
+            :variable "body" ;
+        ] ;
+        :not [ :matches [ :constant "example\\.org\\?/s" ] ] ;
+    ] ;
+.
+
 # Steps
 _:getStorageDescriptionId
     :stepName "Get storage description id" ;
@@ -2266,6 +2286,30 @@ _:putTextResourceReplacingContentWithLinkHeader
     ) ;
 .
 
+_:createJsonResource
+    :stepName "Create JSON resource" ;
+    :request _:postJsonResource ;
+    :extract (
+        _:jsonResourceLocation
+    ) ;
+.
+
+_:getJsonResourceLinksetLinks
+    :stepName "Get JSON resource linkset links" ;
+    :request _:getJsonResource ;
+    :extract (
+        _:linksetLinks
+    ) ;
+.
+
+_:patchJsonResourceReplacingValueWithLinkHeader
+    :stepName "Patch JSON resource replacing value with Link header" ;
+    :request _:patchJsonResourceReplaceValueWithLinkHeader ;
+    :extract (
+        _:status
+    ) ;
+.
+
 # Requests
 _:getStorageDescription
     :method "GET" ;
@@ -2397,6 +2441,26 @@ _:putTextResourceReplaceContentWithLinkHeader
     :body [ :constant "new content" ] ;
 .
 
+_:postJsonResource
+    :method "POST" ;
+    :uri _:container ;
+    :headers _:contentTypeApplicationJson ;
+    :body [ :constant "{\"a\":1}" ] ;
+.
+
+_:getJsonResource
+    :method "GET" ;
+    :uri _:jsonResource ;
+.
+
+_:patchJsonResourceReplaceValueWithLinkHeader
+    :method "PATCH" ;
+    :uri _:jsonResource ;
+    :headers _:contentTypeJsonPatch ;
+    :headers _:linkDescribedBy ;
+    :body [ :constant "[{\"op\":\"replace\",\"path\":\"/a\",\"value\":2}]" ] ;
+.
+
 # URIs
 _:storage
     :variable "baseUri" ;
@@ -2462,6 +2526,15 @@ _:digitsResource
     ] ;
 .
 
+_:jsonResource
+    :base _:container ;
+    :relative [
+        :single [
+            :variable "jsonResourceLocation" ;
+        ] ;
+    ] ;
+.
+
 # Headers
 _:linkTypeContainer
     :key "Link" ;
@@ -2515,6 +2588,11 @@ _:rangeFirstFourBytes
 _:linkDescribedBy
     :key "Link" ;
     :value [ :constant "<https://example.org/s>; rel=\"describedby\"" ] ;
+.
+
+_:contentTypeApplicationJson
+    :key "Content-Type" ;
+    :value [ :constant "application/json" ] ;
 .
 
 # Extractors
@@ -2611,6 +2689,11 @@ _:headEtag
 _:headLinksetLinks
     :link "linkset" ;
     :to "headLinksetLinks" ;
+.
+
+_:jsonResourceLocation
+    :header "Location" ;
+    :to "jsonResourceLocation" ;
 .
 
 # Assertions
