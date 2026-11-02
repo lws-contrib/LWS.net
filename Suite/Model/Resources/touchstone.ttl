@@ -96,6 +96,7 @@
         _:createBeneathDataResourceReturnsAllow ,
         _:containerGetWithWeightedAcceptReturnsLwsMediaType ,
         _:containerGetWithWeightedAcceptReturnsContainerType ,
+        _:containerLwsProfileLdJsonIsomorphic ,
         _:storageDescriptionAsCidReturnsStorageType ,
         _:storageDescriptionContextIsArray ,
         _:storageDescriptionServiceIsArray ,
@@ -1386,6 +1387,22 @@ _:containerGetWithWeightedAcceptReturnsContainerType
         _:getContainerWithWeightedAcceptType
     ) ;
     :assert _:containerType ;
+.
+
+_:containerLwsProfileLdJsonIsomorphic
+    :testName "Container as JSON-LD in the LWS profile is isomorphic with application/lws+json" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:createOuterContainer
+        _:getContainerAsLdJsonProfile
+        _:getContainerAsLwsJson
+    ) ;
+    :assert [
+        :that [ :variable "profiled" ] ;
+        :isomorphicWith [ :variable "reference" ] ;
+    ] ;
 .
 
 _:storageDescriptionAsCidReturnsStorageType
@@ -3230,6 +3247,29 @@ _:getContainerWithWeightedAcceptType
     ) ;
 .
 
+_:getContainerAsLdJsonProfile
+    :stepName "Get container as JSON-LD in the LWS profile" ;
+    :request [
+        :method "GET" ;
+        :uri _:container ;
+        :headers [
+            :key "Accept" ;
+            :value [ :constant "application/ld+json; profile=\"https://www.w3.org/ns/lws/v1\", application/lws+json;q=0.1" ] ;
+        ] ;
+    ] ;
+    :extract (
+        _:profiledGraph
+    ) ;
+.
+
+_:getContainerAsLwsJson
+    :stepName "Get container as application/lws+json" ;
+    :request _:getContainer ;
+    :extract (
+        _:referenceGraph
+    ) ;
+.
+
 _:getStorageDescriptionAsCidType
     :stepName "Get storage description as CID type" ;
     :request _:getStorageDescriptionAsCid ;
@@ -4268,6 +4308,16 @@ _:containerLocation
 _:body
     a :BodyExtractor ;
     :to "body" ;
+.
+
+_:profiledGraph
+    a :GraphExtractor ;
+    :to "profiled" ;
+.
+
+_:referenceGraph
+    a :GraphExtractor ;
+    :to "reference" ;
 .
 
 _:contentType
