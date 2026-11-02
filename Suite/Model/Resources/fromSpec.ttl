@@ -97,7 +97,8 @@
         _:putOnResourceUriWithLinkHeaderSucceeds ,
         _:patchOnResourceUriHasNoDefaultImpactOnAssociatedLinksetResource ,
         _:patchOnResourceUriWithLinkHeaderSucceeds ,
-        _:serverIgnoresPreferSetLinksetOrRespondsWith501NotImplemented ;
+        _:serverIgnoresPreferSetLinksetOrRespondsWith501NotImplemented ,
+        _:putToResourceUriReplacesFullResourceWithNewContent ;
 ] .
 
 # Tests
@@ -1588,6 +1589,24 @@ _:serverIgnoresPreferSetLinksetOrRespondsWith501NotImplemented
     ] ;
 .
 
+_:putToResourceUriReplacesFullResourceWithNewContent
+    :testName "PUT to resource URI replaces full resource with new content" ;
+    :specification "https://www.w3.org/TR/lws10-core/#update-resource"^^xsd:anyURI ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:putTextResourceReplacingContent
+        _:getTextResourceBody
+    ) ;
+    :assert [
+        :that [
+            :variable "body" ;
+        ] ;
+        :equals [ :constant "new content" ] ;
+    ] ;
+.
+
 # Steps
 _:getStorageDescriptionId
     :stepName "Get storage description id" ;
@@ -2355,6 +2374,14 @@ _:putTextResourceReplacingContentWithPreferSetLinkset
     ) ;
 .
 
+_:putTextResourceReplacingContent
+    :stepName "Put text resource replacing content" ;
+    :request _:putTextResourceReplaceContent ;
+    :extract (
+        _:status
+    ) ;
+.
+
 # Requests
 _:getStorageDescription
     :method "GET" ;
@@ -2512,6 +2539,13 @@ _:putTextResourceReplaceContentWithPreferSetLinkset
     :headers _:contentTypeTextPlain ;
     :headers _:preferSetLinkset ;
     :headers _:linkDescribedBy ;
+    :body [ :constant "new content" ] ;
+.
+
+_:putTextResourceReplaceContent
+    :method "PUT" ;
+    :uri _:textResource ;
+    :headers _:contentTypeTextPlain ;
     :body [ :constant "new content" ] ;
 .
 
