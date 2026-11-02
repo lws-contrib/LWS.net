@@ -123,6 +123,7 @@
         _:jsonPatchReturns200Or204 ,
         _:jsonPatchReplacesMember ,
         _:jsonPatchAddsMember ,
+        _:jsonPatchRemovesMember ,
         _:linksetNamedByCreateReturns200 ,
         _:linksetNamedByCreateReturnsLinksetMediaType ,
         _:linksetNamedByCreateHasLinksetArray ,
@@ -1763,6 +1764,26 @@ _:jsonPatchAddsMember
     ] ;
 .
 
+_:jsonPatchRemovesMember
+    :testName "JSON Patch remove deletes a member" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createJsonResource
+        _:getJsonResourceETag
+        _:patchJsonResourceIfMatchStatus
+        _:getJsonResourceDrop
+    ) ;
+    :assert [
+        :that [
+            :count [
+                :variable "jsonDrop" ;
+            ] ;
+        ] ;
+        :equals [ :constant 0 ] ;
+    ] ;
+.
+
 _:linksetNamedByCreateReturns200
     :testName "Linkset named by create returns 200" ;
     :steps (
@@ -3113,6 +3134,14 @@ _:getJsonResourceAdded
     ) ;
 .
 
+_:getJsonResourceDrop
+    :stepName "Get JSON resource drop member" ;
+    :request _:getJsonResource ;
+    :extract (
+        _:jsonDrop
+    ) ;
+.
+
 _:getLinksetContentType
     :stepName "Get linkset Content-Type" ;
     :request _:getLinkset ;
@@ -3913,6 +3942,11 @@ _:jsonTitle
 _:jsonAdded
     :path "$.added" ;
     :to "jsonAdded" ;
+.
+
+_:jsonDrop
+    :path "$.drop" ;
+    :to "jsonDrop" ;
 .
 
 _:itemIds
