@@ -4,7 +4,7 @@ namespace Model.NewModel.Assertions;
 
 public partial class RegexAssertion
 {
-    protected override async Task<Result> ExecuteInternal(object input, Context context)
+    protected internal override async Task<Result> ExecuteInternal(object input, Context context)
     {
         var actual = input as string ?? throw new InvalidOperationException("Input is not a string.");
         var expected = await Matches.Evaluate(context) as string ?? throw new InvalidOperationException("Value of matches is not a string.");

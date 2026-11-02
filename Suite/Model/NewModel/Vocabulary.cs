@@ -79,4 +79,6 @@ internal static class Vocabulary
     internal static INode FormValue { get; } = factory.CreateUriNode(UriFactory.Create($"{NS}formValue"));
 
     internal static INode GreaterThan { get; } = factory.CreateUriNode(UriFactory.Create($"{NS}greaterThan"));
+
+    internal static INode Not { get; } = factory.CreateUriNode(UriFactory.Create($"{NS}not"));
 }

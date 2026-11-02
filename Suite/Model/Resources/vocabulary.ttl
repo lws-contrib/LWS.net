@@ -277,6 +277,14 @@
     rdfs:range :Expression ;
 .
 
+:not
+    a rdf:Property ;
+    rdfs:label "not"@en ;
+    rdfs:comment "Operand assertion whose outcome is negated, applied to the value of the :that of the enclosing assertion. The operand is an assertion node without a :that of its own, such as an equals, matches, contains, greaterThan or another not. Passes when the operand fails and fails when it passes. An operand that cannot be evaluated, such as one whose value is of the wrong type, fails the test case rather than being negated."@en ;
+    rdfs:domain :NotAssertion ;
+    rdfs:range :Assertion ;
+.
+
 # Classes
 
 :Manifest
@@ -436,4 +444,11 @@
     rdfs:subClassOf :Assertion ;
     rdfs:label "Greater than assertion"@en ;
     rdfs:comment "Passes when the value is greater than an integer."@en ;
+.
+
+:NotAssertion
+    a rdfs:Class ;
+    rdfs:subClassOf :Assertion ;
+    rdfs:label "Not assertion"@en ;
+    rdfs:comment "Passes when its operand assertion fails for the value of the :that of the assertion."@en ;
 .

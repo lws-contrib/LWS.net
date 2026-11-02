@@ -2,7 +2,7 @@
 
 public partial class EqualityAssertion
 {
-    protected override async Task<Result> ExecuteInternal(object input, Context context)
+    protected internal override async Task<Result> ExecuteInternal(object input, Context context)
     {
         var expected = await EqualsValue.Evaluate(context);
         return Equals(input, expected)
