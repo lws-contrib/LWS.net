@@ -120,6 +120,7 @@
         _:linksetAdvertisesPatch ,
         _:linksetAdvertisesJsonPatch ,
         _:linksetPatchWithStaleValidatorReturns412 ,
+        _:jsonPatchReturns200Or204 ,
         _:linksetNamedByCreateReturns200 ,
         _:linksetNamedByCreateReturnsLinksetMediaType ,
         _:linksetNamedByCreateHasLinksetArray ,
@@ -1705,6 +1706,21 @@ _:linksetPatchWithStaleValidatorReturns412
     :assert _:412 ;
 .
 
+_:jsonPatchReturns200Or204
+    :testName "PATCH applies JSON Patch to a JSON data resource with 200 or 204" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createJsonResource
+        _:getJsonResourceETag
+        _:patchJsonResourceIfMatchStatus
+    ) ;
+    :assert [
+        :that [ :variable "status" ] ;
+        :matches [ :constant "^(200|204)$" ] ;
+    ] ;
+.
+
 _:linksetNamedByCreateReturns200
     :testName "Linkset named by create returns 200" ;
     :steps (
@@ -3004,6 +3020,41 @@ _:patchLinksetStaleIfMatchStatus
     ) ;
 .
 
+_:createJsonResource
+    :stepName "Create JSON resource" ;
+    :request [
+        :method "POST" ;
+        :uri _:container ;
+        :headers _:contentTypeJson ;
+        :body [ :constant "{\"title\":\"first\",\"keep\":true,\"drop\":\"gone\",\"tags\":[\"a\",\"b\"]}" ] ;
+    ] ;
+    :extract (
+        [
+            :header "Location" ;
+            :to "jsonResourceLocation" ;
+        ]
+    ) ;
+.
+
+_:getJsonResourceETag
+    :stepName "Get JSON resource ETag" ;
+    :request _:getJsonResource ;
+    :extract (
+        [
+            :header "ETag" ;
+            :to "etag" ;
+        ]
+    ) ;
+.
+
+_:patchJsonResourceIfMatchStatus
+    :stepName "Patch JSON resource If-Match status" ;
+    :request _:patchJsonResourceIfMatch ;
+    :extract (
+        _:status
+    ) ;
+.
+
 _:getLinksetContentType
     :stepName "Get linkset Content-Type" ;
     :request _:getLinkset ;
@@ -3275,6 +3326,27 @@ _:patchLinksetStaleIfMatch
         :value [ :constant "\"touchstone-stale-etag\"" ] ;
     ] ;
     :body [ :constant "[{\"op\":\"add\",\"path\":\"/linkset/0/license\",\"value\":[{\"href\":\"https://creativecommons.org/licenses/by/4.0/\"}]}]" ] ;
+.
+
+_:getJsonResource
+    :method "GET" ;
+    :uri _:jsonResource ;
+    :headers _:acceptJson ;
+.
+
+_:patchJsonResourceIfMatch
+    :method "PATCH" ;
+    :uri _:jsonResource ;
+    :headers _:contentTypeJsonPatch ;
+    :headers [
+        :key "If-Match" ;
+        :value [
+            :single [
+                :variable "etag" ;
+            ] ;
+        ] ;
+    ] ;
+    :body [ :constant "[{\"op\":\"test\",\"path\":\"/title\",\"value\":\"first\"},{\"op\":\"replace\",\"path\":\"/title\",\"value\":\"second\"},{\"op\":\"add\",\"path\":\"/added\",\"value\":42},{\"op\":\"remove\",\"path\":\"/drop\"},{\"op\":\"add\",\"path\":\"/tags/-\",\"value\":\"c\"}]" ] ;
 .
 
 _:getTextResource
@@ -3604,6 +3676,15 @@ _:textResource
     ] ;
 .
 
+_:jsonResource
+    :base _:storageRoot ;
+    :relative [
+        :single [
+            :variable "jsonResourceLocation" ;
+        ] ;
+    ] ;
+.
+
 _:digitsResource
     :base _:storageRoot ;
     :relative [
@@ -3688,6 +3769,16 @@ _:acceptLinksetJson
 _:contentTypeTextPlain
     :key "Content-Type" ;
     :value [ :constant "text/plain" ] ;
+.
+
+_:contentTypeJson
+    :key "Content-Type" ;
+    :value [ :constant "application/json" ] ;
+.
+
+_:acceptJson
+    :key "Accept" ;
+    :value [ :constant "application/json" ] ;
 .
 
 _:contentTypeJsonPatch
