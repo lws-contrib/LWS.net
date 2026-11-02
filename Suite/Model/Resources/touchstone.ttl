@@ -138,6 +138,7 @@
         _:containerLinksetReturnsLinksetMediaType ,
         _:containerLinksetHasLinksetArray ,
         _:linksetGoneAfterResourceDeleteReturnsNotFoundOrGone ,
+        _:linksetPatchRedirectingUpReturns4xx ,
         _:containerHeadLinksUp ,
         _:leafUpLinkNamesInnerContainer ,
         _:innerContainerListsLeaf ,
@@ -2003,6 +2004,20 @@ _:linksetGoneAfterResourceDeleteReturnsNotFoundOrGone
     ] ;
 .
 
+_:linksetPatchRedirectingUpReturns4xx
+    :testName "Linkset PATCH redirecting up to a missing container returns 4xx" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:patchLinksetForgedUpStatus
+    ) ;
+    :assert [
+        :that [ :variable "status" ] ;
+        :matches [ :constant "^4\\d\\d$" ] ;
+    ] ;
+.
+
 _:containerHeadLinksUp
     :testName "Container HEAD links up" ;
     :steps (
@@ -3336,6 +3351,14 @@ _:getLinksetETag
     ) ;
 .
 
+_:patchLinksetForgedUpStatus
+    :stepName "Patch linkset forged up status" ;
+    :request _:patchLinksetForgedUp ;
+    :extract (
+        _:status
+    ) ;
+.
+
 _:headContainerUpLinks
     :stepName "Head container up links" ;
     :request _:headContainer ;
@@ -3580,6 +3603,13 @@ _:patchLinksetStaleIfMatch
         :value [ :constant "\"touchstone-stale-etag\"" ] ;
     ] ;
     :body [ :constant "[{\"op\":\"add\",\"path\":\"/linkset/0/license\",\"value\":[{\"href\":\"https://creativecommons.org/licenses/by/4.0/\"}]}]" ] ;
+.
+
+_:patchLinksetForgedUp
+    :method "PATCH" ;
+    :uri _:linkset ;
+    :headers _:contentTypeJsonPatch ;
+    :body [ :constant "[{\"op\":\"add\",\"path\":\"/linkset/0/up\",\"value\":[{\"href\":\"https://linkset.invalid/forged-parent/\"}]}]" ] ;
 .
 
 _:getJsonResource
