@@ -68,6 +68,7 @@
         _:containerTotalItemsCountsOneMemberAfterDelete ,
         _:containerListingOmitsDeletedMember ,
         _:emptyContainerDeleteReturns204 ,
+        _:deletedEmptyContainerGetReturnsNotFoundOrGone ,
         _:containerGetLinksUp ,
         _:containerGetLinksStorage ,
         _:nestedContainerGetReturns200 ,
@@ -1013,6 +1014,23 @@ _:emptyContainerDeleteReturns204
         _:deleteInnerContainerStatus
     ) ;
     :assert _:204 ;
+.
+
+_:deletedEmptyContainerGetReturnsNotFoundOrGone
+    :testName "Deleted empty container GET returns 404 or 410" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createOuterContainer
+        _:createInnerContainer
+        _:getInnerContainerETag
+        _:deleteInnerContainerStatus
+        _:getInnerContainerStatus
+    ) ;
+    :assert [
+        :that [ :variable "status" ] ;
+        :matches [ :constant "^(404|410)$" ] ;
+    ] ;
 .
 
 _:containerGetLinksUp
