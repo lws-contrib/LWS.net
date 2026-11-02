@@ -11,6 +11,7 @@
         _:storageDescriptionHasServiceProperty ,
         _:storageDescriptionServicesContainStorageRoot ,
         _:storageRootServiceEndpointIsUri ,
+        _:storageDescriptionServiceEntriesHaveTypeProperty ,
         _:getDataResourceLinksStorage ,
         _:getContainerLinksStorage ,
         _:headDataResourceLinksStorage ,
@@ -190,6 +191,22 @@ _:storageRootServiceEndpointIsUri
             ] ;
         ] ;
         :matches [ :constant "^https?://.+" ] ;
+    ] ;
+.
+
+_:storageDescriptionServiceEntriesHaveTypeProperty
+    :testName "Storage description service entries have type property" ;
+    :specification "https://www.w3.org/TR/lws10-core/#storage-description-data-model"^^xsd:anyURI ;
+    :steps (
+        _:getServicesWhenAllHaveType
+    ) ;
+    :assert [
+        :that [
+            :count [
+                :variable "servicesAllHavingType" ;
+            ] ;
+        ] ;
+        :greaterThan [ :constant 0 ] ;
     ] ;
 .
 
@@ -1214,6 +1231,17 @@ _:getStorageDescriptionServices
         [
             :path "$.service[*]" ;
             :to "services" ;
+        ]
+    ) ;
+.
+
+_:getServicesWhenAllHaveType
+    :stepName "Get services when all have type" ;
+    :request _:getStorageDescription ;
+    :extract (
+        [
+            :path "$.service[?count($.service[?!@.type]) == 0]" ;
+            :to "servicesAllHavingType" ;
         ]
     ) ;
 .
