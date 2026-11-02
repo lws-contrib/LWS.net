@@ -93,7 +93,8 @@
         _:headContainerReturnsSameEtagHeaderAsGet ,
         _:headDataResourceReturnsSameLinkHeaderWithRelLinksetAsGet ,
         _:headContainerReturnsSameLinkHeaderWithRelLinksetAsGet ,
-        _:putOnResourceUriHasNoDefaultImpactOnAssociatedLinksetResource ;
+        _:putOnResourceUriHasNoDefaultImpactOnAssociatedLinksetResource ,
+        _:putOnResourceUriWithLinkHeaderSucceeds ;
 ] .
 
 # Tests
@@ -1509,6 +1510,24 @@ _:putOnResourceUriHasNoDefaultImpactOnAssociatedLinksetResource
             :variable "body" ;
         ] ;
         :not [ :matches [ :constant "example\\.org\\?/s" ] ] ;
+    ] ;
+.
+
+_:putOnResourceUriWithLinkHeaderSucceeds
+    :testName "PUT on resource URI with Link header succeeds" ;
+    :specification "https://www.w3.org/TR/lws10-core/#update-resource"^^xsd:anyURI ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:getTextResourceLinksetLinks
+        _:putTextResourceReplacingContentWithLinkHeader
+    ) ;
+    :assert [
+        :that [
+            :variable "status" ;
+        ] ;
+        :matches [ :constant "^(200|204)$" ] ;
     ] ;
 .
 
