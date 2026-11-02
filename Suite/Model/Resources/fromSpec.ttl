@@ -91,7 +91,8 @@
         _:headContainerReturnsSameContentTypeHeaderAsGet ,
         _:headDataResourceReturnsSameEtagHeaderAsGet ,
         _:headContainerReturnsSameEtagHeaderAsGet ,
-        _:headDataResourceReturnsSameLinkHeaderWithRelLinksetAsGet ;
+        _:headDataResourceReturnsSameLinkHeaderWithRelLinksetAsGet ,
+        _:headContainerReturnsSameLinkHeaderWithRelLinksetAsGet ;
 ] .
 
 # Tests
@@ -1478,6 +1479,18 @@ _:headDataResourceReturnsSameLinkHeaderWithRelLinksetAsGet
     :assert _:headLinksetLinkEqualsGetLinksetLink ;
 .
 
+_:headContainerReturnsSameLinkHeaderWithRelLinksetAsGet
+    :testName "HEAD container returns same Link header with rel linkset as GET" ;
+    :specification "https://www.w3.org/TR/lws10-core/#read-resource"^^xsd:anyURI ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:getContainerLinksetLinks
+        _:headContainerLinksetLinks
+    ) ;
+    :assert _:headLinksetLinkEqualsGetLinksetLink ;
+.
+
 # Steps
 _:getStorageDescriptionId
     :stepName "Get storage description id" ;
@@ -2192,6 +2205,14 @@ _:headContainerEtag
 _:headTextResourceLinksetLinks
     :stepName "Head text resource linkset links" ;
     :request _:headTextResource ;
+    :extract (
+        _:headLinksetLinks
+    ) ;
+.
+
+_:headContainerLinksetLinks
+    :stepName "Head container linkset links" ;
+    :request _:headContainer ;
     :extract (
         _:headLinksetLinks
     ) ;
