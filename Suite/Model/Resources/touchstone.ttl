@@ -122,6 +122,7 @@
         _:linksetPatchWithStaleValidatorReturns412 ,
         _:jsonPatchReturns200Or204 ,
         _:jsonPatchReplacesMember ,
+        _:jsonPatchAddsMember ,
         _:linksetNamedByCreateReturns200 ,
         _:linksetNamedByCreateReturnsLinksetMediaType ,
         _:linksetNamedByCreateHasLinksetArray ,
@@ -1742,6 +1743,26 @@ _:jsonPatchReplacesMember
     ] ;
 .
 
+_:jsonPatchAddsMember
+    :testName "JSON Patch add creates a member" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createJsonResource
+        _:getJsonResourceETag
+        _:patchJsonResourceIfMatchStatus
+        _:getJsonResourceAdded
+    ) ;
+    :assert [
+        :that [
+            :single [
+                :variable "jsonAdded" ;
+            ] ;
+        ] ;
+        :equals [ :constant "42" ] ;
+    ] ;
+.
+
 _:linksetNamedByCreateReturns200
     :testName "Linkset named by create returns 200" ;
     :steps (
@@ -3084,6 +3105,14 @@ _:getJsonResourceTitle
     ) ;
 .
 
+_:getJsonResourceAdded
+    :stepName "Get JSON resource added member" ;
+    :request _:getJsonResource ;
+    :extract (
+        _:jsonAdded
+    ) ;
+.
+
 _:getLinksetContentType
     :stepName "Get linkset Content-Type" ;
     :request _:getLinkset ;
@@ -3879,6 +3908,11 @@ _:linksetMembers
 _:jsonTitle
     :path "$.title" ;
     :to "jsonTitle" ;
+.
+
+_:jsonAdded
+    :path "$.added" ;
+    :to "jsonAdded" ;
 .
 
 _:itemIds
