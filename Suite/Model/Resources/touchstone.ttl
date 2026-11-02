@@ -127,6 +127,7 @@
         _:jsonPatchKeepsMember ,
         _:jsonPatchKeepsFirstArrayElement ,
         _:jsonPatchAppendsArrayElement ,
+        _:jsonPatchWithFailingTestReturns4xx ,
         _:linksetNamedByCreateReturns200 ,
         _:linksetNamedByCreateReturnsLinksetMediaType ,
         _:linksetNamedByCreateHasLinksetArray ,
@@ -1847,6 +1848,20 @@ _:jsonPatchAppendsArrayElement
     ] ;
 .
 
+_:jsonPatchWithFailingTestReturns4xx
+    :testName "JSON Patch whose test operation fails returns 4xx" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createJsonResource
+        _:patchJsonResourceFailingTestStatus
+    ) ;
+    :assert [
+        :that [ :variable "status" ] ;
+        :matches [ :constant "^4\\d\\d$" ] ;
+    ] ;
+.
+
 _:linksetNamedByCreateReturns200
     :testName "Linkset named by create returns 200" ;
     :steps (
@@ -3181,6 +3196,14 @@ _:patchJsonResourceIfMatchStatus
     ) ;
 .
 
+_:patchJsonResourceFailingTestStatus
+    :stepName "Patch JSON resource failing test status" ;
+    :request _:patchJsonResourceFailingTest ;
+    :extract (
+        _:status
+    ) ;
+.
+
 _:getJsonResourceTitle
     :stepName "Get JSON resource title" ;
     :request _:getJsonResource ;
@@ -3521,6 +3544,13 @@ _:patchJsonResourceIfMatch
         ] ;
     ] ;
     :body [ :constant "[{\"op\":\"test\",\"path\":\"/title\",\"value\":\"first\"},{\"op\":\"replace\",\"path\":\"/title\",\"value\":\"second\"},{\"op\":\"add\",\"path\":\"/added\",\"value\":42},{\"op\":\"remove\",\"path\":\"/drop\"},{\"op\":\"add\",\"path\":\"/tags/-\",\"value\":\"c\"}]" ] ;
+.
+
+_:patchJsonResourceFailingTest
+    :method "PATCH" ;
+    :uri _:jsonResource ;
+    :headers _:contentTypeJsonPatch ;
+    :body [ :constant "[{\"op\":\"replace\",\"path\":\"/title\",\"value\":\"second\"},{\"op\":\"test\",\"path\":\"/keep\",\"value\":false}]" ] ;
 .
 
 _:getTextResource
