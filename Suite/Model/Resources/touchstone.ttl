@@ -142,6 +142,7 @@
         _:resourceUpLinkNamesContainerAfterForgedUpPatch ,
         _:resourceUpLinkOmitsForgedParentAfterForgedUpPatch ,
         _:linksetPatchReplacingArrayReturns2xxOr4xx ,
+        _:linksetAfterArrayReplacePatchReturns200 ,
         _:containerHeadLinksUp ,
         _:leafUpLinkNamesInnerContainer ,
         _:innerContainerListsLeaf ,
@@ -2067,6 +2068,18 @@ _:linksetPatchReplacingArrayReturns2xxOr4xx
         :that [ :variable "status" ] ;
         :matches [ :constant "^[24]\\d\\d$" ] ;
     ] ;
+.
+
+_:linksetAfterArrayReplacePatchReturns200
+    :testName "Linkset GET after a PATCH replacing the linkset array returns 200" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:patchLinksetReplaceArrayStatus
+        _:getLinksetStatus
+    ) ;
+    :assert _:200 ;
 .
 
 _:containerHeadLinksUp
