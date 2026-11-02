@@ -66,6 +66,7 @@
         _:containerTotalItemsCountsBothMembers ,
         _:containerMemberDeleteWithCurrentIfMatchReturns204 ,
         _:containerTotalItemsCountsOneMemberAfterDelete ,
+        _:containerListingOmitsDeletedMember ,
         _:containerGetLinksUp ,
         _:containerGetLinksStorage ,
         _:nestedContainerGetReturns200 ,
@@ -978,6 +979,24 @@ _:containerTotalItemsCountsOneMemberAfterDelete
             ] ;
         ] ;
         :equals [ :constant "1" ] ;
+    ] ;
+.
+
+_:containerListingOmitsDeletedMember
+    :testName "Container listing omits a deleted member" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:getTextResourceETag
+        _:deleteTextResourceIfMatchStatus
+        _:getContainerItemIds
+    ) ;
+    :assert [
+        :that [
+            :variable "itemIds" ;
+        ] ;
+        :not [ :contains _:textResource ] ;
     ] ;
 .
 
