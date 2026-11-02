@@ -143,6 +143,7 @@
         _:resourceUpLinkOmitsForgedParentAfterForgedUpPatch ,
         _:linksetPatchReplacingArrayReturns2xxOr4xx ,
         _:linksetAfterArrayReplacePatchReturns200 ,
+        _:linksetAfterArrayReplacePatchReturnsLinksetMediaType ,
         _:containerHeadLinksUp ,
         _:leafUpLinkNamesInnerContainer ,
         _:innerContainerListsLeaf ,
@@ -2080,6 +2081,18 @@ _:linksetAfterArrayReplacePatchReturns200
         _:getLinksetStatus
     ) ;
     :assert _:200 ;
+.
+
+_:linksetAfterArrayReplacePatchReturnsLinksetMediaType
+    :testName "Linkset GET after a PATCH replacing the linkset array returns linkset media type" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:patchLinksetReplaceArrayStatus
+        _:getLinksetContentType
+    ) ;
+    :assert _:linksetJsonContentType ;
 .
 
 _:containerHeadLinksUp
