@@ -38,6 +38,7 @@
         _:ifModifiedSinceEpochReturnsPostedBody ,
         _:ifUnmodifiedSinceLastModifiedReturns200 ,
         _:ifUnmodifiedSinceEpochReturns412 ,
+        _:putDataResourceReturns200Or204 ,
         _:conditionalPutStaleIfMatchReturns412 ,
         _:conditionalPutStaleIfMatchKeepsResourceReturns200 ,
         _:conditionalPutStaleIfMatchLeavesResourceUntouched ,
@@ -591,6 +592,21 @@ _:ifUnmodifiedSinceEpochReturns412
         _:conditionalGetTextResourceIfUnmodifiedSinceEpochStatus
     ) ;
     :assert _:412 ;
+.
+
+_:putDataResourceReturns200Or204
+    :testName "PUT replaces a data resource with 200 or 204" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:getTextResourceETag
+        _:conditionalPutTextResourceIfMatchStatus
+    ) ;
+    :assert [
+        :that [ :variable "status" ] ;
+        :matches [ :constant "^(200|204)$" ] ;
+    ] ;
 .
 
 _:conditionalPutStaleIfMatchReturns412
