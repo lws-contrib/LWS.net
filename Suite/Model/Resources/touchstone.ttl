@@ -121,6 +121,7 @@
         _:linksetAdvertisesJsonPatch ,
         _:linksetPatchWithStaleValidatorReturns412 ,
         _:jsonPatchReturns200Or204 ,
+        _:jsonPatchReplacesMember ,
         _:linksetNamedByCreateReturns200 ,
         _:linksetNamedByCreateReturnsLinksetMediaType ,
         _:linksetNamedByCreateHasLinksetArray ,
@@ -1721,6 +1722,26 @@ _:jsonPatchReturns200Or204
     ] ;
 .
 
+_:jsonPatchReplacesMember
+    :testName "JSON Patch replace changes a member" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createJsonResource
+        _:getJsonResourceETag
+        _:patchJsonResourceIfMatchStatus
+        _:getJsonResourceTitle
+    ) ;
+    :assert [
+        :that [
+            :single [
+                :variable "jsonTitle" ;
+            ] ;
+        ] ;
+        :equals [ :constant "second" ] ;
+    ] ;
+.
+
 _:linksetNamedByCreateReturns200
     :testName "Linkset named by create returns 200" ;
     :steps (
@@ -3055,6 +3076,14 @@ _:patchJsonResourceIfMatchStatus
     ) ;
 .
 
+_:getJsonResourceTitle
+    :stepName "Get JSON resource title" ;
+    :request _:getJsonResource ;
+    :extract (
+        _:jsonTitle
+    ) ;
+.
+
 _:getLinksetContentType
     :stepName "Get linkset Content-Type" ;
     :request _:getLinkset ;
@@ -3845,6 +3874,11 @@ _:linksetLinks
 _:linksetMembers
     :path "$.linkset" ;
     :to "linksetMembers" ;
+.
+
+_:jsonTitle
+    :path "$.title" ;
+    :to "jsonTitle" ;
 .
 
 _:itemIds
