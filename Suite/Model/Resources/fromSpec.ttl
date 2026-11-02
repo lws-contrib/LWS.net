@@ -81,7 +81,8 @@
         _:serverSupportsRangeRequestsStatus206 ,
         _:serverSupportsRangeRequestsRequestedBytes ,
         _:serverSupportsRangeRequestsContentRange ,
-        _:getDataResourceResponseIncludesEtagHeader ;
+        _:getDataResourceResponseIncludesEtagHeader ,
+        _:getContainerResponseIncludesEtagHeader ;
 ] .
 
 # Tests
@@ -1339,6 +1340,17 @@ _:getDataResourceResponseIncludesEtagHeader
     :assert _:entityTag ;
 .
 
+_:getContainerResponseIncludesEtagHeader
+    :testName "GET container response includes ETag header" ;
+    :specification "https://www.w3.org/TR/lws10-core/#read-resource"^^xsd:anyURI ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:getContainerEtag
+    ) ;
+    :assert _:entityTag ;
+.
+
 # Steps
 _:getStorageDescriptionId
     :stepName "Get storage description id" ;
@@ -1965,6 +1977,14 @@ _:getDigitsResourceFirstFourBytesContentRange
 _:getTextResourceEtag
     :stepName "Get text resource ETag" ;
     :request _:getTextResource ;
+    :extract (
+        _:etag
+    ) ;
+.
+
+_:getContainerEtag
+    :stepName "Get container ETag" ;
+    :request _:getContainer ;
     :extract (
         _:etag
     ) ;
