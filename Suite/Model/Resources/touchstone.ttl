@@ -124,6 +124,7 @@
         _:jsonPatchReplacesMember ,
         _:jsonPatchAddsMember ,
         _:jsonPatchRemovesMember ,
+        _:jsonPatchKeepsMember ,
         _:linksetNamedByCreateReturns200 ,
         _:linksetNamedByCreateReturnsLinksetMediaType ,
         _:linksetNamedByCreateHasLinksetArray ,
@@ -1784,6 +1785,26 @@ _:jsonPatchRemovesMember
     ] ;
 .
 
+_:jsonPatchKeepsMember
+    :testName "JSON Patch keeps a member it does not touch" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createJsonResource
+        _:getJsonResourceETag
+        _:patchJsonResourceIfMatchStatus
+        _:getJsonResourceKeep
+    ) ;
+    :assert [
+        :that [
+            :single [
+                :variable "jsonKeep" ;
+            ] ;
+        ] ;
+        :equals [ :constant "true" ] ;
+    ] ;
+.
+
 _:linksetNamedByCreateReturns200
     :testName "Linkset named by create returns 200" ;
     :steps (
@@ -3134,6 +3155,14 @@ _:getJsonResourceAdded
     ) ;
 .
 
+_:getJsonResourceKeep
+    :stepName "Get JSON resource keep member" ;
+    :request _:getJsonResource ;
+    :extract (
+        _:jsonKeep
+    ) ;
+.
+
 _:getJsonResourceDrop
     :stepName "Get JSON resource drop member" ;
     :request _:getJsonResource ;
@@ -3942,6 +3971,11 @@ _:jsonTitle
 _:jsonAdded
     :path "$.added" ;
     :to "jsonAdded" ;
+.
+
+_:jsonKeep
+    :path "$.keep" ;
+    :to "jsonKeep" ;
 .
 
 _:jsonDrop
