@@ -62,7 +62,8 @@
         _:serverManagedMetadataIsGeneratedAutomaticallyUponCreation ,
         _:serverManagedUpLinkIsNotOverriddenByClientProvidedLink ,
         _:serverManagedLinksetLinkIsNotOverriddenByClientProvidedLink ,
-        _:successfulCreationReturns201StatusCode ;
+        _:successfulCreationReturns201StatusCode ,
+        _:successfulCreationReturnsNewUriInLocationHeader ;
 ] .
 
 # Tests
@@ -1025,6 +1026,24 @@ _:successfulCreationReturns201StatusCode
         _:createTextResourceStatus
     ) ;
     :assert _:201 ;
+.
+
+_:successfulCreationReturnsNewUriInLocationHeader
+    :testName "Successful creation returns new URI in Location header" ;
+    :specification "https://www.w3.org/TR/lws10-core/#create-resource"^^xsd:anyURI ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+    ) ;
+    :assert [
+        :that [
+            :single [
+                :variable "textResourceLocation" ;
+            ] ;
+        ] ;
+        :matches [ :constant "^\\S+$" ] ;
+    ] ;
 .
 
 # Steps
