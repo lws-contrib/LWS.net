@@ -65,7 +65,8 @@
         _:successfulCreationReturns201StatusCode ,
         _:successfulCreationReturnsNewUriInLocationHeader ,
         _:createdResourceCanBeRetrievedUsingGetOnItsNewUri ,
-        _:createResponseIncludesLinkHeaderWithRelUp ;
+        _:createResponseIncludesLinkHeaderWithRelUp ,
+        _:createResponseLinkHeaderWithRelUpTargetsParentContainer ;
 ] .
 
 # Tests
@@ -1075,6 +1076,22 @@ _:createResponseIncludesLinkHeaderWithRelUp
             ] ;
         ] ;
         :greaterThan [ :constant 0 ] ;
+    ] ;
+.
+
+_:createResponseLinkHeaderWithRelUpTargetsParentContainer
+    :testName "Create response Link header with rel up targets parent container" ;
+    :specification "https://www.w3.org/TR/lws10-core/#create-resource"^^xsd:anyURI ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResourceUpLinks
+    ) ;
+    :assert [
+        :that [
+            :variable "upLinks" ;
+        ] ;
+        :contains _:container ;
     ] ;
 .
 
