@@ -79,7 +79,8 @@
         _:getDataResourceReturnsContentTypeMatchingStoredMediaType ,
         _:getDataResourceResponseIncludesLinkHeaderWithRelType ,
         _:serverSupportsRangeRequestsStatus206 ,
-        _:serverSupportsRangeRequestsRequestedBytes ;
+        _:serverSupportsRangeRequestsRequestedBytes ,
+        _:serverSupportsRangeRequestsContentRange ;
 ] .
 
 # Tests
@@ -1306,6 +1307,25 @@ _:serverSupportsRangeRequestsRequestedBytes
     ] ;
 .
 
+_:serverSupportsRangeRequestsContentRange
+    :testName "Server supports range requests: Content-Range" ;
+    :specification "https://www.w3.org/TR/lws10-core/#read-resource"^^xsd:anyURI ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createDigitsResource
+        _:getDigitsResourceFirstFourBytesContentRange
+    ) ;
+    :assert [
+        :that [
+            :single [
+                :variable "contentRange" ;
+            ] ;
+        ] ;
+        :equals [ :constant "bytes 0-3/10" ] ;
+    ] ;
+.
+
 # Steps
 _:getStorageDescriptionId
     :stepName "Get storage description id" ;
@@ -1921,6 +1941,14 @@ _:getDigitsResourceFirstFourBytesBody
     ) ;
 .
 
+_:getDigitsResourceFirstFourBytesContentRange
+    :stepName "Get digits resource first four bytes Content-Range" ;
+    :request _:getDigitsResourceFirstFourBytes ;
+    :extract (
+        _:contentRange
+    ) ;
+.
+
 # Requests
 _:getStorageDescription
     :method "GET" ;
@@ -2233,6 +2261,11 @@ _:typeLinks
 _:digitsResourceLocation
     :header "Location" ;
     :to "digitsResourceLocation" ;
+.
+
+_:contentRange
+    :header "Content-Range" ;
+    :to "contentRange" ;
 .
 
 # Assertions
