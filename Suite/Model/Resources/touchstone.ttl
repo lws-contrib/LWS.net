@@ -140,6 +140,7 @@
         _:linksetGoneAfterResourceDeleteReturnsNotFoundOrGone ,
         _:linksetPatchRedirectingUpReturns4xx ,
         _:resourceUpLinkNamesContainerAfterForgedUpPatch ,
+        _:resourceUpLinkOmitsForgedParentAfterForgedUpPatch ,
         _:containerHeadLinksUp ,
         _:leafUpLinkNamesInnerContainer ,
         _:innerContainerListsLeaf ,
@@ -2035,6 +2036,21 @@ _:resourceUpLinkNamesContainerAfterForgedUpPatch
             ] ;
         ] ;
         :equals _:container ;
+    ] ;
+.
+
+_:resourceUpLinkOmitsForgedParentAfterForgedUpPatch
+    :testName "Resource up link omits the forged parent after a forged up PATCH" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:patchLinksetForgedUpStatus
+        _:getTextResourceUpLinks
+    ) ;
+    :assert [
+        :that [ :variable "upLinks" ] ;
+        :not [ :contains [ :constant "https://linkset.invalid/forged-parent/" ] ] ;
     ] ;
 .
 
