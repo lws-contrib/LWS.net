@@ -141,6 +141,7 @@
         _:linksetPatchRedirectingUpReturns4xx ,
         _:resourceUpLinkNamesContainerAfterForgedUpPatch ,
         _:resourceUpLinkOmitsForgedParentAfterForgedUpPatch ,
+        _:linksetPatchReplacingArrayReturns2xxOr4xx ,
         _:containerHeadLinksUp ,
         _:leafUpLinkNamesInnerContainer ,
         _:innerContainerListsLeaf ,
@@ -2054,6 +2055,20 @@ _:resourceUpLinkOmitsForgedParentAfterForgedUpPatch
     ] ;
 .
 
+_:linksetPatchReplacingArrayReturns2xxOr4xx
+    :testName "Linkset PATCH replacing the linkset array with a string returns 2xx or 4xx" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:patchLinksetReplaceArrayStatus
+    ) ;
+    :assert [
+        :that [ :variable "status" ] ;
+        :matches [ :constant "^[24]\\d\\d$" ] ;
+    ] ;
+.
+
 _:containerHeadLinksUp
     :testName "Container HEAD links up" ;
     :steps (
@@ -3403,6 +3418,14 @@ _:getTextResourceUpLinks
     ) ;
 .
 
+_:patchLinksetReplaceArrayStatus
+    :stepName "Patch linkset replace array status" ;
+    :request _:patchLinksetReplaceArray ;
+    :extract (
+        _:status
+    ) ;
+.
+
 _:headContainerUpLinks
     :stepName "Head container up links" ;
     :request _:headContainer ;
@@ -3654,6 +3677,13 @@ _:patchLinksetForgedUp
     :uri _:linkset ;
     :headers _:contentTypeJsonPatch ;
     :body [ :constant "[{\"op\":\"add\",\"path\":\"/linkset/0/up\",\"value\":[{\"href\":\"https://linkset.invalid/forged-parent/\"}]}]" ] ;
+.
+
+_:patchLinksetReplaceArray
+    :method "PATCH" ;
+    :uri _:linkset ;
+    :headers _:contentTypeJsonPatch ;
+    :body [ :constant "[{\"op\":\"replace\",\"path\":\"/linkset\",\"value\":\"not a linkset\"}]" ] ;
 .
 
 _:getJsonResource
