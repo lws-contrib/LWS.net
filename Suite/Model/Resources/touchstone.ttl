@@ -69,6 +69,7 @@
         _:containerListingOmitsDeletedMember ,
         _:emptyContainerDeleteReturns204 ,
         _:deletedEmptyContainerGetReturnsNotFoundOrGone ,
+        _:parentContainerListingOmitsDeletedEmptyContainer ,
         _:containerGetLinksUp ,
         _:containerGetLinksStorage ,
         _:nestedContainerGetReturns200 ,
@@ -1030,6 +1031,23 @@ _:deletedEmptyContainerGetReturnsNotFoundOrGone
     :assert [
         :that [ :variable "status" ] ;
         :matches [ :constant "^(404|410)$" ] ;
+    ] ;
+.
+
+_:parentContainerListingOmitsDeletedEmptyContainer
+    :testName "Parent container listing omits a deleted empty container" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createOuterContainer
+        _:createInnerContainer
+        _:getInnerContainerETag
+        _:deleteInnerContainerStatus
+        _:getOuterContainerItemIds
+    ) ;
+    :assert [
+        :that [ :variable "itemIds" ] ;
+        :not [ :contains _:inner ] ;
     ] ;
 .
 
