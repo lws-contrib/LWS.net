@@ -82,5 +82,7 @@ internal static class Vocabulary
 
     internal static INode GreaterThan { get; } = factory.CreateUriNode(UriFactory.Create($"{NS}greaterThan"));
 
+    internal static INode IsomorphicWith { get; } = factory.CreateUriNode(UriFactory.Create($"{NS}isomorphicWith"));
+
     internal static INode Not { get; } = factory.CreateUriNode(UriFactory.Create($"{NS}not"));
 }

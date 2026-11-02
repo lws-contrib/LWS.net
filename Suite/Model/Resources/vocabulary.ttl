@@ -277,6 +277,14 @@
     rdfs:range :Expression ;
 .
 
+:isomorphicWith
+    a rdf:Property ;
+    rdfs:label "isomorphic with"@en ;
+    rdfs:comment "Expression evaluating to the graph the value must be isomorphic with, meaning equal up to a one to one mapping of blank nodes. The result of the expression must be a graph, such as one extracted by a graph extractor. The value must be a graph too."@en ;
+    rdfs:domain :IsomorphicAssertion ;
+    rdfs:range :Expression ;
+.
+
 :not
     a rdf:Property ;
     rdfs:label "not"@en ;
@@ -451,6 +459,13 @@
     rdfs:subClassOf :Assertion ;
     rdfs:label "Greater than assertion"@en ;
     rdfs:comment "Passes when the value is greater than an integer."@en ;
+.
+
+:IsomorphicAssertion
+    a rdfs:Class ;
+    rdfs:subClassOf :Assertion ;
+    rdfs:label "Isomorphic assertion"@en ;
+    rdfs:comment "Passes when the value is isomorphic with another graph."@en ;
 .
 
 :NotAssertion
