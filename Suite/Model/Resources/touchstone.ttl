@@ -102,6 +102,7 @@
         _:createDataResourceReturnsLocation ,
         _:createDataResourceLinksUp ,
         _:secondOfTwoIdenticalCreatesReturns201 ,
+        _:twoIdenticalCreatesReturnDistinctLocations ,
         _:containerGetLinksLinkset ,
         _:dataResourceGetLinksLinkset ,
         _:containerHeadLinksLinkset ,
@@ -1446,6 +1447,20 @@ _:secondOfTwoIdenticalCreatesReturns201
         _:createSecondSameBytesResource
     ) ;
     :assert _:201 ;
+.
+
+_:twoIdenticalCreatesReturnDistinctLocations
+    :testName "Two identical creates return distinct Locations" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createFirstSameBytesResource
+        _:createSecondSameBytesResource
+    ) ;
+    :assert [
+        :that [ :single [ :variable "secondSameBytesLocation" ] ] ;
+        :not [ :equals [ :single [ :variable "firstSameBytesLocation" ] ] ] ;
+    ] ;
 .
 
 _:containerGetLinksLinkset
