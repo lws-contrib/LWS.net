@@ -30,6 +30,8 @@ internal static class Vocabulary
 
     internal static INode BodyExtractor { get; } = factory.CreateUriNode(UriFactory.Create($"{NS}BodyExtractor"));
 
+    internal static INode GraphExtractor { get; } = factory.CreateUriNode(UriFactory.Create($"{NS}GraphExtractor"));
+
     internal static INode Method { get; } = factory.CreateUriNode(UriFactory.Create($"{NS}method"));
 
     internal static INode Uri { get; } = factory.CreateUriNode(UriFactory.Create($"{NS}uri"));

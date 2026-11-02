@@ -337,6 +337,13 @@
     rdfs:comment "Extracts the status code of the response as a string, such as 200. Recognised by its type, as it has no property of its own."@en ;
 .
 
+:GraphExtractor
+    a rdfs:Class ;
+    rdfs:subClassOf :Extractor ;
+    rdfs:label "Graph extractor"@en ;
+    rdfs:comment "Parses the body of the response as RDF and extracts it as a graph. The parser follows the media type of the response: application/lws+json, application/ld+json and application/json are parsed as JSON-LD with the LWS context, any other media type with the RDF parser that dotNetRDF has registered for it, such as text/turtle for Turtle. A media type without a registered parser, a body that does not parse and a JSON-LD body with a non-empty named graph make the extraction fail. Relative IRIs resolve against the URL the response was fetched from. Recognised by its type, as it has no property of its own."@en ;
+.
+
 :HeaderExtractor
     a rdfs:Class ;
     rdfs:subClassOf :Extractor ;

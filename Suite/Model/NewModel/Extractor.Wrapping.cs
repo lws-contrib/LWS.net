@@ -15,6 +15,11 @@ public abstract partial class Extractor : GraphWrapperNode
             return BodyExtractor.Wrap(node);
         }
 
+        if (node.Graph.GetTriplesWithSubjectPredicate(node, Vocabulary.RdfType).WithObject(Vocabulary.GraphExtractor).Any())
+        {
+            return GraphExtractor.Wrap(node);
+        }
+
         if (node.Graph.GetTriplesWithSubjectPredicate(node, Vocabulary.Header).Any())
         {
             return HeaderExtractor.Wrap(node);
