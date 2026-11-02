@@ -106,7 +106,8 @@
         _:serverMinimallySupportsJsonPatchApplicationJsonPatchJson ,
         _:linksetPatchWithFailingPreconditionIsRejectedWith412PreconditionFailed ,
         _:putIsIdempotentForExistingResources ,
-        _:onSuccessDeleteRespondsWith204NoContent ;
+        _:onSuccessDeleteRespondsWith204NoContent ,
+        _:serverRemovesResourceContentOnDelete ;
 ] .
 
 # Tests
@@ -1739,6 +1740,24 @@ _:onSuccessDeleteRespondsWith204NoContent
         _:deleteTextResource
     ) ;
     :assert _:204 ;
+.
+
+_:serverRemovesResourceContentOnDelete
+    :testName "Server removes resource content on delete" ;
+    :specification "https://www.w3.org/TR/lws10-core/#delete-resource"^^xsd:anyURI ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:deleteTextResource
+        _:getTextResourceStatus
+    ) ;
+    :assert [
+        :that [
+            :variable "status" ;
+        ] ;
+        :matches [ :constant "^(404|410)$" ] ;
+    ] ;
 .
 
 # Steps
