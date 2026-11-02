@@ -92,7 +92,8 @@
         _:headDataResourceReturnsSameEtagHeaderAsGet ,
         _:headContainerReturnsSameEtagHeaderAsGet ,
         _:headDataResourceReturnsSameLinkHeaderWithRelLinksetAsGet ,
-        _:headContainerReturnsSameLinkHeaderWithRelLinksetAsGet ;
+        _:headContainerReturnsSameLinkHeaderWithRelLinksetAsGet ,
+        _:putOnResourceUriHasNoDefaultImpactOnAssociatedLinksetResource ;
 ] .
 
 # Tests
@@ -1492,6 +1493,25 @@ _:headContainerReturnsSameLinkHeaderWithRelLinksetAsGet
     :assert _:headLinksetLinkEqualsGetLinksetLink ;
 .
 
+_:putOnResourceUriHasNoDefaultImpactOnAssociatedLinksetResource
+    :testName "PUT on resource URI has no default impact on associated linkset resource" ;
+    :specification "https://www.w3.org/TR/lws10-core/#update-resource"^^xsd:anyURI ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:getTextResourceLinksetLinks
+        _:putTextResourceReplacingContentWithLinkHeader
+        _:getLinksetBody
+    ) ;
+    :assert [
+        :that [
+            :variable "body" ;
+        ] ;
+        :not [ :matches [ :constant "example\\.org\\?/s" ] ] ;
+    ] ;
+.
+
 # Steps
 _:getStorageDescriptionId
     :stepName "Get storage description id" ;
@@ -2219,6 +2239,14 @@ _:headContainerLinksetLinks
     ) ;
 .
 
+_:putTextResourceReplacingContentWithLinkHeader
+    :stepName "Put text resource replacing content with Link header" ;
+    :request _:putTextResourceReplaceContentWithLinkHeader ;
+    :extract (
+        _:status
+    ) ;
+.
+
 # Requests
 _:getStorageDescription
     :method "GET" ;
@@ -2342,6 +2370,14 @@ _:getDigitsResourceFirstFourBytes
     :headers _:rangeFirstFourBytes ;
 .
 
+_:putTextResourceReplaceContentWithLinkHeader
+    :method "PUT" ;
+    :uri _:textResource ;
+    :headers _:contentTypeTextPlain ;
+    :headers _:linkDescribedBy ;
+    :body [ :constant "new content" ] ;
+.
+
 # URIs
 _:storage
     :variable "baseUri" ;
@@ -2455,6 +2491,11 @@ _:linkForgedLinkset
 _:rangeFirstFourBytes
     :key "Range" ;
     :value [ :constant "bytes=0-3" ] ;
+.
+
+_:linkDescribedBy
+    :key "Link" ;
+    :value [ :constant "<https://example.org/s>; rel=\"describedby\"" ] ;
 .
 
 # Extractors
