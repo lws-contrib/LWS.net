@@ -83,7 +83,8 @@
         _:serverSupportsRangeRequestsContentRange ,
         _:getDataResourceResponseIncludesEtagHeader ,
         _:getContainerResponseIncludesEtagHeader ,
-        _:getContainerResponseLinkHeaderWithRelTypeIndicatesContainer ;
+        _:getContainerResponseLinkHeaderWithRelTypeIndicatesContainer ,
+        _:headContainerLinkHeaderWithRelTypeIndicatesContainer ;
 ] .
 
 # Tests
@@ -1368,6 +1369,22 @@ _:getContainerResponseLinkHeaderWithRelTypeIndicatesContainer
     ] ;
 .
 
+_:headContainerLinkHeaderWithRelTypeIndicatesContainer
+    :testName "HEAD container Link header with rel type indicates container" ;
+    :specification "https://www.w3.org/TR/lws10-core/#read-resource"^^xsd:anyURI ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:headContainerTypeLinks
+    ) ;
+    :assert [
+        :that [
+            :variable "typeLinks" ;
+        ] ;
+        :contains [ :constant "https://www.w3.org/ns/lws#Container" ] ;
+    ] ;
+.
+
 # Steps
 _:getStorageDescriptionId
     :stepName "Get storage description id" ;
@@ -2010,6 +2027,14 @@ _:getContainerEtag
 _:getContainerTypeLinks
     :stepName "Get container type links" ;
     :request _:getContainer ;
+    :extract (
+        _:typeLinks
+    ) ;
+.
+
+_:headContainerTypeLinks
+    :stepName "Head container type links" ;
+    :request _:headContainer ;
     :extract (
         _:typeLinks
     ) ;
