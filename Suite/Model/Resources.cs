@@ -9,15 +9,13 @@ public class Resources
 {
     public static readonly Uri Base = new("http://lws.example.com/");
 
+    public static readonly Uri LwsContext = new("https://www.w3.org/ns/lws/v1");
+
     public static ManifestGraph ManifestGraph
     {
         get
         {
-            var parser = new JsonLdParser(new()
-            {
-                Base = Base,
-                DocumentLoader = Loader
-            });
+            var parser = JsonLdParser(Base);
 
             var store = new TripleStore();
             Load(parser, store, "manifest.jsonld");
@@ -73,8 +71,20 @@ public class Resources
 
     public static string String(string name) => Reader(name).ReadToEnd();
 
+    public static JsonLdParser JsonLdParser(Uri baseUri) =>
+        new(new()
+        {
+            Base = baseUri,
+            DocumentLoader = Loader
+        });
+
     public static RemoteDocument Loader(Uri uri, JsonLdLoaderOptions _)
     {
+        if (uri == LwsContext)
+        {
+            return new RemoteDocument { Document = String("lws_v1.jsonld") };
+        }
+
         if (!Base.IsBaseOf(uri))
         {
             throw new Exception("Unknown context document URI");
