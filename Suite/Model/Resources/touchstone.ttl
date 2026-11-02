@@ -145,6 +145,7 @@
         _:linksetAfterArrayReplacePatchReturns200 ,
         _:linksetAfterArrayReplacePatchReturnsLinksetMediaType ,
         _:linksetAfterArrayReplacePatchHasLinksetArray ,
+        _:linksetJsonPatchReturns200Or204 ,
         _:containerHeadLinksUp ,
         _:leafUpLinkNamesInnerContainer ,
         _:innerContainerListsLeaf ,
@@ -2108,6 +2109,21 @@ _:linksetAfterArrayReplacePatchHasLinksetArray
     :assert _:linksetArray ;
 .
 
+_:linksetJsonPatchReturns200Or204
+    :testName "Linkset JSON Patch with a current If-Match returns 200 or 204" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:getLinksetETag
+        _:patchLinksetLicenseIfMatchStatus
+    ) ;
+    :assert [
+        :that [ :variable "status" ] ;
+        :matches [ :constant "^(200|204)$" ] ;
+    ] ;
+.
+
 _:containerHeadLinksUp
     :testName "Container HEAD links up" ;
     :steps (
@@ -3465,6 +3481,14 @@ _:patchLinksetReplaceArrayStatus
     ) ;
 .
 
+_:patchLinksetLicenseIfMatchStatus
+    :stepName "Patch linkset license If-Match status" ;
+    :request _:patchLinksetLicenseIfMatch ;
+    :extract (
+        _:status
+    ) ;
+.
+
 _:headContainerUpLinks
     :stepName "Head container up links" ;
     :request _:headContainer ;
@@ -3723,6 +3747,21 @@ _:patchLinksetReplaceArray
     :uri _:linkset ;
     :headers _:contentTypeJsonPatch ;
     :body [ :constant "[{\"op\":\"replace\",\"path\":\"/linkset\",\"value\":\"not a linkset\"}]" ] ;
+.
+
+_:patchLinksetLicenseIfMatch
+    :method "PATCH" ;
+    :uri _:linkset ;
+    :headers _:contentTypeJsonPatch ;
+    :headers [
+        :key "If-Match" ;
+        :value [
+            :single [
+                :variable "etag" ;
+            ] ;
+        ] ;
+    ] ;
+    :body [ :constant "[{\"op\":\"add\",\"path\":\"/linkset/0/license\",\"value\":[{\"href\":\"https://creativecommons.org/licenses/by/4.0/\"}]}]" ] ;
 .
 
 _:getJsonResource
