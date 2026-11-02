@@ -105,7 +105,8 @@
         _:patchWithInvalidPayloadRespondsWith400BadRequest ,
         _:serverMinimallySupportsJsonPatchApplicationJsonPatchJson ,
         _:linksetPatchWithFailingPreconditionIsRejectedWith412PreconditionFailed ,
-        _:putIsIdempotentForExistingResources ;
+        _:putIsIdempotentForExistingResources ,
+        _:onSuccessDeleteRespondsWith204NoContent ;
 ] .
 
 # Tests
@@ -1728,6 +1729,18 @@ _:putIsIdempotentForExistingResources
     ] ;
 .
 
+_:onSuccessDeleteRespondsWith204NoContent
+    :testName "On success DELETE responds with 204 No Content" ;
+    :specification "https://www.w3.org/TR/lws10-core/#delete-resource"^^xsd:anyURI ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:deleteTextResource
+    ) ;
+    :assert _:204 ;
+.
+
 # Steps
 _:getStorageDescriptionId
     :stepName "Get storage description id" ;
@@ -3157,4 +3170,11 @@ _:400
         :variable "status" ;
     ] ;
     :equals [ :constant "400" ] ;
+.
+
+_:204
+    :that [
+        :variable "status" ;
+    ] ;
+    :equals [ :constant "204" ] ;
 .
