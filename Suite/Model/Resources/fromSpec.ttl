@@ -98,7 +98,8 @@
         _:patchOnResourceUriHasNoDefaultImpactOnAssociatedLinksetResource ,
         _:patchOnResourceUriWithLinkHeaderSucceeds ,
         _:serverIgnoresPreferSetLinksetOrRespondsWith501NotImplemented ,
-        _:putToResourceUriReplacesFullResourceWithNewContent ;
+        _:putToResourceUriReplacesFullResourceWithNewContent ,
+        _:successfulPutRespondsWith200OkOr204NoContent ;
 ] .
 
 # Tests
@@ -1604,6 +1605,23 @@ _:putToResourceUriReplacesFullResourceWithNewContent
             :variable "body" ;
         ] ;
         :equals [ :constant "new content" ] ;
+    ] ;
+.
+
+_:successfulPutRespondsWith200OkOr204NoContent
+    :testName "Successful PUT responds with 200 OK or 204 No Content" ;
+    :specification "https://www.w3.org/TR/lws10-core/#update-resource"^^xsd:anyURI ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:putTextResourceReplacingContent
+    ) ;
+    :assert [
+        :that [
+            :variable "status" ;
+        ] ;
+        :matches [ :constant "^(200|204)$" ] ;
     ] ;
 .
 
