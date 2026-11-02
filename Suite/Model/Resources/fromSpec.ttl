@@ -60,7 +60,8 @@
         _:serverPreservesLinksClientIsNotPermittedToModifyWhenApplyingPatch ,
         _:deletingResourceRemovesItsAssociatedLinksetResource ,
         _:serverManagedMetadataIsGeneratedAutomaticallyUponCreation ,
-        _:serverManagedUpLinkIsNotOverriddenByClientProvidedLink ;
+        _:serverManagedUpLinkIsNotOverriddenByClientProvidedLink ,
+        _:serverManagedLinksetLinkIsNotOverriddenByClientProvidedLink ;
 ] .
 
 # Tests
@@ -996,6 +997,24 @@ _:serverManagedUpLinkIsNotOverriddenByClientProvidedLink
     ] ;
 .
 
+_:serverManagedLinksetLinkIsNotOverriddenByClientProvidedLink
+    :testName "Server-managed linkset link is not overridden by client-provided link" ;
+    :specification "https://www.w3.org/TR/lws10-core/#create-resource"^^xsd:anyURI ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResourceWithForgedLinksetLink
+        _:getTextResourceLinksetLinks
+        _:getLinksetBody
+    ) ;
+    :assert [
+        :that [
+            :variable "body" ;
+        ] ;
+        :matches [ :constant "(?i)^(?![\\s\\S]*example\\.org\\\\?/evil)(?=[\\s\\S]*\"up\")" ] ;
+    ] ;
+.
+
 # Steps
 _:getStorageDescriptionId
     :stepName "Get storage description id" ;
@@ -1480,6 +1499,22 @@ _:createTextResourceWithForgedUpLink
     ) ;
 .
 
+_:createTextResourceWithForgedLinksetLink
+    :stepName "Create text resource with forged linkset link" ;
+    :request _:postTextResourceWithForgedLinksetLink ;
+    :extract (
+        _:textResourceLocation
+    ) ;
+.
+
+_:getLinksetBody
+    :stepName "Get linkset body" ;
+    :request _:getLinkset ;
+    :extract (
+        _:body
+    ) ;
+.
+
 # Requests
 _:getStorageDescription
     :method "GET" ;
@@ -1583,6 +1618,14 @@ _:postTextResourceWithForgedUpLink
     :body [ :constant "milk\neggs\nbread\nbutter\napples\norange juice\n" ] ;
 .
 
+_:postTextResourceWithForgedLinksetLink
+    :method "POST" ;
+    :uri _:container ;
+    :headers _:contentTypeTextPlain ;
+    :headers _:linkForgedLinkset ;
+    :body [ :constant "milk\neggs\nbread\nbutter\napples\norange juice\n" ] ;
+.
+
 # URIs
 _:storage
     :variable "baseUri" ;
@@ -1679,6 +1722,11 @@ _:linkForgedUp
     :value [ :constant "<https://example.org/evil>; rel=\"up\"" ] ;
 .
 
+_:linkForgedLinkset
+    :key "Link" ;
+    :value [ :constant "<https://example.org/evil>; rel=\"linkset\"" ] ;
+.
+
 # Extractors
 _:containerLocation
     :header "Location" ;
@@ -1738,6 +1786,11 @@ _:acceptPatch
 _:etag
     :header "ETag" ;
     :to "etag" ;
+.
+
+_:body
+    a :BodyExtractor ;
+    :to "body" ;
 .
 
 # Assertions
