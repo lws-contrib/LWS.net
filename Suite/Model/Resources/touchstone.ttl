@@ -39,6 +39,7 @@
         _:ifUnmodifiedSinceLastModifiedReturns200 ,
         _:ifUnmodifiedSinceEpochReturns412 ,
         _:putDataResourceReturns200Or204 ,
+        _:putDataResourceReplacesContent ,
         _:conditionalPutStaleIfMatchReturns412 ,
         _:conditionalPutStaleIfMatchKeepsResourceReturns200 ,
         _:conditionalPutStaleIfMatchLeavesResourceUntouched ,
@@ -606,6 +607,24 @@ _:putDataResourceReturns200Or204
     :assert [
         :that [ :variable "status" ] ;
         :matches [ :constant "^(200|204)$" ] ;
+    ] ;
+.
+
+_:putDataResourceReplacesContent
+    :testName "PUT replaces the data resource content exactly" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:getTextResourceETag
+        _:conditionalPutTextResourceIfMatchStatus
+        _:getTextResourceBody
+    ) ;
+    :assert [
+        :that [
+            :variable "body" ;
+        ] ;
+        :matches [ :constant "^second content$" ] ;
     ] ;
 .
 
