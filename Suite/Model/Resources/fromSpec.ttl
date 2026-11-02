@@ -67,7 +67,8 @@
         _:createdResourceCanBeRetrievedUsingGetOnItsNewUri ,
         _:createResponseIncludesLinkHeaderWithRelUp ,
         _:createResponseLinkHeaderWithRelUpTargetsParentContainer ,
-        _:createResponseIncludesLinkHeaderWithRelLinkset ;
+        _:createResponseIncludesLinkHeaderWithRelLinkset ,
+        _:dataResourceIsCreatedWithContentFromRequestBody ;
 ] .
 
 # Tests
@@ -1107,6 +1108,23 @@ _:createResponseIncludesLinkHeaderWithRelLinkset
     :assert _:linksetLink ;
 .
 
+_:dataResourceIsCreatedWithContentFromRequestBody
+    :testName "Data resource is created with content from request body" ;
+    :specification "https://www.w3.org/TR/lws10-core/#create-resource"^^xsd:anyURI ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:getTextResourceBody
+    ) ;
+    :assert [
+        :that [
+            :variable "body" ;
+        ] ;
+        :equals [ :constant "milk\neggs\nbread\nbutter\napples\norange juice\n" ] ;
+    ] ;
+.
+
 # Steps
 _:getStorageDescriptionId
     :stepName "Get storage description id" ;
@@ -1628,6 +1646,14 @@ _:createTextResourceUpLinks
     :request _:postTextResource ;
     :extract (
         _:upLinks
+    ) ;
+.
+
+_:getTextResourceBody
+    :stepName "Get text resource body" ;
+    :request _:getTextResource ;
+    :extract (
+        _:body
     ) ;
 .
 
