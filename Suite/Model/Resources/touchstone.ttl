@@ -70,6 +70,7 @@
         _:emptyContainerDeleteReturns204 ,
         _:deletedEmptyContainerGetReturnsNotFoundOrGone ,
         _:parentContainerListingOmitsDeletedEmptyContainer ,
+        _:deletedDataResourceGetReturnsNotFoundOrGone ,
         _:containerGetLinksUp ,
         _:containerGetLinksStorage ,
         _:nestedContainerGetReturns200 ,
@@ -1048,6 +1049,22 @@ _:parentContainerListingOmitsDeletedEmptyContainer
     :assert [
         :that [ :variable "itemIds" ] ;
         :not [ :contains _:inner ] ;
+    ] ;
+.
+
+_:deletedDataResourceGetReturnsNotFoundOrGone
+    :testName "Deleted data resource GET returns 404 or 410" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createTextResource
+        _:getTextResourceETag
+        _:deleteTextResourceIfMatchStatus
+        _:getTextResourceStatus
+    ) ;
+    :assert [
+        :that [ :variable "status" ] ;
+        :matches [ :constant "^(404|410)$" ] ;
     ] ;
 .
 
