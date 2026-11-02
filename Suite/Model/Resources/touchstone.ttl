@@ -128,6 +128,7 @@
         _:jsonPatchKeepsFirstArrayElement ,
         _:jsonPatchAppendsArrayElement ,
         _:jsonPatchWithFailingTestReturns4xx ,
+        _:jsonPatchWithFailingTestKeepsTitle ,
         _:linksetNamedByCreateReturns200 ,
         _:linksetNamedByCreateReturnsLinksetMediaType ,
         _:linksetNamedByCreateHasLinksetArray ,
@@ -1859,6 +1860,25 @@ _:jsonPatchWithFailingTestReturns4xx
     :assert [
         :that [ :variable "status" ] ;
         :matches [ :constant "^4\\d\\d$" ] ;
+    ] ;
+.
+
+_:jsonPatchWithFailingTestKeepsTitle
+    :testName "JSON Patch whose test operation fails does not apply its first operation" ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainer
+        _:createJsonResource
+        _:patchJsonResourceFailingTestStatus
+        _:getJsonResourceTitle
+    ) ;
+    :assert [
+        :that [
+            :single [
+                :variable "jsonTitle" ;
+            ] ;
+        ] ;
+        :equals [ :constant "first" ] ;
     ] ;
 .
 
