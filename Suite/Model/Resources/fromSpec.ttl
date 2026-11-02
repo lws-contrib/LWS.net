@@ -70,7 +70,8 @@
         _:createResponseIncludesLinkHeaderWithRelLinkset ,
         _:dataResourceIsCreatedWithContentFromRequestBody ,
         _:postWithLinkHeaderWithRelTypeContainerCreatesContainer ,
-        _:containerCreationResponseLinkRelUpTargetsParentContainer ;
+        _:containerCreationResponseLinkRelUpTargetsParentContainer ,
+        _:containerCreationResponseIncludesLinkHeaderWithRelLinkset ;
 ] .
 
 # Tests
@@ -1160,6 +1161,16 @@ _:containerCreationResponseLinkRelUpTargetsParentContainer
     ] ;
 .
 
+_:containerCreationResponseIncludesLinkHeaderWithRelLinkset
+    :testName "Container creation response includes Link header with rel linkset" ;
+    :specification "https://www.w3.org/TR/lws10-core/#create-resource"^^xsd:anyURI ;
+    :steps (
+        _:discoverStorageRoot
+        _:createContainerLinksetLinks
+    ) ;
+    :assert _:linksetLink ;
+.
+
 # Steps
 _:getStorageDescriptionId
     :stepName "Get storage description id" ;
@@ -1697,6 +1708,14 @@ _:createContainerUpLinks
     :request _:postContainer ;
     :extract (
         _:upLinks
+    ) ;
+.
+
+_:createContainerLinksetLinks
+    :stepName "Create container linkset links" ;
+    :request _:postContainer ;
+    :extract (
+        _:linksetLinks
     ) ;
 .
 
