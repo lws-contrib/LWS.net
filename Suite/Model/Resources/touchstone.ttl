@@ -3200,25 +3200,37 @@ _:getStorageDescriptionAsCidContentType
 .
 
 _:getStorageDescriptionFirstContext
+    a :ReadStorageDescription ;
     :stepName "Get storage description first context" ;
-    :request _:getStorageDescriptionAsCid ;
-    :extract (
-        [
-            :path "$['@context'][0]" ;
-            :to "context" ;
-        ]
-    ) ;
+    :argument [
+        :parameterName "target" ;
+        :value _:storage ;
+    ] ;
+    :argument [
+        :parameterName "path" ;
+        :value "$['@context'][0]" ;
+    ] ;
+    :argument [
+        :parameterName "as" ;
+        :value "context" ;
+    ] ;
 .
 
 _:getStorageDescriptionSecondContext
+    a :ReadStorageDescription ;
     :stepName "Get storage description second context" ;
-    :request _:getStorageDescriptionAsCid ;
-    :extract (
-        [
-            :path "$['@context'][1]" ;
-            :to "context" ;
-        ]
-    ) ;
+    :argument [
+        :parameterName "target" ;
+        :value _:storage ;
+    ] ;
+    :argument [
+        :parameterName "path" ;
+        :value "$['@context'][1]" ;
+    ] ;
+    :argument [
+        :parameterName "as" ;
+        :value "context" ;
+    ] ;
 .
 
 _:getContainerETag
@@ -3425,33 +3437,54 @@ _:getContainerAsLwsJson
 .
 
 _:getStorageDescriptionAsCidType
+    a :ReadStorageDescription ;
     :stepName "Get storage description as CID type" ;
-    :request _:getStorageDescriptionAsCid ;
-    :extract (
-        _:type
-    ) ;
+    :argument [
+        :parameterName "target" ;
+        :value _:storage ;
+    ] ;
+    :argument [
+        :parameterName "path" ;
+        :value "$.type" ;
+    ] ;
+    :argument [
+        :parameterName "as" ;
+        :value "type" ;
+    ] ;
 .
 
 _:getStorageDescriptionContext
+    a :ReadStorageDescription ;
     :stepName "Get storage description context" ;
-    :request _:getStorageDescriptionAsCid ;
-    :extract (
-        [
-            :path "$['@context']" ;
-            :to "context" ;
-        ]
-    ) ;
+    :argument [
+        :parameterName "target" ;
+        :value _:storage ;
+    ] ;
+    :argument [
+        :parameterName "path" ;
+        :value "$['@context']" ;
+    ] ;
+    :argument [
+        :parameterName "as" ;
+        :value "context" ;
+    ] ;
 .
 
 _:getStorageDescriptionService
+    a :ReadStorageDescription ;
     :stepName "Get storage description service" ;
-    :request _:getStorageDescriptionAsCid ;
-    :extract (
-        [
-            :path "$.service" ;
-            :to "service" ;
-        ]
-    ) ;
+    :argument [
+        :parameterName "target" ;
+        :value _:storage ;
+    ] ;
+    :argument [
+        :parameterName "path" ;
+        :value "$.service" ;
+    ] ;
+    :argument [
+        :parameterName "as" ;
+        :value "service" ;
+    ] ;
 .
 
 _:getMissingResourceBody

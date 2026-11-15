@@ -1984,14 +1984,20 @@ _:getStorageRootType
 .
 
 _:getStorageDescriptionAsCidContext
+    a :ReadStorageDescription ;
     :stepName "Get storage description as CID context" ;
-    :request _:getStorageDescriptionAsCid ;
-    :extract (
-        [
-            :path "$['@context']" ;
-            :to "context" ;
-        ]
-    ) ;
+    :argument [
+        :parameterName "target" ;
+        :value _:storage ;
+    ] ;
+    :argument [
+        :parameterName "path" ;
+        :value "$['@context']" ;
+    ] ;
+    :argument [
+        :parameterName "as" ;
+        :value "context" ;
+    ] ;
 .
 
 _:headStorageDescriptionStorageLinks
