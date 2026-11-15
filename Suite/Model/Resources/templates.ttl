@@ -106,3 +106,61 @@
         ) ;
     ] ;
 .
+
+:PutResourceIfMatch
+    a :StepTemplate ;
+    :parameter (
+        [ :parameterName "target" ; :required true ]
+        [ :parameterName "etag" ; :required true ]
+        [ :parameterName "contentType" ; :required true ]
+        [ :parameterName "body" ; :required true ]
+        [ :parameterName "as" ; :default "status" ]
+    ) ;
+    :expansion [
+        :request [
+            :method "PUT" ;
+            :uri p:target ;
+            :headers [
+                :key "Content-Type" ;
+                :value [ :constant [ :param "contentType" ] ] ;
+            ] ;
+            :headers [
+                :key "If-Match" ;
+                :value p:etag ;
+            ] ;
+            :body [ :constant [ :param "body" ] ] ;
+        ] ;
+        :extract (
+            [ a :StatusCodeExtractor ; :to [ :param "as" ] ]
+        ) ;
+    ] ;
+.
+
+:PatchResourceIfMatch
+    a :StepTemplate ;
+    :parameter (
+        [ :parameterName "target" ; :required true ]
+        [ :parameterName "etag" ; :required true ]
+        [ :parameterName "contentType" ; :required true ]
+        [ :parameterName "body" ; :required true ]
+        [ :parameterName "as" ; :default "status" ]
+    ) ;
+    :expansion [
+        :request [
+            :method "PATCH" ;
+            :uri p:target ;
+            :headers [
+                :key "Content-Type" ;
+                :value [ :constant [ :param "contentType" ] ] ;
+            ] ;
+            :headers [
+                :key "If-Match" ;
+                :value p:etag ;
+            ] ;
+            :body [ :constant [ :param "body" ] ] ;
+        ] ;
+        :extract (
+            [ a :StatusCodeExtractor ; :to [ :param "as" ] ]
+        ) ;
+    ] ;
+.

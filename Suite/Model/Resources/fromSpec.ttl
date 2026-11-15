@@ -2301,11 +2301,24 @@ _:headLinksetEtag
 .
 
 _:patchLinksetAddingDescribedBy
+    a :PatchResourceIfMatch ;
     :stepName "Patch linkset adding describedby" ;
-    :request _:patchLinksetAddDescribedBy ;
-    :extract (
-        _:status
-    ) ;
+    :argument [
+        :parameterName "target" ;
+        :value _:linkset ;
+    ] ;
+    :argument [
+        :parameterName "etag" ;
+        :value [ :single [ :variable "etag" ] ] ;
+    ] ;
+    :argument [
+        :parameterName "contentType" ;
+        :value "application/json-patch+json" ;
+    ] ;
+    :argument [
+        :parameterName "body" ;
+        :value "[{\"op\":\"add\",\"path\":\"/linkset/0/describedby\",\"value\":[{\"href\":\"https://example.org/schema\"}]}]" ;
+    ] ;
 .
 
 _:getLinksetDescribedByHref
@@ -2320,11 +2333,24 @@ _:getLinksetDescribedByHref
 .
 
 _:patchLinksetRemovingType
+    a :PatchResourceIfMatch ;
     :stepName "Patch linkset removing type" ;
-    :request _:patchLinksetRemoveType ;
-    :extract (
-        _:status
-    ) ;
+    :argument [
+        :parameterName "target" ;
+        :value _:linkset ;
+    ] ;
+    :argument [
+        :parameterName "etag" ;
+        :value [ :single [ :variable "etag" ] ] ;
+    ] ;
+    :argument [
+        :parameterName "contentType" ;
+        :value "application/json-patch+json" ;
+    ] ;
+    :argument [
+        :parameterName "body" ;
+        :value "[{\"op\":\"remove\",\"path\":\"/linkset/0/type\"}]" ;
+    ] ;
 .
 
 _:getLinksetTypeHrefs
@@ -2669,19 +2695,45 @@ _:getJsonResourceCity
 .
 
 _:putJsonResourceReplacingContent
+    a :PutResourceIfMatch ;
     :stepName "Put JSON resource replacing content" ;
-    :request _:putJsonResourceReplaceContent ;
-    :extract (
-        _:status
-    ) ;
+    :argument [
+        :parameterName "target" ;
+        :value _:jsonResource ;
+    ] ;
+    :argument [
+        :parameterName "etag" ;
+        :value [ :single [ :variable "etag" ] ] ;
+    ] ;
+    :argument [
+        :parameterName "contentType" ;
+        :value "application/json" ;
+    ] ;
+    :argument [
+        :parameterName "body" ;
+        :value "{\"name\":\"Alice\",\"age\":30,\"city\":\"New London\",\"state\":\"Connecticut\"}" ;
+    ] ;
 .
 
 _:putTextResourceReplacingContentWithBogusIfMatch
+    a :PutResourceIfMatch ;
     :stepName "Put text resource replacing content with bogus If-Match" ;
-    :request _:putTextResourceReplaceContentWithBogusIfMatch ;
-    :extract (
-        _:status
-    ) ;
+    :argument [
+        :parameterName "target" ;
+        :value _:textResource ;
+    ] ;
+    :argument [
+        :parameterName "etag" ;
+        :value [ :constant "\"bogus\"" ] ;
+    ] ;
+    :argument [
+        :parameterName "contentType" ;
+        :value "text/plain" ;
+    ] ;
+    :argument [
+        :parameterName "body" ;
+        :value "new content" ;
+    ] ;
 .
 
 _:patchJsonResourceWithInvalidPayload
@@ -2712,11 +2764,24 @@ _:getJsonResourceAValue
 .
 
 _:patchLinksetAddingDescribedByWithBogusIfMatch
+    a :PatchResourceIfMatch ;
     :stepName "Patch linkset adding describedby with bogus If-Match" ;
-    :request _:patchLinksetAddDescribedByWithBogusIfMatch ;
-    :extract (
-        _:status
-    ) ;
+    :argument [
+        :parameterName "target" ;
+        :value _:linkset ;
+    ] ;
+    :argument [
+        :parameterName "etag" ;
+        :value [ :constant "\"bogus\"" ] ;
+    ] ;
+    :argument [
+        :parameterName "contentType" ;
+        :value "application/json-patch+json" ;
+    ] ;
+    :argument [
+        :parameterName "body" ;
+        :value "[{\"op\":\"add\",\"path\":\"/linkset/0/describedby\",\"value\":[{\"href\":\"https://example.org/schema\"}]}]" ;
+    ] ;
 .
 
 _:deleteTextResourceWithMatchingIfMatch
@@ -2817,22 +2882,6 @@ _:headLinkset
     :headers _:acceptLinksetJson ;
 .
 
-_:patchLinksetAddDescribedBy
-    :method "PATCH" ;
-    :uri _:linkset ;
-    :headers _:contentTypeJsonPatch ;
-    :headers _:ifMatchEtag ;
-    :body [ :constant "[{\"op\":\"add\",\"path\":\"/linkset/0/describedby\",\"value\":[{\"href\":\"https://example.org/schema\"}]}]" ] ;
-.
-
-_:patchLinksetRemoveType
-    :method "PATCH" ;
-    :uri _:linkset ;
-    :headers _:contentTypeJsonPatch ;
-    :headers _:ifMatchEtag ;
-    :body [ :constant "[{\"op\":\"remove\",\"path\":\"/linkset/0/type\"}]" ] ;
-.
-
 _:postTextResource
     :method "POST" ;
     :uri _:container ;
@@ -2905,22 +2954,6 @@ _:putTextResourceReplaceContent
     :body [ :constant "new content" ] ;
 .
 
-_:putJsonResourceReplaceContent
-    :method "PUT" ;
-    :uri _:jsonResource ;
-    :headers _:contentTypeApplicationJson ;
-    :headers _:ifMatchEtag ;
-    :body [ :constant "{\"name\":\"Alice\",\"age\":30,\"city\":\"New London\",\"state\":\"Connecticut\"}" ] ;
-.
-
-_:putTextResourceReplaceContentWithBogusIfMatch
-    :method "PUT" ;
-    :uri _:textResource ;
-    :headers _:contentTypeTextPlain ;
-    :headers _:ifMatchBogus ;
-    :body [ :constant "new content" ] ;
-.
-
 _:patchJsonResourceInvalidPayload
     :method "PATCH" ;
     :uri _:jsonResource ;
@@ -2933,14 +2966,6 @@ _:patchJsonResourceReplaceValue
     :uri _:jsonResource ;
     :headers _:contentTypeJsonPatch ;
     :body [ :constant "[{\"op\":\"replace\",\"path\":\"/a\",\"value\":2}]" ] ;
-.
-
-_:patchLinksetAddDescribedByWithBogusIfMatch
-    :method "PATCH" ;
-    :uri _:linkset ;
-    :headers _:contentTypeJsonPatch ;
-    :headers _:ifMatchBogus ;
-    :body [ :constant "[{\"op\":\"add\",\"path\":\"/linkset/0/describedby\",\"value\":[{\"href\":\"https://example.org/schema\"}]}]" ] ;
 .
 
 # URIs
@@ -3043,15 +3068,6 @@ _:contentTypeJsonPatch
     :value [ :constant "application/json-patch+json" ] ;
 .
 
-_:ifMatchEtag
-    :key "If-Match" ;
-    :value [
-        :single [
-            :variable "etag" ;
-        ] ;
-    ] ;
-.
-
 _:linkForgedUp
     :key "Link" ;
     :value [ :constant "<https://example.org/evil>; rel=\"up\"" ] ;
@@ -3072,19 +3088,9 @@ _:linkDescribedBy
     :value [ :constant "<https://example.org/s>; rel=\"describedby\"" ] ;
 .
 
-_:contentTypeApplicationJson
-    :key "Content-Type" ;
-    :value [ :constant "application/json" ] ;
-.
-
 _:preferSetLinkset
     :key "Prefer" ;
     :value [ :constant "set-linkset" ] ;
-.
-
-_:ifMatchBogus
-    :key "If-Match" ;
-    :value [ :constant "\"bogus\"" ] ;
 .
 
 # Extractors

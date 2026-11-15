@@ -2993,19 +2993,45 @@ _:conditionalGetTextResourceIfUnmodifiedSinceEpochStatus
 .
 
 _:conditionalPutTextResourceIfMatchStatus
+    a :PutResourceIfMatch ;
     :stepName "Conditional put text resource If-Match status" ;
-    :request _:conditionalPutTextResourceIfMatch ;
-    :extract (
-        _:status
-    ) ;
+    :argument [
+        :parameterName "target" ;
+        :value _:textResource ;
+    ] ;
+    :argument [
+        :parameterName "etag" ;
+        :value [ :single [ :variable "etag" ] ] ;
+    ] ;
+    :argument [
+        :parameterName "contentType" ;
+        :value "text/plain" ;
+    ] ;
+    :argument [
+        :parameterName "body" ;
+        :value "second content" ;
+    ] ;
 .
 
 _:conditionalPutTextResourceStaleIfMatchStatus
+    a :PutResourceIfMatch ;
     :stepName "Conditional put text resource stale If-Match status" ;
-    :request _:conditionalPutTextResourceStaleIfMatch ;
-    :extract (
-        _:status
-    ) ;
+    :argument [
+        :parameterName "target" ;
+        :value _:textResource ;
+    ] ;
+    :argument [
+        :parameterName "etag" ;
+        :value [ :single [ :variable "etag" ] ] ;
+    ] ;
+    :argument [
+        :parameterName "contentType" ;
+        :value "text/plain" ;
+    ] ;
+    :argument [
+        :parameterName "body" ;
+        :value "third content, must not land" ;
+    ] ;
 .
 
 _:conditionalGetTextResourceNeverMatchingStatus
@@ -3025,11 +3051,24 @@ _:conditionalGetTextResourceNeverMatchingBody
 .
 
 _:conditionalPutTextResourceIfMatchChangedContentStatus
+    a :PutResourceIfMatch ;
     :stepName "Conditional put text resource If-Match changed content status" ;
-    :request _:conditionalPutTextResourceIfMatchChangedContent ;
-    :extract (
-        _:status
-    ) ;
+    :argument [
+        :parameterName "target" ;
+        :value _:textResource ;
+    ] ;
+    :argument [
+        :parameterName "etag" ;
+        :value [ :single [ :variable "etag" ] ] ;
+    ] ;
+    :argument [
+        :parameterName "contentType" ;
+        :value "text/plain" ;
+    ] ;
+    :argument [
+        :parameterName "body" ;
+        :value "changed content" ;
+    ] ;
 .
 
 _:conditionalDeleteTextResourceStaleIfMatchStatus
@@ -3504,11 +3543,24 @@ _:getLinksetAcceptPatch
 .
 
 _:patchLinksetStaleIfMatchStatus
+    a :PatchResourceIfMatch ;
     :stepName "Patch linkset stale If-Match status" ;
-    :request _:patchLinksetStaleIfMatch ;
-    :extract (
-        _:status
-    ) ;
+    :argument [
+        :parameterName "target" ;
+        :value _:linkset ;
+    ] ;
+    :argument [
+        :parameterName "etag" ;
+        :value [ :constant "\"touchstone-stale-etag\"" ] ;
+    ] ;
+    :argument [
+        :parameterName "contentType" ;
+        :value "application/json-patch+json" ;
+    ] ;
+    :argument [
+        :parameterName "body" ;
+        :value "[{\"op\":\"add\",\"path\":\"/linkset/0/license\",\"value\":[{\"href\":\"https://creativecommons.org/licenses/by/4.0/\"}]}]" ;
+    ] ;
 .
 
 _:createJsonResource
@@ -3544,11 +3596,24 @@ _:getJsonResourceETag
 .
 
 _:patchJsonResourceIfMatchStatus
+    a :PatchResourceIfMatch ;
     :stepName "Patch JSON resource If-Match status" ;
-    :request _:patchJsonResourceIfMatch ;
-    :extract (
-        _:status
-    ) ;
+    :argument [
+        :parameterName "target" ;
+        :value _:jsonResource ;
+    ] ;
+    :argument [
+        :parameterName "etag" ;
+        :value [ :single [ :variable "etag" ] ] ;
+    ] ;
+    :argument [
+        :parameterName "contentType" ;
+        :value "application/json-patch+json" ;
+    ] ;
+    :argument [
+        :parameterName "body" ;
+        :value "[{\"op\":\"test\",\"path\":\"/title\",\"value\":\"first\"},{\"op\":\"replace\",\"path\":\"/title\",\"value\":\"second\"},{\"op\":\"add\",\"path\":\"/added\",\"value\":42},{\"op\":\"remove\",\"path\":\"/drop\"},{\"op\":\"add\",\"path\":\"/tags/-\",\"value\":\"c\"}]" ;
+    ] ;
 .
 
 _:patchJsonResourceFailingTestStatus
@@ -3659,11 +3724,24 @@ _:patchLinksetReplaceArrayStatus
 .
 
 _:patchLinksetLicenseIfMatchStatus
+    a :PatchResourceIfMatch ;
     :stepName "Patch linkset license If-Match status" ;
-    :request _:patchLinksetLicenseIfMatch ;
-    :extract (
-        _:status
-    ) ;
+    :argument [
+        :parameterName "target" ;
+        :value _:linkset ;
+    ] ;
+    :argument [
+        :parameterName "etag" ;
+        :value [ :single [ :variable "etag" ] ] ;
+    ] ;
+    :argument [
+        :parameterName "contentType" ;
+        :value "application/json-patch+json" ;
+    ] ;
+    :argument [
+        :parameterName "body" ;
+        :value "[{\"op\":\"add\",\"path\":\"/linkset/0/license\",\"value\":[{\"href\":\"https://creativecommons.org/licenses/by/4.0/\"}]}]" ;
+    ] ;
 .
 
 _:getLinksetLicenseHrefs
@@ -3946,17 +4024,6 @@ _:getLinkset
     :headers _:acceptLinksetJson ;
 .
 
-_:patchLinksetStaleIfMatch
-    :method "PATCH" ;
-    :uri _:linkset ;
-    :headers _:contentTypeJsonPatch ;
-    :headers [
-        :key "If-Match" ;
-        :value [ :constant "\"touchstone-stale-etag\"" ] ;
-    ] ;
-    :body [ :constant "[{\"op\":\"add\",\"path\":\"/linkset/0/license\",\"value\":[{\"href\":\"https://creativecommons.org/licenses/by/4.0/\"}]}]" ] ;
-.
-
 _:patchLinksetForgedUp
     :method "PATCH" ;
     :uri _:linkset ;
@@ -3971,40 +4038,10 @@ _:patchLinksetReplaceArray
     :body [ :constant "[{\"op\":\"replace\",\"path\":\"/linkset\",\"value\":\"not a linkset\"}]" ] ;
 .
 
-_:patchLinksetLicenseIfMatch
-    :method "PATCH" ;
-    :uri _:linkset ;
-    :headers _:contentTypeJsonPatch ;
-    :headers [
-        :key "If-Match" ;
-        :value [
-            :single [
-                :variable "etag" ;
-            ] ;
-        ] ;
-    ] ;
-    :body [ :constant "[{\"op\":\"add\",\"path\":\"/linkset/0/license\",\"value\":[{\"href\":\"https://creativecommons.org/licenses/by/4.0/\"}]}]" ] ;
-.
-
 _:getJsonResource
     :method "GET" ;
     :uri _:jsonResource ;
     :headers _:acceptJson ;
-.
-
-_:patchJsonResourceIfMatch
-    :method "PATCH" ;
-    :uri _:jsonResource ;
-    :headers _:contentTypeJsonPatch ;
-    :headers [
-        :key "If-Match" ;
-        :value [
-            :single [
-                :variable "etag" ;
-            ] ;
-        ] ;
-    ] ;
-    :body [ :constant "[{\"op\":\"test\",\"path\":\"/title\",\"value\":\"first\"},{\"op\":\"replace\",\"path\":\"/title\",\"value\":\"second\"},{\"op\":\"add\",\"path\":\"/added\",\"value\":42},{\"op\":\"remove\",\"path\":\"/drop\"},{\"op\":\"add\",\"path\":\"/tags/-\",\"value\":\"c\"}]" ] ;
 .
 
 _:patchJsonResourceFailingTest
@@ -4076,36 +4113,6 @@ _:conditionalGetTextResourceIfUnmodifiedSinceEpoch
     ] ;
 .
 
-_:conditionalPutTextResourceIfMatch
-    :method "PUT" ;
-    :uri _:textResource ;
-    :headers _:contentTypeTextPlain ;
-    :headers [
-        :key "If-Match" ;
-        :value [
-            :single [
-                :variable "etag" ;
-            ] ;
-        ] ;
-    ] ;
-    :body [ :constant "second content" ] ;
-.
-
-_:conditionalPutTextResourceStaleIfMatch
-    :method "PUT" ;
-    :uri _:textResource ;
-    :headers _:contentTypeTextPlain ;
-    :headers [
-        :key "If-Match" ;
-        :value [
-            :single [
-                :variable "etag" ;
-            ] ;
-        ] ;
-    ] ;
-    :body [ :constant "third content, must not land" ] ;
-.
-
 _:conditionalGetTextResourceNeverMatching
     :method "GET" ;
     :uri _:textResource ;
@@ -4113,21 +4120,6 @@ _:conditionalGetTextResourceNeverMatching
         :key "If-None-Match" ;
         :value [ :constant "\"touchstone-never-a-real-etag\"" ] ;
     ] ;
-.
-
-_:conditionalPutTextResourceIfMatchChangedContent
-    :method "PUT" ;
-    :uri _:textResource ;
-    :headers _:contentTypeTextPlain ;
-    :headers [
-        :key "If-Match" ;
-        :value [
-            :single [
-                :variable "etag" ;
-            ] ;
-        ] ;
-    ] ;
-    :body [ :constant "changed content" ] ;
 .
 
 _:getDigitsResourceFirstFourBytes
