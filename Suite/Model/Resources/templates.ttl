@@ -21,3 +21,27 @@
         ) ;
     ] ;
 .
+
+:CreateResource
+    a :StepTemplate ;
+    :parameter (
+        [ :parameterName "in" ; :required true ]
+        [ :parameterName "contentType" ; :required true ]
+        [ :parameterName "body" ; :required true ]
+        [ :parameterName "as" ; :default "resourceLocation" ]
+    ) ;
+    :expansion [
+        :request [
+            :method "POST" ;
+            :uri p:in ;
+            :headers [
+                :key "Content-Type" ;
+                :value [ :constant [ :param "contentType" ] ] ;
+            ] ;
+            :body [ :constant [ :param "body" ] ] ;
+        ] ;
+        :extract (
+            [ :header "Location" ; :to [ :param "as" ] ]
+        ) ;
+    ] ;
+.

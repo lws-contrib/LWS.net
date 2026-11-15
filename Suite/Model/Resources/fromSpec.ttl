@@ -1885,16 +1885,21 @@ _:createContainer
 .
 
 _:createTextResource
+    a :CreateResource ;
     :stepName "Create text resource" ;
-    :request [
-        :method "POST" ;
-        :uri _:container ;
-        :headers _:contentTypeTextPlain ;
-        :body [ :constant "milk\neggs\nbread\nbutter\napples\norange juice\n" ] ;
+    :argument [
+        :parameterName "in" ;
+        :value _:container ;
+    ], [
+        :parameterName "contentType" ;
+        :value "text/plain" ;
+    ], [
+        :parameterName "body" ;
+        :value "milk\neggs\nbread\nbutter\napples\norange juice\n" ;
+    ], [
+        :parameterName "as" ;
+        :value "textResourceLocation" ;
     ] ;
-    :extract (
-        _:textResourceLocation
-    ) ;
 .
 
 _:getTextResourceStorageLinks
@@ -2051,16 +2056,21 @@ _:getContainerItemIds
 .
 
 _:createSecondTextResource
+    a :CreateResource ;
     :stepName "Create second text resource" ;
-    :request [
-        :method "POST" ;
-        :uri _:container ;
-        :headers _:contentTypeTextPlain ;
-        :body [ :constant "milk\neggs\nbread\nbutter\napples\norange juice\n" ] ;
+    :argument [
+        :parameterName "in" ;
+        :value _:container ;
+    ], [
+        :parameterName "contentType" ;
+        :value "text/plain" ;
+    ], [
+        :parameterName "body" ;
+        :value "milk\neggs\nbread\nbutter\napples\norange juice\n" ;
+    ], [
+        :parameterName "as" ;
+        :value "secondTextResourceLocation" ;
     ] ;
-    :extract (
-        _:secondTextResourceLocation
-    ) ;
 .
 
 _:deleteTextResource
@@ -2392,16 +2402,21 @@ _:getTextResourceTypeLinks
 .
 
 _:createDigitsResource
+    a :CreateResource ;
     :stepName "Create digits resource" ;
-    :request [
-        :method "POST" ;
-        :uri _:container ;
-        :headers _:contentTypeTextPlain ;
-        :body [ :constant "0123456789" ] ;
+    :argument [
+        :parameterName "in" ;
+        :value _:container ;
+    ], [
+        :parameterName "contentType" ;
+        :value "text/plain" ;
+    ], [
+        :parameterName "body" ;
+        :value "0123456789" ;
+    ], [
+        :parameterName "as" ;
+        :value "digitsResourceLocation" ;
     ] ;
-    :extract (
-        _:digitsResourceLocation
-    ) ;
 .
 
 _:getDigitsResourceFirstFourBytesStatus
@@ -2541,11 +2556,21 @@ _:putTextResourceReplacingContentWithLinkHeader
 .
 
 _:createJsonResource
+    a :CreateResource ;
     :stepName "Create JSON resource" ;
-    :request _:postJsonResource ;
-    :extract (
-        _:jsonResourceLocation
-    ) ;
+    :argument [
+        :parameterName "in" ;
+        :value _:container ;
+    ], [
+        :parameterName "contentType" ;
+        :value "application/json" ;
+    ], [
+        :parameterName "body" ;
+        :value "{\"a\":1}" ;
+    ], [
+        :parameterName "as" ;
+        :value "jsonResourceLocation" ;
+    ] ;
 .
 
 _:getJsonResourceLinksetLinks
@@ -2800,13 +2825,6 @@ _:putTextResourceReplaceContentWithLinkHeader
     :body [ :constant "new content" ] ;
 .
 
-_:postJsonResource
-    :method "POST" ;
-    :uri _:container ;
-    :headers _:contentTypeApplicationJson ;
-    :body [ :constant "{\"a\":1}" ] ;
-.
-
 _:getJsonResource
     :method "GET" ;
     :uri _:jsonResource ;
@@ -3050,11 +3068,6 @@ _:upLinks
     :to "upLinks" ;
 .
 
-_:secondTextResourceLocation
-    :header "Location" ;
-    :to "secondTextResourceLocation" ;
-.
-
 _:nestedContainerLocation
     :header "Location" ;
     :to "nestedContainerLocation" ;
@@ -3090,11 +3103,6 @@ _:typeLinks
     :to "typeLinks" ;
 .
 
-_:digitsResourceLocation
-    :header "Location" ;
-    :to "digitsResourceLocation" ;
-.
-
 _:contentRange
     :header "Content-Range" ;
     :to "contentRange" ;
@@ -3113,11 +3121,6 @@ _:headEtag
 _:headLinksetLinks
     :link "linkset" ;
     :to "headLinksetLinks" ;
-.
-
-_:jsonResourceLocation
-    :header "Location" ;
-    :to "jsonResourceLocation" ;
 .
 
 # Assertions

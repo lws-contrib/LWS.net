@@ -35,7 +35,7 @@ public class ResourcesTest
 
         var leftovers = graph.Triples
             .Where(t => t.Predicate.ToString() is Vocabulary + "argument" or Vocabulary + "expansion"
-                || t.Predicate.ToString() == RdfType && t.Object.ToString() is Vocabulary + "CreateContainer" or Vocabulary + "StepTemplate")
+                || t.Predicate.ToString() == RdfType && t.Object.ToString() is Vocabulary + "CreateContainer" or Vocabulary + "CreateResource" or Vocabulary + "StepTemplate")
             .ToArray();
         Assert.IsEmpty(leftovers);
 
@@ -48,6 +48,26 @@ public class ResourcesTest
         var extractor = (Model.NewModel.Extractors.HeaderExtractor)Model.NewModel.Step.Wrap(step, graph).Extract.Single();
         Assert.AreEqual("Location", extractor.HeaderName);
         Assert.AreEqual("containerLocation", extractor.To);
+    }
+
+    [TestMethod]
+    public void ParseExpandsCreateResourceInFromSpec()
+    {
+        var graph = Resources.Parse(new(Resources.Base, "fromSpec.ttl"));
+
+        var step = graph.GetTriplesWithPredicateObject(graph.CreateUriNode(new Uri(Vocabulary + "stepName")), graph.CreateLiteralNode("Create JSON resource")).Single().Subject;
+        var wrapped = Model.NewModel.Step.Wrap(step, graph);
+
+        Assert.AreEqual("POST", wrapped.Request.Method);
+        Assert.HasCount(1, wrapped.Request.Headers);
+
+        var extractor = (Model.NewModel.Extractors.HeaderExtractor)wrapped.Extract.Single();
+        Assert.AreEqual("Location", extractor.HeaderName);
+        Assert.AreEqual("jsonResourceLocation", extractor.To);
+
+        var literals = GraphAssert.Reachable(graph, [step]).Triples.Select(t => t.Object).Where(o => o.NodeType == NodeType.Literal).Select(o => ((ILiteralNode)o).Value).ToArray();
+        CollectionAssert.Contains(literals, "application/json");
+        CollectionAssert.Contains(literals, "{\"a\":1}");
     }
 
     private static IEnumerable<INode> ManifestNodes(IGraph graph) =>
