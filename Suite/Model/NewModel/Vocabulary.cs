@@ -85,4 +85,20 @@ internal static class Vocabulary
     internal static INode IsomorphicWith { get; } = factory.CreateUriNode(UriFactory.Create($"{NS}isomorphicWith"));
 
     internal static INode Not { get; } = factory.CreateUriNode(UriFactory.Create($"{NS}not"));
+
+    internal static INode StepTemplate { get; } = factory.CreateUriNode(UriFactory.Create($"{NS}StepTemplate"));
+
+    internal static INode Parameter { get; } = factory.CreateUriNode(UriFactory.Create($"{NS}parameter"));
+
+    internal static INode ParameterName { get; } = factory.CreateUriNode(UriFactory.Create($"{NS}parameterName"));
+
+    internal static INode Default { get; } = factory.CreateUriNode(UriFactory.Create($"{NS}default"));
+
+    internal static INode Required { get; } = factory.CreateUriNode(UriFactory.Create($"{NS}required"));
+
+    internal static INode Expansion { get; } = factory.CreateUriNode(UriFactory.Create($"{NS}expansion"));
+
+    internal static INode Param { get; } = factory.CreateUriNode(UriFactory.Create($"{NS}param"));
+
+    internal static INode Argument { get; } = factory.CreateUriNode(UriFactory.Create($"{NS}argument"));
 }
