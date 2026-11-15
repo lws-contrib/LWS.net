@@ -318,18 +318,12 @@ _:discoverStorageRoot
 .
 
 _:createContainer
+    a :CreateContainer ;
     :stepName "Create container" ;
-    :request [
-        :method "POST" ;
-        :uri _:storageRoot ;
-        :headers _:linkTypeContainer ;
+    :argument [
+        :parameterName "in" ;
+        :value _:storageRoot ;
     ] ;
-    :extract (
-        [
-            :header "Location" ;
-            :to "containerLocation" ;
-        ]
-    ) ;
 .
 
 _:getContainerStatus
@@ -365,19 +359,21 @@ _:getContainerAsLwsJsonTypeLinks
 .
 
 _:createShoppingList
+    a :CreateResource ;
     :stepName "Create shopping list" ;
-    :request [
-        :method "POST" ;
-        :uri _:container ;
-        :headers _:contentTypeTextPlain ;
-        :body [ :constant "milk\neggs\nbread\nbutter\napples\norange juice\n" ] ;
+    :argument [
+        :parameterName "in" ;
+        :value _:container ;
+    ], [
+        :parameterName "contentType" ;
+        :value "text/plain" ;
+    ], [
+        :parameterName "body" ;
+        :value "milk\neggs\nbread\nbutter\napples\norange juice\n" ;
+    ], [
+        :parameterName "as" ;
+        :value "shoppingListLocation" ;
     ] ;
-    :extract (
-        [
-            :header "Location" ;
-            :to "shoppingListLocation" ;
-        ]
-    ) ;
 .
 
 _:getShoppingListStatus
@@ -583,16 +579,6 @@ _:tokenEndpoint
 _:acceptLwsJson
     :key "Accept" ;
     :value [ :constant "application/lws+json" ] ;
-.
-
-_:linkTypeContainer
-    :key "Link" ;
-    :value [ :constant "<https://www.w3.org/ns/lws#Container>; rel=\"type\"" ] ;
-.
-
-_:contentTypeTextPlain
-    :key "Content-Type" ;
-    :value [ :constant "text/plain" ] ;
 .
 
 _:contentTypeFormUrlEncoded

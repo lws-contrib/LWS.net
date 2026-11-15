@@ -127,6 +127,41 @@ public class ResourcesTest
         CollectionAssert.Contains(literals, "0123456789");
     }
 
+    [TestMethod]
+    public void ParseExpandsTemplatesInOldManifest()
+    {
+        var graph = Resources.Parse(new(Resources.Base, "oldmanifest.ttl"));
+
+        var leftovers = graph.Triples
+            .Where(t => t.Predicate.ToString() is Vocabulary + "argument" or Vocabulary + "expansion"
+                || t.Predicate.ToString() == RdfType && t.Object.ToString() is Vocabulary + "CreateContainer" or Vocabulary + "CreateResource" or Vocabulary + "DeleteResource" or Vocabulary + "ReadContainer" or Vocabulary + "StepTemplate")
+            .ToArray();
+        Assert.IsEmpty(leftovers);
+
+        var step = graph.GetTriplesWithPredicateObject(graph.CreateUriNode(new Uri(Vocabulary + "stepName")), graph.CreateLiteralNode("Create shopping list")).Single().Subject;
+        var wrapped = Model.NewModel.Step.Wrap(step, graph);
+
+        Assert.AreEqual("POST", wrapped.Request.Method);
+        Assert.HasCount(1, wrapped.Request.Headers);
+    }
+
+    [TestMethod]
+    public void ParseExpandsTemplatesInExample()
+    {
+        var graph = Resources.Parse(new(Resources.Base, "example.ttl"));
+
+        var leftovers = graph.Triples
+            .Where(t => t.Predicate.ToString() is Vocabulary + "argument" or Vocabulary + "expansion"
+                || t.Predicate.ToString() == RdfType && t.Object.ToString() is Vocabulary + "CreateContainer" or Vocabulary + "CreateResource" or Vocabulary + "DeleteResource" or Vocabulary + "ReadContainer" or Vocabulary + "StepTemplate")
+            .ToArray();
+        Assert.IsEmpty(leftovers);
+
+        var step = graph.GetTriplesWithPredicateObject(graph.CreateUriNode(new Uri(Vocabulary + "stepName")), graph.CreateLiteralNode("Delete resource")).Single().Subject;
+        var wrapped = Model.NewModel.Step.Wrap(step, graph);
+
+        Assert.AreEqual("DELETE", wrapped.Request.Method);
+    }
+
     private static IEnumerable<INode> ManifestNodes(IGraph graph) =>
         graph.GetTriplesWithPredicate(graph.CreateUriNode(new Uri(Vocabulary + "manifestName"))).Select(t => t.Subject).ToArray();
 }

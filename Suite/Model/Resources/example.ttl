@@ -38,21 +38,16 @@
                 ) ;
             ]
             [
+                a :DeleteResource ;
                 :stepName "Delete resource" ;
-                :request [
-                    :method "DELETE" ;
-                    :uri [
+                :argument [
+                    :parameterName "target" ;
+                    :value [
                         :single [
                             :variable "newResource" ;
                         ] ;
                     ] ;
                 ] ;
-                :extract (
-                    [
-                        a :StatusCodeExtractor ;
-                        :to "status" ;
-                    ]
-                ) ;
             ]
         ) ;
         :assert [
