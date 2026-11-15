@@ -101,6 +101,32 @@ public class ResourcesTest
         Assert.AreEqual("containerId", extractor.To);
     }
 
+    [TestMethod]
+    public void ParseExpandsTemplatesInTouchstone()
+    {
+        var graph = Resources.Parse(new(Resources.Base, "touchstone.ttl"));
+
+        var leftovers = graph.Triples
+            .Where(t => t.Predicate.ToString() is Vocabulary + "argument" or Vocabulary + "expansion"
+                || t.Predicate.ToString() == RdfType && t.Object.ToString() is Vocabulary + "CreateContainer" or Vocabulary + "CreateResource" or Vocabulary + "DeleteResource" or Vocabulary + "ReadContainer" or Vocabulary + "StepTemplate")
+            .ToArray();
+        Assert.IsEmpty(leftovers);
+
+        var step = graph.GetTriplesWithPredicateObject(graph.CreateUriNode(new Uri(Vocabulary + "stepName")), graph.CreateLiteralNode("Create digits resource")).Single().Subject;
+        var wrapped = Model.NewModel.Step.Wrap(step, graph);
+
+        Assert.AreEqual("POST", wrapped.Request.Method);
+        Assert.HasCount(1, wrapped.Request.Headers);
+
+        var extractor = (Model.NewModel.Extractors.HeaderExtractor)wrapped.Extract.Single();
+        Assert.AreEqual("Location", extractor.HeaderName);
+        Assert.AreEqual("digitsResourceLocation", extractor.To);
+
+        var literals = GraphAssert.Reachable(graph, [step]).Triples.Select(t => t.Object).Where(o => o.NodeType == NodeType.Literal).Select(o => ((ILiteralNode)o).Value).ToArray();
+        CollectionAssert.Contains(literals, "text/plain");
+        CollectionAssert.Contains(literals, "0123456789");
+    }
+
     private static IEnumerable<INode> ManifestNodes(IGraph graph) =>
         graph.GetTriplesWithPredicate(graph.CreateUriNode(new Uri(Vocabulary + "manifestName"))).Select(t => t.Subject).ToArray();
 }

@@ -2498,19 +2498,24 @@ _:createTextResource
 .
 
 _:createSecondTextResource
+    a :CreateResource ;
     :stepName "Create second text resource" ;
-    :request [
-        :method "POST" ;
-        :uri _:container ;
-        :headers _:contentTypeTextPlain ;
-        :body [ :constant "milk\neggs\nbread\nbutter\napples\norange juice\n" ] ;
+    :argument [
+        :parameterName "in" ;
+        :value _:container ;
     ] ;
-    :extract (
-        [
-            :header "Location" ;
-            :to "secondTextResourceLocation" ;
-        ]
-    ) ;
+    :argument [
+        :parameterName "contentType" ;
+        :value "text/plain" ;
+    ] ;
+    :argument [
+        :parameterName "body" ;
+        :value "milk\neggs\nbread\nbutter\napples\norange juice\n" ;
+    ] ;
+    :argument [
+        :parameterName "as" ;
+        :value "secondTextResourceLocation" ;
+    ] ;
 .
 
 _:getTextResourceBody
@@ -2522,19 +2527,24 @@ _:getTextResourceBody
 .
 
 _:createDigitsResource
+    a :CreateResource ;
     :stepName "Create digits resource" ;
-    :request [
-        :method "POST" ;
-        :uri _:container ;
-        :headers _:contentTypeTextPlain ;
-        :body [ :constant "0123456789" ] ;
+    :argument [
+        :parameterName "in" ;
+        :value _:container ;
     ] ;
-    :extract (
-        [
-            :header "Location" ;
-            :to "digitsResourceLocation" ;
-        ]
-    ) ;
+    :argument [
+        :parameterName "contentType" ;
+        :value "text/plain" ;
+    ] ;
+    :argument [
+        :parameterName "body" ;
+        :value "0123456789" ;
+    ] ;
+    :argument [
+        :parameterName "as" ;
+        :value "digitsResourceLocation" ;
+    ] ;
 .
 
 _:getDigitsResourceBeyondEndStatus
@@ -2567,27 +2577,54 @@ _:createNestedContainer
 .
 
 _:getContainerItems
+    a :ReadContainer ;
     :stepName "Get container items" ;
-    :request _:getContainer ;
-    :extract (
-        _:items
-    ) ;
+    :argument [
+        :parameterName "target" ;
+        :value _:container ;
+    ] ;
+    :argument [
+        :parameterName "path" ;
+        :value "$.items" ;
+    ] ;
+    :argument [
+        :parameterName "as" ;
+        :value "items" ;
+    ] ;
 .
 
 _:getContainerId
+    a :ReadContainer ;
     :stepName "Get container id" ;
-    :request _:getContainer ;
-    :extract (
-        _:id
-    ) ;
+    :argument [
+        :parameterName "target" ;
+        :value _:container ;
+    ] ;
+    :argument [
+        :parameterName "path" ;
+        :value "$.id" ;
+    ] ;
+    :argument [
+        :parameterName "as" ;
+        :value "id" ;
+    ] ;
 .
 
 _:getContainerTotalItems
+    a :ReadContainer ;
     :stepName "Get container total items" ;
-    :request _:getContainer ;
-    :extract (
-        _:totalItems
-    ) ;
+    :argument [
+        :parameterName "target" ;
+        :value _:container ;
+    ] ;
+    :argument [
+        :parameterName "path" ;
+        :value "$.totalItems" ;
+    ] ;
+    :argument [
+        :parameterName "as" ;
+        :value "totalItems" ;
+    ] ;
 .
 
 _:getContainerUpLinks
@@ -2740,14 +2777,24 @@ _:createResourceInMissingContainer
 .
 
 _:createFirstSameBytesResource
+    a :CreateResource ;
     :stepName "Create first same-bytes resource" ;
-    :request _:createSameBytesResource ;
-    :extract (
-        [
-            :header "Location" ;
-            :to "firstSameBytesLocation" ;
-        ]
-    ) ;
+    :argument [
+        :parameterName "in" ;
+        :value _:container ;
+    ] ;
+    :argument [
+        :parameterName "contentType" ;
+        :value "text/plain" ;
+    ] ;
+    :argument [
+        :parameterName "body" ;
+        :value "same bytes" ;
+    ] ;
+    :argument [
+        :parameterName "as" ;
+        :value "firstSameBytesLocation" ;
+    ] ;
 .
 
 _:createSecondSameBytesResource
@@ -2799,19 +2846,24 @@ _:getSecondSameBytesResourceBody
 .
 
 _:createDataResource
+    a :CreateResource ;
     :stepName "Create data resource" ;
-    :request [
-        :method "POST" ;
-        :uri _:container ;
-        :headers _:contentTypeTextPlain ;
-        :body [ :constant "not a container" ] ;
+    :argument [
+        :parameterName "in" ;
+        :value _:container ;
     ] ;
-    :extract (
-        [
-            :header "Location" ;
-            :to "notAContainerLocation" ;
-        ]
-    ) ;
+    :argument [
+        :parameterName "contentType" ;
+        :value "text/plain" ;
+    ] ;
+    :argument [
+        :parameterName "body" ;
+        :value "not a container" ;
+    ] ;
+    :argument [
+        :parameterName "as" ;
+        :value "notAContainerLocation" ;
+    ] ;
 .
 
 _:createResourceBeneathDataResourceStatus
@@ -3140,11 +3192,20 @@ _:conditionalGetContainerBody
 .
 
 _:getContainerType
+    a :ReadContainer ;
     :stepName "Get container type" ;
-    :request _:getContainer ;
-    :extract (
-        _:type
-    ) ;
+    :argument [
+        :parameterName "target" ;
+        :value _:container ;
+    ] ;
+    :argument [
+        :parameterName "path" ;
+        :value "$.type" ;
+    ] ;
+    :argument [
+        :parameterName "as" ;
+        :value "type" ;
+    ] ;
 .
 
 _:getContainerTypeLinks
@@ -3185,11 +3246,20 @@ _:getStorageRootTypeLinks
 .
 
 _:getStorageRootType
+    a :ReadContainer ;
     :stepName "Get storage root type" ;
-    :request _:getStorageRoot ;
-    :extract (
-        _:type
-    ) ;
+    :argument [
+        :parameterName "target" ;
+        :value _:storageRoot ;
+    ] ;
+    :argument [
+        :parameterName "path" ;
+        :value "$.type" ;
+    ] ;
+    :argument [
+        :parameterName "as" ;
+        :value "type" ;
+    ] ;
 .
 
 _:getTextResourceTypeLinks
@@ -3424,19 +3494,24 @@ _:patchLinksetStaleIfMatchStatus
 .
 
 _:createJsonResource
+    a :CreateResource ;
     :stepName "Create JSON resource" ;
-    :request [
-        :method "POST" ;
-        :uri _:container ;
-        :headers _:contentTypeJson ;
-        :body [ :constant "{\"title\":\"first\",\"keep\":true,\"drop\":\"gone\",\"tags\":[\"a\",\"b\"]}" ] ;
+    :argument [
+        :parameterName "in" ;
+        :value _:container ;
     ] ;
-    :extract (
-        [
-            :header "Location" ;
-            :to "jsonResourceLocation" ;
-        ]
-    ) ;
+    :argument [
+        :parameterName "contentType" ;
+        :value "application/json" ;
+    ] ;
+    :argument [
+        :parameterName "body" ;
+        :value "{\"title\":\"first\",\"keep\":true,\"drop\":\"gone\",\"tags\":[\"a\",\"b\"]}" ;
+    ] ;
+    :argument [
+        :parameterName "as" ;
+        :value "jsonResourceLocation" ;
+    ] ;
 .
 
 _:getJsonResourceETag
@@ -3593,49 +3668,50 @@ _:headContainerUpLinks
 .
 
 _:createOuterContainer
+    a :CreateContainer ;
     :stepName "Create outer container" ;
-    :request [
-        :method "POST" ;
-        :uri _:container ;
-        :headers _:linkTypeContainer ;
+    :argument [
+        :parameterName "in" ;
+        :value _:container ;
     ] ;
-    :extract (
-        [
-            :header "Location" ;
-            :to "outerLocation" ;
-        ]
-    ) ;
+    :argument [
+        :parameterName "as" ;
+        :value "outerLocation" ;
+    ] ;
 .
 
 _:createInnerContainer
+    a :CreateContainer ;
     :stepName "Create inner container" ;
-    :request [
-        :method "POST" ;
-        :uri _:outer ;
-        :headers _:linkTypeContainer ;
+    :argument [
+        :parameterName "in" ;
+        :value _:outer ;
     ] ;
-    :extract (
-        [
-            :header "Location" ;
-            :to "innerLocation" ;
-        ]
-    ) ;
+    :argument [
+        :parameterName "as" ;
+        :value "innerLocation" ;
+    ] ;
 .
 
 _:createLeafResource
+    a :CreateResource ;
     :stepName "Create leaf resource" ;
-    :request [
-        :method "POST" ;
-        :uri _:inner ;
-        :headers _:contentTypeTextPlain ;
-        :body [ :constant "two containers deep" ] ;
+    :argument [
+        :parameterName "in" ;
+        :value _:inner ;
     ] ;
-    :extract (
-        [
-            :header "Location" ;
-            :to "leafLocation" ;
-        ]
-    ) ;
+    :argument [
+        :parameterName "contentType" ;
+        :value "text/plain" ;
+    ] ;
+    :argument [
+        :parameterName "body" ;
+        :value "two containers deep" ;
+    ] ;
+    :argument [
+        :parameterName "as" ;
+        :value "leafLocation" ;
+    ] ;
 .
 
 _:headLeafUpLinks
@@ -3647,11 +3723,20 @@ _:headLeafUpLinks
 .
 
 _:getInnerContainerItemIds
+    a :ReadContainer ;
     :stepName "Get inner container item ids" ;
-    :request _:getInnerContainer ;
-    :extract (
-        _:itemIds
-    ) ;
+    :argument [
+        :parameterName "target" ;
+        :value _:inner ;
+    ] ;
+    :argument [
+        :parameterName "path" ;
+        :value "$.items[*].id" ;
+    ] ;
+    :argument [
+        :parameterName "as" ;
+        :value "itemIds" ;
+    ] ;
 .
 
 _:getInnerContainerUpLinks
@@ -3663,11 +3748,20 @@ _:getInnerContainerUpLinks
 .
 
 _:getOuterContainerItemIds
+    a :ReadContainer ;
     :stepName "Get outer container item ids" ;
-    :request _:getOuterContainer ;
-    :extract (
-        _:itemIds
-    ) ;
+    :argument [
+        :parameterName "target" ;
+        :value _:outer ;
+    ] ;
+    :argument [
+        :parameterName "path" ;
+        :value "$.items[*].id" ;
+    ] ;
+    :argument [
+        :parameterName "as" ;
+        :value "itemIds" ;
+    ] ;
 .
 
 _:getOuterContainerUpLinks
@@ -3679,11 +3773,20 @@ _:getOuterContainerUpLinks
 .
 
 _:getContainerItemIds
+    a :ReadContainer ;
     :stepName "Get container item ids" ;
-    :request _:getContainer ;
-    :extract (
-        _:itemIds
-    ) ;
+    :argument [
+        :parameterName "target" ;
+        :value _:container ;
+    ] ;
+    :argument [
+        :parameterName "path" ;
+        :value "$.items[*].id" ;
+    ] ;
+    :argument [
+        :parameterName "as" ;
+        :value "itemIds" ;
+    ] ;
 .
 
 _:getInnerContainerETag
@@ -4301,11 +4404,6 @@ _:contentTypeTextPlain
     :value [ :constant "text/plain" ] ;
 .
 
-_:contentTypeJson
-    :key "Content-Type" ;
-    :value [ :constant "application/json" ] ;
-.
-
 _:acceptJson
     :key "Accept" ;
     :value [ :constant "application/json" ] ;
@@ -4350,21 +4448,6 @@ _:contentType
 _:type
     :path "$.type" ;
     :to "type" ;
-.
-
-_:items
-    :path "$.items" ;
-    :to "items" ;
-.
-
-_:id
-    :path "$.id" ;
-    :to "id" ;
-.
-
-_:totalItems
-    :path "$.totalItems" ;
-    :to "totalItems" ;
 .
 
 _:typeLinks
@@ -4420,11 +4503,6 @@ _:jsonFirstTag
 _:jsonThirdTag
     :path "$.tags[2]" ;
     :to "jsonThirdTag" ;
-.
-
-_:itemIds
-    :path "$.items[*].id" ;
-    :to "itemIds" ;
 .
 
 _:upLinks
