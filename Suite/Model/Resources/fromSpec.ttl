@@ -1876,15 +1876,12 @@ _:discoverStorageRoot
 .
 
 _:createContainer
+    a :CreateContainer ;
     :stepName "Create container" ;
-    :request [
-        :method "POST" ;
-        :uri _:storageRoot ;
-        :headers _:linkTypeContainer ;
+    :argument [
+        :parameterName "in" ;
+        :value _:storageRoot ;
     ] ;
-    :extract (
-        _:containerLocation
-    ) ;
 .
 
 _:createTextResource
@@ -3028,11 +3025,6 @@ _:ifMatchBogus
 .
 
 # Extractors
-_:containerLocation
-    :header "Location" ;
-    :to "containerLocation" ;
-.
-
 _:textResourceLocation
     :header "Location" ;
     :to "textResourceLocation" ;
