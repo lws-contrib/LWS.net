@@ -1967,14 +1967,20 @@ _:getStorageDescriptionAsCidContentType
 .
 
 _:getStorageRootType
+    a :ReadContainer ;
     :stepName "Get storage root type" ;
-    :request _:getStorageRoot ;
-    :extract (
-        [
-            :path "$.type" ;
-            :to "type" ;
-        ]
-    ) ;
+    :argument [
+        :parameterName "target" ;
+        :value _:storageRoot ;
+    ] ;
+    :argument [
+        :parameterName "path" ;
+        :value "$.type" ;
+    ] ;
+    :argument [
+        :parameterName "as" ;
+        :value "type" ;
+    ] ;
 .
 
 _:getStorageDescriptionAsCidContext
@@ -2045,14 +2051,20 @@ _:headContainerUpLinks
 .
 
 _:getContainerItemIds
+    a :ReadContainer ;
     :stepName "Get container item ids" ;
-    :request _:getContainer ;
-    :extract (
-        [
-            :path "$.items[*].id" ;
-            :to "itemIds" ;
-        ]
-    ) ;
+    :argument [
+        :parameterName "target" ;
+        :value _:container ;
+    ] ;
+    :argument [
+        :parameterName "path" ;
+        :value "$.items[*].id" ;
+    ] ;
+    :argument [
+        :parameterName "as" ;
+        :value "itemIds" ;
+    ] ;
 .
 
 _:createSecondTextResource
@@ -2112,69 +2124,105 @@ _:getNestedContainerUpLinks
 .
 
 _:getContainerId
+    a :ReadContainer ;
     :stepName "Get container id" ;
-    :request _:getContainer ;
-    :extract (
-        [
-            :path "$.id" ;
-            :to "containerId" ;
-        ]
-    ) ;
+    :argument [
+        :parameterName "target" ;
+        :value _:container ;
+    ] ;
+    :argument [
+        :parameterName "path" ;
+        :value "$.id" ;
+    ] ;
+    :argument [
+        :parameterName "as" ;
+        :value "containerId" ;
+    ] ;
 .
 
 _:getContainerType
+    a :ReadContainer ;
     :stepName "Get container type" ;
-    :request _:getContainer ;
-    :extract (
-        [
-            :path "$.type" ;
-            :to "containerType" ;
-        ]
-    ) ;
+    :argument [
+        :parameterName "target" ;
+        :value _:container ;
+    ] ;
+    :argument [
+        :parameterName "path" ;
+        :value "$.type" ;
+    ] ;
+    :argument [
+        :parameterName "as" ;
+        :value "containerType" ;
+    ] ;
 .
 
 _:getContainerTotalItems
+    a :ReadContainer ;
     :stepName "Get container totalItems" ;
-    :request _:getContainer ;
-    :extract (
-        [
-            :path "$.totalItems" ;
-            :to "totalItems" ;
-        ]
-    ) ;
+    :argument [
+        :parameterName "target" ;
+        :value _:container ;
+    ] ;
+    :argument [
+        :parameterName "path" ;
+        :value "$.totalItems" ;
+    ] ;
+    :argument [
+        :parameterName "as" ;
+        :value "totalItems" ;
+    ] ;
 .
 
 _:getContainerItemsArray
+    a :ReadContainer ;
     :stepName "Get container items array" ;
-    :request _:getContainer ;
-    :extract (
-        [
-            :path "$.items" ;
-            :to "itemsArray" ;
-        ]
-    ) ;
+    :argument [
+        :parameterName "target" ;
+        :value _:container ;
+    ] ;
+    :argument [
+        :parameterName "path" ;
+        :value "$.items" ;
+    ] ;
+    :argument [
+        :parameterName "as" ;
+        :value "itemsArray" ;
+    ] ;
 .
 
 _:getContainerItemTypes
+    a :ReadContainer ;
     :stepName "Get container item types" ;
-    :request _:getContainer ;
-    :extract (
-        [
-            :path "$.items[*].type" ;
-            :to "itemTypes" ;
-        ]
-    ) ;
+    :argument [
+        :parameterName "target" ;
+        :value _:container ;
+    ] ;
+    :argument [
+        :parameterName "path" ;
+        :value "$.items[*].type" ;
+    ] ;
+    :argument [
+        :parameterName "as" ;
+        :value "itemTypes" ;
+    ] ;
 .
 
 _:getContainerItemFormats
+    a :ReadContainer ;
     :stepName "Get container item formats" ;
-    :request _:getContainer ;
-    :extract (
-        [
-            :path "$.items[*].format" ;
-            :to "itemFormats" ;
-        ]
-    ) ;
+    :argument [
+        :parameterName "target" ;
+        :value _:container ;
+    ] ;
+    :argument [
+        :parameterName "path" ;
+        :value "$.items[*].format" ;
+    ] ;
+    :argument [
+        :parameterName "as" ;
+        :value "itemFormats" ;
+    ] ;
 .
 
 _:getTextResourceLinksetLinks

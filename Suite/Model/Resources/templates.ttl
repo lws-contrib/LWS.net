@@ -62,3 +62,25 @@
         ) ;
     ] ;
 .
+
+:ReadContainer
+    a :StepTemplate ;
+    :parameter (
+        [ :parameterName "target" ; :required true ]
+        [ :parameterName "path" ; :required true ]
+        [ :parameterName "as" ; :required true ]
+    ) ;
+    :expansion [
+        :request [
+            :method "GET" ;
+            :uri p:target ;
+            :headers [
+                :key "Accept" ;
+                :value [ :constant "application/lws+json" ] ;
+            ] ;
+        ] ;
+        :extract (
+            [ :path p:path ; :to [ :param "as" ] ]
+        ) ;
+    ] ;
+.
