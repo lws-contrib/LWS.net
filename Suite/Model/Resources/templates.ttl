@@ -84,3 +84,25 @@
         ) ;
     ] ;
 .
+
+:DeleteResourceIfMatch
+    a :StepTemplate ;
+    :parameter (
+        [ :parameterName "target" ; :required true ]
+        [ :parameterName "etag" ; :required true ]
+        [ :parameterName "as" ; :default "status" ]
+    ) ;
+    :expansion [
+        :request [
+            :method "DELETE" ;
+            :uri p:target ;
+            :headers [
+                :key "If-Match" ;
+                :value p:etag ;
+            ] ;
+        ] ;
+        :extract (
+            [ a :StatusCodeExtractor ; :to [ :param "as" ] ]
+        ) ;
+    ] ;
+.

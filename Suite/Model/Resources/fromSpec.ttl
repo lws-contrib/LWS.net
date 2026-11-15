@@ -2720,11 +2720,20 @@ _:patchLinksetAddingDescribedByWithBogusIfMatch
 .
 
 _:deleteTextResourceWithMatchingIfMatch
+    a :DeleteResourceIfMatch ;
     :stepName "Delete text resource with matching If-Match" ;
-    :request _:deleteTextResourceIfMatchEtag ;
-    :extract (
-        _:status
-    ) ;
+    :argument [
+        :parameterName "target" ;
+        :value _:textResource ;
+    ] ;
+    :argument [
+        :parameterName "etag" ;
+        :value [
+            :single [
+                :variable "etag" ;
+            ] ;
+        ] ;
+    ] ;
 .
 
 _:deleteNestedContainer
@@ -2932,12 +2941,6 @@ _:patchLinksetAddDescribedByWithBogusIfMatch
     :headers _:contentTypeJsonPatch ;
     :headers _:ifMatchBogus ;
     :body [ :constant "[{\"op\":\"add\",\"path\":\"/linkset/0/describedby\",\"value\":[{\"href\":\"https://example.org/schema\"}]}]" ] ;
-.
-
-_:deleteTextResourceIfMatchEtag
-    :method "DELETE" ;
-    :uri _:textResource ;
-    :headers _:ifMatchEtag ;
 .
 
 # URIs

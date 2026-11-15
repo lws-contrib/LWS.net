@@ -3033,19 +3033,37 @@ _:conditionalPutTextResourceIfMatchChangedContentStatus
 .
 
 _:conditionalDeleteTextResourceStaleIfMatchStatus
+    a :DeleteResourceIfMatch ;
     :stepName "Conditional delete text resource stale If-Match status" ;
-    :request _:conditionalDeleteTextResourceStaleIfMatch ;
-    :extract (
-        _:status
-    ) ;
+    :argument [
+        :parameterName "target" ;
+        :value _:textResource ;
+    ] ;
+    :argument [
+        :parameterName "etag" ;
+        :value [
+            :single [
+                :variable "etag" ;
+            ] ;
+        ] ;
+    ] ;
 .
 
 _:deleteTextResourceIfMatchStatus
+    a :DeleteResourceIfMatch ;
     :stepName "Delete text resource If-Match status" ;
-    :request _:deleteTextResourceIfMatch ;
-    :extract (
-        _:status
-    ) ;
+    :argument [
+        :parameterName "target" ;
+        :value _:textResource ;
+    ] ;
+    :argument [
+        :parameterName "etag" ;
+        :value [
+            :single [
+                :variable "etag" ;
+            ] ;
+        ] ;
+    ] ;
 .
 
 _:headTextResourceStatus
@@ -3801,11 +3819,20 @@ _:getInnerContainerETag
 .
 
 _:deleteInnerContainerStatus
+    a :DeleteResourceIfMatch ;
     :stepName "Delete inner container status" ;
-    :request _:deleteInnerContainer ;
-    :extract (
-        _:status
-    ) ;
+    :argument [
+        :parameterName "target" ;
+        :value _:inner ;
+    ] ;
+    :argument [
+        :parameterName "etag" ;
+        :value [
+            :single [
+                :variable "etag" ;
+            ] ;
+        ] ;
+    ] ;
 .
 
 _:getLeafStatus
@@ -4103,32 +4130,6 @@ _:conditionalPutTextResourceIfMatchChangedContent
     :body [ :constant "changed content" ] ;
 .
 
-_:conditionalDeleteTextResourceStaleIfMatch
-    :method "DELETE" ;
-    :uri _:textResource ;
-    :headers [
-        :key "If-Match" ;
-        :value [
-            :single [
-                :variable "etag" ;
-            ] ;
-        ] ;
-    ] ;
-.
-
-_:deleteTextResourceIfMatch
-    :method "DELETE" ;
-    :uri _:textResource ;
-    :headers [
-        :key "If-Match" ;
-        :value [
-            :single [
-                :variable "etag" ;
-            ] ;
-        ] ;
-    ] ;
-.
-
 _:getDigitsResourceFirstFourBytes
     :method "GET" ;
     :uri _:digitsResource ;
@@ -4233,19 +4234,6 @@ _:getOuterContainer
     :method "GET" ;
     :uri _:outer ;
     :headers _:acceptLwsJson ;
-.
-
-_:deleteInnerContainer
-    :method "DELETE" ;
-    :uri _:inner ;
-    :headers [
-        :key "If-Match" ;
-        :value [
-            :single [
-                :variable "etag" ;
-            ] ;
-        ] ;
-    ] ;
 .
 
 _:getLeaf
