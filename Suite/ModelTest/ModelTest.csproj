@@ -1,0 +1,7 @@
+<Project Sdk="MSTest.Sdk/4.4.0">
+
+  <ItemGroup>
+    <ProjectReference Include="..\Model\Model.csproj" />
+  </ItemGroup>
+
+</Project>
