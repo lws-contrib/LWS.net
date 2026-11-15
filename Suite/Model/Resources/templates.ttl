@@ -1,0 +1,23 @@
+@prefix : <http://example.com/> .
+@prefix p: <urn:lws:param:> .
+
+:CreateContainer
+    a :StepTemplate ;
+    :parameter (
+        [ :parameterName "in" ; :required true ]
+        [ :parameterName "as" ; :default "containerLocation" ]
+    ) ;
+    :expansion [
+        :request [
+            :method "POST" ;
+            :uri p:in ;
+            :headers [
+                :key "Link" ;
+                :value [ :constant "<https://www.w3.org/ns/lws#Container>; rel=\"type\"" ] ;
+            ] ;
+        ] ;
+        :extract (
+            [ :header "Location" ; :to [ :param "as" ] ]
+        ) ;
+    ] ;
+.

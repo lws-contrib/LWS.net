@@ -98,6 +98,12 @@ public class Resources
         var g = new Graph { BaseUri = uri };
         new TurtleParser().Load(g, Reader(Base.MakeRelativeUri(uri).ToString()));
 
+        var templates = new Graph();
+        new TurtleParser().Load(templates, Reader("templates.ttl"));
+        g.Merge(templates);
+
+        TemplateExpander.Expand(g);
+
         return new NewModel.Graph(g);
     }
 
