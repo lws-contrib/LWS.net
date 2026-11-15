@@ -1,6 +1,6 @@
 ﻿namespace Model.NewModel;
 
-public class StepTemplate : GraphWrapperNode
+public class StepTemplate : Typed
 {
     protected StepTemplate(INode node, IGraph graph) : base(node, graph) { }
 

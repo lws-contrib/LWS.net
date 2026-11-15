@@ -1,6 +1,6 @@
 ﻿namespace Model.NewModel;
 
-public class TemplateInstance : GraphWrapperNode
+public class TemplateInstance : Typed
 {
     protected TemplateInstance(INode node, IGraph graph) : base(node, graph) { }
 

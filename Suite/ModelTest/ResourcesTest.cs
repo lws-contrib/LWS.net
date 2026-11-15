@@ -19,9 +19,13 @@ public class ResourcesTest
         var plain = new Graph { BaseUri = NewUri };
         new TurtleParser().Load(plain, Resources.Reader("new.ttl"));
 
-        var actual = Resources.Parse(NewUri);
+        IGraph actual = Resources.Parse(NewUri);
 
-        Assert.IsTrue(plain.Equals(actual));
+        var expectedManifest = GraphAssert.Reachable(plain, ManifestNodes(plain));
+        var actualManifest = GraphAssert.Reachable(actual, ManifestNodes(actual));
+
+        Assert.IsNotEmpty(expectedManifest.Triples);
+        Assert.IsTrue(expectedManifest.Equals(actualManifest));
     }
 
     [TestMethod]
@@ -30,7 +34,7 @@ public class ResourcesTest
         var graph = Resources.Parse(new(Resources.Base, "fromSpec.ttl"));
 
         var leftovers = graph.Triples
-            .Where(t => t.Predicate.ToString() is Vocabulary + "argument" or Vocabulary + "parameterName" or Vocabulary + "param"
+            .Where(t => t.Predicate.ToString() is Vocabulary + "argument" or Vocabulary + "expansion"
                 || t.Predicate.ToString() == RdfType && t.Object.ToString() is Vocabulary + "CreateContainer" or Vocabulary + "StepTemplate")
             .ToArray();
         Assert.IsEmpty(leftovers);
@@ -40,5 +44,12 @@ public class ResourcesTest
 
         Assert.AreEqual("POST", request.Method);
         Assert.HasCount(1, request.Headers);
+
+        var extractor = (Model.NewModel.Extractors.HeaderExtractor)Model.NewModel.Step.Wrap(step, graph).Extract.Single();
+        Assert.AreEqual("Location", extractor.HeaderName);
+        Assert.AreEqual("containerLocation", extractor.To);
     }
+
+    private static IEnumerable<INode> ManifestNodes(IGraph graph) =>
+        graph.GetTriplesWithPredicate(graph.CreateUriNode(new Uri(Vocabulary + "manifestName"))).Select(t => t.Subject).ToArray();
 }

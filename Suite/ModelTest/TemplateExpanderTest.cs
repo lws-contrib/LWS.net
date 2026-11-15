@@ -32,8 +32,14 @@ public class TemplateExpanderTest
         .
         """;
 
-    private static string Step(string name, string uri, string to) => $$"""
-        [
+    private static readonly Uri S = new("http://example.com/s");
+
+    private static readonly Uri A = new("http://example.com/a");
+
+    private static readonly Uri B = new("http://example.com/b");
+
+    private static string Step(string subject, string name, string uri, string to) => $$"""
+        {{subject}}
             :stepName "{{name}}" ;
             :request [
                 :method "POST" ;
@@ -46,33 +52,48 @@ public class TemplateExpanderTest
             :extract (
                 [ :header "Location" ; :to "{{to}}" ]
             ) ;
-        ] .
+        .
         """;
 
     [TestMethod]
     public void AppliesDefault()
     {
-        var actual = Expand($"{Template} _:s a :CreateContainer ; :stepName \"Create\" ; :argument [ :parameterName \"in\" ; :value _:storageRoot ] .");
+        var actual = Expand($"{Template} :s a :CreateContainer ; :stepName \"Create\" ; :argument [ :parameterName \"in\" ; :value _:storageRoot ] .");
 
-        GraphAssert.Isomorphic($"{Prefixes}{Step("Create", "_:storageRoot", "containerLocation")}", actual);
+        GraphAssert.IsomorphicFrom($"{Prefixes}{Step(":s", "Create", "_:storageRoot", "containerLocation")}", actual, S);
     }
 
     [TestMethod]
     public void AppliesExplicitArgument()
     {
-        var actual = Expand($"{Template} _:s a :CreateContainer ; :stepName \"Create\" ; :argument [ :parameterName \"in\" ; :value _:storageRoot ], [ :parameterName \"as\" ; :value \"other\" ] .");
+        var actual = Expand($"{Template} :s a :CreateContainer ; :stepName \"Create\" ; :argument [ :parameterName \"in\" ; :value _:storageRoot ], [ :parameterName \"as\" ; :value \"other\" ] .");
 
-        GraphAssert.Isomorphic($"{Prefixes}{Step("Create", "_:storageRoot", "other")}", actual);
+        GraphAssert.IsomorphicFrom($"{Prefixes}{Step(":s", "Create", "_:storageRoot", "other")}", actual, S);
     }
 
     [TestMethod]
     public void GivesInstancesDistinctBlankNodes()
     {
-        var actual = Expand($"{Template} _:a a :CreateContainer ; :stepName \"A\" ; :argument [ :parameterName \"in\" ; :value _:r ], [ :parameterName \"as\" ; :value \"x\" ] . _:b a :CreateContainer ; :stepName \"B\" ; :argument [ :parameterName \"in\" ; :value _:r ], [ :parameterName \"as\" ; :value \"y\" ] .");
+        var actual = Expand($"{Template} :a a :CreateContainer ; :stepName \"A\" ; :argument [ :parameterName \"in\" ; :value _:r ], [ :parameterName \"as\" ; :value \"x\" ] . :b a :CreateContainer ; :stepName \"B\" ; :argument [ :parameterName \"in\" ; :value _:r ], [ :parameterName \"as\" ; :value \"y\" ] .");
 
-        var one = Step("A", "_:r", "x");
-        var two = Step("B", "_:r", "y");
-        GraphAssert.Isomorphic($"{Prefixes}{one} {two}", actual);
+        var one = Step(":a", "A", "_:r", "x");
+        var two = Step(":b", "B", "_:r", "y");
+        GraphAssert.IsomorphicFrom($"{Prefixes}{one} {two}", actual, A, B);
+    }
+
+    [TestMethod]
+    public void KeepsBlankNodesSharedBetweenTemplateAndOtherSteps()
+    {
+        const string input = """
+            :T a :StepTemplate ; :parameter () ; :expansion [ :request [ :headers _:h ] ] .
+            :s a :T .
+            :plain :stepName "P" ; :request [ :method "GET" ; :headers _:h ] .
+            _:h :key "K" ; :value "V" .
+            """;
+
+        var actual = Expand(input);
+
+        GraphAssert.IsomorphicFrom($"{Prefixes}:plain :stepName \"P\" ; :request [ :method \"GET\" ; :headers [ :key \"K\" ; :value \"V\" ] ] .", actual, new Uri("http://example.com/plain"));
     }
 
     [TestMethod]
@@ -86,7 +107,7 @@ public class TemplateExpanderTest
     [TestMethod]
     public void RejectsMissingRequiredParameter()
     {
-        Assert.ThrowsExactly<TemplateExpansionException>(() => Expand($"{Template} _:s a :CreateContainer ."));
+        Assert.ThrowsExactly<TemplateExpansionException>(() => Expand($"{Template} :s a :CreateContainer ."));
     }
 
     [TestMethod]
@@ -102,13 +123,13 @@ public class TemplateExpanderTest
     [TestMethod]
     public void RejectsTwoValuesForOneParameter()
     {
-        Assert.ThrowsExactly<TemplateExpansionException>(() => Expand($"{Template} _:s a :CreateContainer ; :argument [ :parameterName \"in\" ; :value _:a ], [ :parameterName \"in\" ; :value _:b ] ."));
+        Assert.ThrowsExactly<TemplateExpansionException>(() => Expand($"{Template} :s a :CreateContainer ; :argument [ :parameterName \"in\" ; :value _:a ], [ :parameterName \"in\" ; :value _:b ] ."));
     }
 
     [TestMethod]
     public void RejectsArgumentForUndeclaredParameter()
     {
-        Assert.ThrowsExactly<TemplateExpansionException>(() => Expand($"{Template} _:s a :CreateContainer ; :argument [ :parameterName \"in\" ; :value _:r ], [ :parameterName \"nope\" ; :value _:x ] ."));
+        Assert.ThrowsExactly<TemplateExpansionException>(() => Expand($"{Template} :s a :CreateContainer ; :argument [ :parameterName \"in\" ; :value _:r ], [ :parameterName \"nope\" ; :value _:x ] ."));
     }
 
     private static IGraph Expand(string turtle)

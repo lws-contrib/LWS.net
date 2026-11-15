@@ -17,46 +17,25 @@ public static class TemplateExpander
 
         var arguments = instances.Keys.ToDictionary(instance => instance, instance => NewModel.TemplateInstance.Wrap(instance, graph).Arguments.ToArray());
 
-        var dropped = templates.Keys.SelectMany(template => Reachable(graph, template))
-            .Concat(arguments.Values.SelectMany(a => a).Where(argument => argument.NodeType == NodeType.Blank))
-            .ToHashSet();
-
         foreach (var (instance, templateNode) in instances)
         {
             new Instantiation(graph, templateNode, templates[templateNode], instance, arguments[instance]).Run();
         }
 
-        foreach (var node in dropped.Where(node => node.NodeType == NodeType.Blank))
+        foreach (var node in templates.Keys)
         {
-            NewModel.Placeholder.Wrap(node, graph).ParameterName = null;
-        }
-
-        foreach (var (node, template) in templates)
-        {
-            foreach (var parameter in template.Parameters)
-            {
-                parameter.ParameterName = null;
-                parameter.Default = null;
-                parameter.Required = null;
-            }
-
             var stepTemplate = NewModel.StepTemplate.Wrap(node, graph);
             stepTemplate.Expansion = null;
+            stepTemplate.Parameters.Clear();
+            stepTemplate.Type.Remove(((IUriNode)NewModel.Vocabulary.StepTemplate).Uri);
         }
 
         foreach (var (instance, templateNode) in instances)
         {
-            foreach (var argument in arguments[instance].Where(argument => argument.NodeType == NodeType.Blank))
-            {
-                argument.ParameterName = null;
-                argument.Value = null;
-            }
-
-            NewModel.TemplateInstance.Wrap(instance, graph).Arguments.Clear();
-            graph.Retract(new Triple(instance, NewModel.Vocabulary.RdfType, templateNode));
+            var templateInstance = NewModel.TemplateInstance.Wrap(instance, graph);
+            templateInstance.Arguments.Clear();
+            templateInstance.Type.Remove(((IUriNode)templateNode).Uri);
         }
-
-        graph.Retract(dropped.SelectMany(graph.GetTriplesWithSubject).ToArray());
     }
 
     private static Template ReadTemplate(NewModel.StepTemplate template)
@@ -65,22 +44,6 @@ public static class TemplateExpander
             ?? throw new TemplateExpansionException($"Template {template} has no expansion.");
 
         return new Template([.. template.Parameters], expansion);
-    }
-
-    private static HashSet<INode> Reachable(IGraph graph, INode root)
-    {
-        var seen = new HashSet<INode> { root };
-        var pending = new Stack<INode>([root]);
-
-        while (pending.TryPop(out var node))
-        {
-            foreach (var next in graph.GetTriplesWithSubject(node).Select(t => t.Object).Where(o => o.NodeType == NodeType.Blank && seen.Add(o)))
-            {
-                pending.Push(next);
-            }
-        }
-
-        return seen;
     }
 
     private sealed record Template(NewModel.Parameter[] Parameters, INode Expansion);
