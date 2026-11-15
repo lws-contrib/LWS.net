@@ -128,9 +128,7 @@
 :value
     a rdf:Property ;
     rdfs:label "value"@en ;
-    rdfs:comment "Expression evaluating to the value of the header field, which must be a string."@en ;
-    rdfs:domain :RequestHeader ;
-    rdfs:range :Expression ;
+    rdfs:comment "On a request header, an expression evaluating to the value of the header field, which must be a string. On an argument of a step template instance, the value given for the parameter."@en ;
 .
 
 :formKey
@@ -291,6 +289,57 @@
     rdfs:comment "Operand assertion whose outcome is negated, applied to the value of the :that of the enclosing assertion. The operand is an assertion node without a :that of its own, such as an equals, matches, contains, greaterThan or another not. Passes when the operand fails and fails when it passes. An operand that cannot be evaluated, such as one whose value is of the wrong type, fails the test case rather than being negated."@en ;
     rdfs:domain :NotAssertion ;
     rdfs:range :Assertion ;
+.
+
+:parameter
+    a rdf:Property ;
+    rdfs:label "parameter"@en ;
+    rdfs:comment "Ordered list of the parameters of the step template. Each item is a parameter."@en ;
+    rdfs:domain :StepTemplate ;
+    rdfs:range rdf:List ;
+.
+
+:parameterName
+    a rdf:Property ;
+    rdfs:label "parameter name"@en ;
+    rdfs:comment "On a parameter, the name of the parameter. In the expansion, a placeholder IRI in the namespace urn:lws:param: with this name, such as p:in, or a node with a :param of this name, stands for the value. On an argument, the name of the parameter the argument gives a value for."@en ;
+    rdfs:range xsd:string ;
+.
+
+:argument
+    a rdf:Property ;
+    rdfs:label "argument"@en ;
+    rdfs:comment "Value that an instance of a step template gives for one of the parameters of the template, with a :parameterName and a :value."@en ;
+    rdfs:range :Argument ;
+.
+
+:default
+    a rdf:Property ;
+    rdfs:label "default"@en ;
+    rdfs:comment "Value the parameter has when an instance of the step template gives none."@en ;
+    rdfs:domain :Parameter ;
+.
+
+:required
+    a rdf:Property ;
+    rdfs:label "required"@en ;
+    rdfs:comment "Whether an instance of the step template must give a value for the parameter, when it has no default."@en ;
+    rdfs:domain :Parameter ;
+    rdfs:range xsd:boolean ;
+.
+
+:expansion
+    a rdf:Property ;
+    rdfs:label "expansion"@en ;
+    rdfs:comment "Step that replaces each instance of the step template, with placeholders replaced by the values of the parameters."@en ;
+    rdfs:domain :StepTemplate ;
+    rdfs:range :Step ;
+.
+
+:param
+    a rdf:Property ;
+    rdfs:label "param"@en ;
+    rdfs:comment "Name of the parameter whose value replaces the node in the expansion of a step template, as in [ :param \"in\" ]. Used where a placeholder IRI in the namespace urn:lws:param: cannot be used, such as in the place of a literal or a subject."@en ;
 .
 
 # Classes
@@ -473,4 +522,23 @@
     rdfs:subClassOf :Assertion ;
     rdfs:label "Not assertion"@en ;
     rdfs:comment "Passes when its operand assertion fails for the value of the :that of the assertion."@en ;
+.
+
+:StepTemplate
+    a rdfs:Class ;
+    rdfs:subClassOf rdfs:Class ;
+    rdfs:label "Step template"@en ;
+    rdfs:comment "Class whose instances are steps, each replaced by the expansion of the template. A step template is both a class and, through its :parameter and :expansion, a description of how its instances expand to a step."@en ;
+.
+
+:Parameter
+    a rdfs:Class ;
+    rdfs:label "Parameter"@en ;
+    rdfs:comment "Named value that an instance of a step template can give, with an optional default."@en ;
+.
+
+:Argument
+    a rdfs:Class ;
+    rdfs:label "Argument"@en ;
+    rdfs:comment "Value that an instance of a step template gives for a parameter, with the :parameterName of the parameter and the :value."@en ;
 .
