@@ -35,7 +35,7 @@ public class ResourcesTest
 
         var leftovers = graph.Triples
             .Where(t => t.Predicate.ToString() is Vocabulary + "argument" or Vocabulary + "expansion"
-                || t.Predicate.ToString() == RdfType && t.Object.ToString() is Vocabulary + "CreateContainer" or Vocabulary + "CreateResource" or Vocabulary + "DeleteResource" or Vocabulary + "DeleteResourceIfMatch" or Vocabulary + "PutResourceIfMatch" or Vocabulary + "PatchResourceIfMatch" or Vocabulary + "ReadContainer" or Vocabulary + "ReadStorageDescription" or Vocabulary + "ReadLinkset" or Vocabulary + "StepTemplate")
+                || t.Predicate.ToString() == RdfType && t.Object.ToString() is Vocabulary + "CreateContainer" or Vocabulary + "CreateResource" or Vocabulary + "DeleteResource" or Vocabulary + "DeleteResourceIfMatch" or Vocabulary + "PutResourceIfMatch" or Vocabulary + "PatchResource" or Vocabulary + "PatchResourceIfMatch" or Vocabulary + "ReadContainer" or Vocabulary + "ReadStorageDescription" or Vocabulary + "ReadLinkset" or Vocabulary + "StepTemplate")
             .ToArray();
         Assert.IsEmpty(leftovers);
 
@@ -145,6 +145,25 @@ public class ResourcesTest
     }
 
     [TestMethod]
+    public void ParseExpandsPatchResourceInFromSpec()
+    {
+        var graph = Resources.Parse(new(Resources.Base, "fromSpec.ttl"));
+
+        var step = graph.GetTriplesWithPredicateObject(graph.CreateUriNode(new Uri(Vocabulary + "stepName")), graph.CreateLiteralNode("Patch JSON resource replacing value")).Single().Subject;
+        var wrapped = Model.NewModel.Step.Wrap(step, graph);
+
+        Assert.AreEqual("PATCH", wrapped.Request.Method);
+        Assert.HasCount(1, wrapped.Request.Headers);
+
+        var extractor = (Model.NewModel.Extractors.StatusCodeExtractor)wrapped.Extract.Single();
+        Assert.AreEqual("status", extractor.To);
+
+        var literals = GraphAssert.Reachable(graph, [step]).Triples.Select(t => t.Object).Where(o => o.NodeType == NodeType.Literal).Select(o => ((ILiteralNode)o).Value).ToArray();
+        CollectionAssert.Contains(literals, "Content-Type");
+        CollectionAssert.DoesNotContain(literals, "If-Match");
+    }
+
+    [TestMethod]
     public void ParseExpandsReadContainerInFromSpec()
     {
         var graph = Resources.Parse(new(Resources.Base, "fromSpec.ttl"));
@@ -205,7 +224,7 @@ public class ResourcesTest
 
         var leftovers = graph.Triples
             .Where(t => t.Predicate.ToString() is Vocabulary + "argument" or Vocabulary + "expansion"
-                || t.Predicate.ToString() == RdfType && t.Object.ToString() is Vocabulary + "CreateContainer" or Vocabulary + "CreateResource" or Vocabulary + "DeleteResource" or Vocabulary + "DeleteResourceIfMatch" or Vocabulary + "PutResourceIfMatch" or Vocabulary + "PatchResourceIfMatch" or Vocabulary + "ReadContainer" or Vocabulary + "ReadStorageDescription" or Vocabulary + "ReadLinkset" or Vocabulary + "StepTemplate")
+                || t.Predicate.ToString() == RdfType && t.Object.ToString() is Vocabulary + "CreateContainer" or Vocabulary + "CreateResource" or Vocabulary + "DeleteResource" or Vocabulary + "DeleteResourceIfMatch" or Vocabulary + "PutResourceIfMatch" or Vocabulary + "PatchResource" or Vocabulary + "PatchResourceIfMatch" or Vocabulary + "ReadContainer" or Vocabulary + "ReadStorageDescription" or Vocabulary + "ReadLinkset" or Vocabulary + "StepTemplate")
             .ToArray();
         Assert.IsEmpty(leftovers);
 
@@ -231,7 +250,7 @@ public class ResourcesTest
 
         var leftovers = graph.Triples
             .Where(t => t.Predicate.ToString() is Vocabulary + "argument" or Vocabulary + "expansion"
-                || t.Predicate.ToString() == RdfType && t.Object.ToString() is Vocabulary + "CreateContainer" or Vocabulary + "CreateResource" or Vocabulary + "DeleteResource" or Vocabulary + "DeleteResourceIfMatch" or Vocabulary + "PutResourceIfMatch" or Vocabulary + "PatchResourceIfMatch" or Vocabulary + "ReadContainer" or Vocabulary + "ReadStorageDescription" or Vocabulary + "ReadLinkset" or Vocabulary + "StepTemplate")
+                || t.Predicate.ToString() == RdfType && t.Object.ToString() is Vocabulary + "CreateContainer" or Vocabulary + "CreateResource" or Vocabulary + "DeleteResource" or Vocabulary + "DeleteResourceIfMatch" or Vocabulary + "PutResourceIfMatch" or Vocabulary + "PatchResource" or Vocabulary + "PatchResourceIfMatch" or Vocabulary + "ReadContainer" or Vocabulary + "ReadStorageDescription" or Vocabulary + "ReadLinkset" or Vocabulary + "StepTemplate")
             .ToArray();
         Assert.IsEmpty(leftovers);
 
@@ -249,7 +268,7 @@ public class ResourcesTest
 
         var leftovers = graph.Triples
             .Where(t => t.Predicate.ToString() is Vocabulary + "argument" or Vocabulary + "expansion"
-                || t.Predicate.ToString() == RdfType && t.Object.ToString() is Vocabulary + "CreateContainer" or Vocabulary + "CreateResource" or Vocabulary + "DeleteResource" or Vocabulary + "DeleteResourceIfMatch" or Vocabulary + "PutResourceIfMatch" or Vocabulary + "PatchResourceIfMatch" or Vocabulary + "ReadContainer" or Vocabulary + "ReadStorageDescription" or Vocabulary + "ReadLinkset" or Vocabulary + "StepTemplate")
+                || t.Predicate.ToString() == RdfType && t.Object.ToString() is Vocabulary + "CreateContainer" or Vocabulary + "CreateResource" or Vocabulary + "DeleteResource" or Vocabulary + "DeleteResourceIfMatch" or Vocabulary + "PutResourceIfMatch" or Vocabulary + "PatchResource" or Vocabulary + "PatchResourceIfMatch" or Vocabulary + "ReadContainer" or Vocabulary + "ReadStorageDescription" or Vocabulary + "ReadLinkset" or Vocabulary + "StepTemplate")
             .ToArray();
         Assert.IsEmpty(leftovers);
 

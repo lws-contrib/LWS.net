@@ -3650,11 +3650,20 @@ _:patchJsonResourceIfMatchStatus
 .
 
 _:patchJsonResourceFailingTestStatus
+    a :PatchResource ;
     :stepName "Patch JSON resource failing test status" ;
-    :request _:patchJsonResourceFailingTest ;
-    :extract (
-        _:status
-    ) ;
+    :argument [
+        :parameterName "target" ;
+        :value _:jsonResource ;
+    ] ;
+    :argument [
+        :parameterName "contentType" ;
+        :value "application/json-patch+json" ;
+    ] ;
+    :argument [
+        :parameterName "body" ;
+        :value "[{\"op\":\"replace\",\"path\":\"/title\",\"value\":\"second\"},{\"op\":\"test\",\"path\":\"/keep\",\"value\":false}]" ;
+    ] ;
 .
 
 _:getJsonResourceTitle
@@ -3742,11 +3751,20 @@ _:getLinksetETag
 .
 
 _:patchLinksetForgedUpStatus
+    a :PatchResource ;
     :stepName "Patch linkset forged up status" ;
-    :request _:patchLinksetForgedUp ;
-    :extract (
-        _:status
-    ) ;
+    :argument [
+        :parameterName "target" ;
+        :value _:linkset ;
+    ] ;
+    :argument [
+        :parameterName "contentType" ;
+        :value "application/json-patch+json" ;
+    ] ;
+    :argument [
+        :parameterName "body" ;
+        :value "[{\"op\":\"add\",\"path\":\"/linkset/0/up\",\"value\":[{\"href\":\"https://linkset.invalid/forged-parent/\"}]}]" ;
+    ] ;
 .
 
 _:getTextResourceUpLinks
@@ -3758,11 +3776,20 @@ _:getTextResourceUpLinks
 .
 
 _:patchLinksetReplaceArrayStatus
+    a :PatchResource ;
     :stepName "Patch linkset replace array status" ;
-    :request _:patchLinksetReplaceArray ;
-    :extract (
-        _:status
-    ) ;
+    :argument [
+        :parameterName "target" ;
+        :value _:linkset ;
+    ] ;
+    :argument [
+        :parameterName "contentType" ;
+        :value "application/json-patch+json" ;
+    ] ;
+    :argument [
+        :parameterName "body" ;
+        :value "[{\"op\":\"replace\",\"path\":\"/linkset\",\"value\":\"not a linkset\"}]" ;
+    ] ;
 .
 
 _:patchLinksetLicenseIfMatchStatus
@@ -4075,31 +4102,10 @@ _:getLinkset
     :headers _:acceptLinksetJson ;
 .
 
-_:patchLinksetForgedUp
-    :method "PATCH" ;
-    :uri _:linkset ;
-    :headers _:contentTypeJsonPatch ;
-    :body [ :constant "[{\"op\":\"add\",\"path\":\"/linkset/0/up\",\"value\":[{\"href\":\"https://linkset.invalid/forged-parent/\"}]}]" ] ;
-.
-
-_:patchLinksetReplaceArray
-    :method "PATCH" ;
-    :uri _:linkset ;
-    :headers _:contentTypeJsonPatch ;
-    :body [ :constant "[{\"op\":\"replace\",\"path\":\"/linkset\",\"value\":\"not a linkset\"}]" ] ;
-.
-
 _:getJsonResource
     :method "GET" ;
     :uri _:jsonResource ;
     :headers _:acceptJson ;
-.
-
-_:patchJsonResourceFailingTest
-    :method "PATCH" ;
-    :uri _:jsonResource ;
-    :headers _:contentTypeJsonPatch ;
-    :body [ :constant "[{\"op\":\"replace\",\"path\":\"/title\",\"value\":\"second\"},{\"op\":\"test\",\"path\":\"/keep\",\"value\":false}]" ] ;
 .
 
 _:getTextResource
@@ -4438,11 +4444,6 @@ _:contentTypeTextPlain
 _:acceptJson
     :key "Accept" ;
     :value [ :constant "application/json" ] ;
-.
-
-_:contentTypeJsonPatch
-    :key "Content-Type" ;
-    :value [ :constant "application/json-patch+json" ] ;
 .
 
 # Extractors

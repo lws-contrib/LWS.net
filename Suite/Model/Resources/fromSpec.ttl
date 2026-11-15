@@ -2767,19 +2767,37 @@ _:putTextResourceReplacingContentWithBogusIfMatch
 .
 
 _:patchJsonResourceWithInvalidPayload
+    a :PatchResource ;
     :stepName "Patch JSON resource with invalid payload" ;
-    :request _:patchJsonResourceInvalidPayload ;
-    :extract (
-        _:status
-    ) ;
+    :argument [
+        :parameterName "target" ;
+        :value _:jsonResource ;
+    ] ;
+    :argument [
+        :parameterName "contentType" ;
+        :value "application/json-patch+json" ;
+    ] ;
+    :argument [
+        :parameterName "body" ;
+        :value "not json" ;
+    ] ;
 .
 
 _:patchJsonResourceReplacingValue
+    a :PatchResource ;
     :stepName "Patch JSON resource replacing value" ;
-    :request _:patchJsonResourceReplaceValue ;
-    :extract (
-        _:status
-    ) ;
+    :argument [
+        :parameterName "target" ;
+        :value _:jsonResource ;
+    ] ;
+    :argument [
+        :parameterName "contentType" ;
+        :value "application/json-patch+json" ;
+    ] ;
+    :argument [
+        :parameterName "body" ;
+        :value "[{\"op\":\"replace\",\"path\":\"/a\",\"value\":2}]" ;
+    ] ;
 .
 
 _:getJsonResourceAValue
@@ -2982,20 +3000,6 @@ _:putTextResourceReplaceContent
     :uri _:textResource ;
     :headers _:contentTypeTextPlain ;
     :body [ :constant "new content" ] ;
-.
-
-_:patchJsonResourceInvalidPayload
-    :method "PATCH" ;
-    :uri _:jsonResource ;
-    :headers _:contentTypeJsonPatch ;
-    :body [ :constant "not json" ] ;
-.
-
-_:patchJsonResourceReplaceValue
-    :method "PATCH" ;
-    :uri _:jsonResource ;
-    :headers _:contentTypeJsonPatch ;
-    :body [ :constant "[{\"op\":\"replace\",\"path\":\"/a\",\"value\":2}]" ] ;
 .
 
 # URIs
