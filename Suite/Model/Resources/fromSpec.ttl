@@ -2264,14 +2264,20 @@ _:getLinksetContentType
 .
 
 _:getLinksetMembers
+    a :ReadLinkset ;
     :stepName "Get linkset members" ;
-    :request _:getLinkset ;
-    :extract (
-        [
-            :path "$.linkset[*]" ;
-            :to "linksetMembers" ;
-        ]
-    ) ;
+    :argument [
+        :parameterName "target" ;
+        :value _:linkset ;
+    ] ;
+    :argument [
+        :parameterName "path" ;
+        :value "$.linkset[*]" ;
+    ] ;
+    :argument [
+        :parameterName "as" ;
+        :value "linksetMembers" ;
+    ] ;
 .
 
 _:headLinksetAllow
@@ -2328,14 +2334,20 @@ _:patchLinksetAddingDescribedBy
 .
 
 _:getLinksetDescribedByHref
+    a :ReadLinkset ;
     :stepName "Get linkset describedby href" ;
-    :request _:getLinkset ;
-    :extract (
-        [
-            :path "$.linkset[?(@.describedby)].describedby[0].href" ;
-            :to "describedByHref" ;
-        ]
-    ) ;
+    :argument [
+        :parameterName "target" ;
+        :value _:linkset ;
+    ] ;
+    :argument [
+        :parameterName "path" ;
+        :value "$.linkset[?(@.describedby)].describedby[0].href" ;
+    ] ;
+    :argument [
+        :parameterName "as" ;
+        :value "describedByHref" ;
+    ] ;
 .
 
 _:patchLinksetRemovingType
@@ -2360,14 +2372,20 @@ _:patchLinksetRemovingType
 .
 
 _:getLinksetTypeHrefs
+    a :ReadLinkset ;
     :stepName "Get linkset type hrefs" ;
-    :request _:getLinkset ;
-    :extract (
-        [
-            :path "$.linkset[*].type[*].href" ;
-            :to "typeHrefs" ;
-        ]
-    ) ;
+    :argument [
+        :parameterName "target" ;
+        :value _:linkset ;
+    ] ;
+    :argument [
+        :parameterName "path" ;
+        :value "$.linkset[*].type[*].href" ;
+    ] ;
+    :argument [
+        :parameterName "as" ;
+        :value "typeHrefs" ;
+    ] ;
 .
 
 _:createTextResourceLinksetLinks
@@ -2379,14 +2397,20 @@ _:createTextResourceLinksetLinks
 .
 
 _:getLinksetUpHrefs
+    a :ReadLinkset ;
     :stepName "Get linkset up hrefs" ;
-    :request _:getLinkset ;
-    :extract (
-        [
-            :path "$.linkset[*].up[*].href" ;
-            :to "upHrefs" ;
-        ]
-    ) ;
+    :argument [
+        :parameterName "target" ;
+        :value _:linkset ;
+    ] ;
+    :argument [
+        :parameterName "path" ;
+        :value "$.linkset[*].up[*].href" ;
+    ] ;
+    :argument [
+        :parameterName "as" ;
+        :value "upHrefs" ;
+    ] ;
 .
 
 _:createTextResourceWithForgedUpLink

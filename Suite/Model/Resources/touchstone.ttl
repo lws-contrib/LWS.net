@@ -3714,11 +3714,20 @@ _:getLinksetContentType
 .
 
 _:getLinksetMembers
+    a :ReadLinkset ;
     :stepName "Get linkset members" ;
-    :request _:getLinkset ;
-    :extract (
-        _:linksetMembers
-    ) ;
+    :argument [
+        :parameterName "target" ;
+        :value _:linkset ;
+    ] ;
+    :argument [
+        :parameterName "path" ;
+        :value "$.linkset" ;
+    ] ;
+    :argument [
+        :parameterName "as" ;
+        :value "linksetMembers" ;
+    ] ;
 .
 
 _:getLinksetETag
@@ -3778,11 +3787,20 @@ _:patchLinksetLicenseIfMatchStatus
 .
 
 _:getLinksetLicenseHrefs
+    a :ReadLinkset ;
     :stepName "Get linkset license hrefs" ;
-    :request _:getLinkset ;
-    :extract (
-        _:linksetLicenseHrefs
-    ) ;
+    :argument [
+        :parameterName "target" ;
+        :value _:linkset ;
+    ] ;
+    :argument [
+        :parameterName "path" ;
+        :value "$.linkset[*].license[*].href" ;
+    ] ;
+    :argument [
+        :parameterName "as" ;
+        :value "linksetLicenseHrefs" ;
+    ] ;
 .
 
 _:headContainerUpLinks
@@ -4476,16 +4494,6 @@ _:storageLinks
 _:linksetLinks
     :link "linkset" ;
     :to "linksetLinks" ;
-.
-
-_:linksetMembers
-    :path "$.linkset" ;
-    :to "linksetMembers" ;
-.
-
-_:linksetLicenseHrefs
-    :path "$.linkset[*].license[*].href" ;
-    :to "linksetLicenseHrefs" ;
 .
 
 _:jsonTitle
