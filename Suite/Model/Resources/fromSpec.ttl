@@ -2074,25 +2074,21 @@ _:createSecondTextResource
 .
 
 _:deleteTextResource
+    a :DeleteResource ;
     :stepName "Delete text resource" ;
-    :request [
-        :method "DELETE" ;
-        :uri _:textResource ;
+    :argument [
+        :parameterName "target" ;
+        :value _:textResource ;
     ] ;
-    :extract (
-        _:status
-    ) ;
 .
 
 _:deleteContainer
+    a :DeleteResource ;
     :stepName "Delete container" ;
-    :request [
-        :method "DELETE" ;
-        :uri _:container ;
+    :argument [
+        :parameterName "target" ;
+        :value _:container ;
     ] ;
-    :extract (
-        _:status
-    ) ;
 .
 
 _:createNestedContainer
@@ -2684,14 +2680,12 @@ _:deleteTextResourceWithMatchingIfMatch
 .
 
 _:deleteNestedContainer
+    a :DeleteResource ;
     :stepName "Delete nested container" ;
-    :request [
-        :method "DELETE" ;
-        :uri _:nestedContainer ;
+    :argument [
+        :parameterName "target" ;
+        :value _:nestedContainer ;
     ] ;
-    :extract (
-        _:status
-    ) ;
 .
 
 # Requests

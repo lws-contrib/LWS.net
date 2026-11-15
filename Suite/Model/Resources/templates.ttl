@@ -45,3 +45,20 @@
         ) ;
     ] ;
 .
+
+:DeleteResource
+    a :StepTemplate ;
+    :parameter (
+        [ :parameterName "target" ; :required true ]
+        [ :parameterName "as" ; :default "status" ]
+    ) ;
+    :expansion [
+        :request [
+            :method "DELETE" ;
+            :uri p:target ;
+        ] ;
+        :extract (
+            [ a :StatusCodeExtractor ; :to [ :param "as" ] ]
+        ) ;
+    ] ;
+.
